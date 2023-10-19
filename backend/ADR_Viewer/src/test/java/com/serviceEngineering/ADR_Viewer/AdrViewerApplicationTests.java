@@ -16,8 +16,10 @@ class AdrViewerApplicationTests {
 
 	private final String owner = "flohuemer";
 	private final String repoName = "graal";
-	private final String filePath = "wasm/docs/arch";
+	private final String directoryPath = "wasm/docs/arch";
+	private final String filePath = "wasm/docs/arch/adr-001.md";
 	private final String branch = "adrs";
+	private final int nunADRs = 27;
 
 	@Mock
 	private RestTemplate restTemplate;
@@ -36,12 +38,12 @@ class AdrViewerApplicationTests {
 
 	@Test
 	void connectGithub() {
-		assertThat(githubService.fetchRepositoryContent(owner, repoName, filePath, branch)).isNotNull();
+		assertThat(githubService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).isNotNull();
 	}
 
 	@Test
-	void extractADRs() {
-
+	void extractADRsAndCheckNumberOfADRs() {
+		assertThat(githubService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).hasSize(nunADRs);
 	}
 
 	@Test
@@ -51,7 +53,7 @@ class AdrViewerApplicationTests {
 
 	@Test
 	void readSingleADR() {
-
+		assertThat(githubService.fetchADRFile(owner, repoName, filePath, branch)).isNotNull();
 	}
 
 }
