@@ -1,10 +1,8 @@
 package com.serviceEngineering.ADR_Viewer.service;
 
+import com.serviceEngineering.ADR_Viewer.entity.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -22,17 +20,27 @@ public class GithubService {
         this.restTemplate = restTemplate;
     }
 
-    public String fetchRepositoryContent(String owner, String repoName, String filePath, String branch) {
+    /***
+     * TODO: create search methode in order to search for ADRs inside a project ---> Goal is that, the user does not have to specify
+     *  the path to the folder
+     * @param owner: Github Username of the person created the Github repository
+     * @param repoName: Name of the repository stored in Github
+     * @param filePath: Path to the directory where to ADRs are stores ---> To be decommissioned
+     * @param branch: Github branch
+     * @return: Array of RestResponse.class in JSON
+     */
+    public RestResponse[] fetchRepositoryContent(String owner, String repoName, String filePath, String branch) {
         String apiUrl = String.format("%s/repos/%s/%s/contents/%s?ref=%s", githubApiUrl, owner, repoName, filePath, branch);
-        String accessToken = "token " + githubApiToken;
 
-        // Set up the request headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", accessToken);
+        ResponseEntity<RestResponse[]> responseEntity =
+                restTemplate.getForEntity(apiUrl, RestResponse[].class);
+        return responseEntity.getBody();
+    }
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
-        return response.getBody();
+    public String fetchADRFile(String owner, String repoName, String filePath, String branch) {
+        String apiUrl = String.format("%s/repos/%s/%s/contents/%s?ref=%s", githubApiUrl, owner, repoName, filePath, branch);
+        ResponseEntity<RestResponse> responseEntity =
+                restTemplate.getForEntity(apiUrl, RestResponse.class);
+        return restTemplate.getForEntity(responseEntity.getBody().getDownload_url(), String.class).getBody();
     }
 }

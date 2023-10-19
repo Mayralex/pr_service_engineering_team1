@@ -1,6 +1,7 @@
 package com.serviceEngineering.ADR_Viewer.Controller;
 
 import com.serviceEngineering.ADR_Viewer.ADRParser;
+import com.serviceEngineering.ADR_Viewer.entity.RestResponse;
 import com.serviceEngineering.ADR_Viewer.service.GithubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +18,20 @@ public class ADRController {
     private GithubService githubService;
 
     @GetMapping("/scanADRs")
-    public String scanADRs(
+    public RestResponse[] scanADRs(
             @RequestParam String owner,
             @RequestParam String repoName,
             @RequestParam String filePath,
             @RequestParam String branch) {
-        String content = githubService.fetchRepositoryContent(owner, repoName, filePath, branch);
-        //return adrParser.parseADRs(content);
-        return content;
+        return githubService.fetchRepositoryContent(owner, repoName, filePath, branch);
+    }
+
+    @GetMapping("/fetchFile")
+    public String fetchFile(
+            @RequestParam String owner,
+            @RequestParam String repoName,
+            @RequestParam String filePath,
+            @RequestParam String branch) {
+        return githubService.fetchADRFile(owner, repoName, filePath, branch);
     }
 }
