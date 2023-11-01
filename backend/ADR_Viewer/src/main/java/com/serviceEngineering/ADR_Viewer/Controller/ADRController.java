@@ -34,4 +34,14 @@ public class ADRController {
             @RequestParam String branch) {
         return githubService.fetchADRFile(owner, repoName, filePath, branch);
     }
+
+    @GetMapping("/parseFile")
+    public String parseFile(
+            @RequestParam String owner,
+            @RequestParam String repoName,
+            @RequestParam String filePath,
+            @RequestParam String branch
+    ) {
+        return githubService.parseADRFile(owner, repoName, filePath, branch);
+    }
 }

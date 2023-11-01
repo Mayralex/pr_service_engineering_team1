@@ -1,5 +1,6 @@
 package com.serviceEngineering.ADR_Viewer.service;
 
+import com.serviceEngineering.ADR_Viewer.ADRParser;
 import com.serviceEngineering.ADR_Viewer.entity.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,5 +43,10 @@ public class GithubService {
         ResponseEntity<RestResponse> responseEntity =
                 restTemplate.getForEntity(apiUrl, RestResponse.class);
         return restTemplate.getForEntity(responseEntity.getBody().getDownload_url(), String.class).getBody();
+    }
+
+    public String parseADRFile(String owner, String repoName, String filePath, String branch) {
+        String markdown = fetchADRFile(owner, repoName, filePath, branch);
+        return ADRParser.convertMarkdown(markdown);
     }
 }
