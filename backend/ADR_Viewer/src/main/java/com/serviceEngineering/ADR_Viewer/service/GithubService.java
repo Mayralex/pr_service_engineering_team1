@@ -1,9 +1,12 @@
 package com.serviceEngineering.ADR_Viewer.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.serviceEngineering.ADR_Viewer.ADRParser;
+import com.serviceEngineering.ADR_Viewer.entity.ADR;
 import com.serviceEngineering.ADR_Viewer.entity.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -45,8 +48,19 @@ public class GithubService {
         return restTemplate.getForEntity(responseEntity.getBody().getDownload_url(), String.class).getBody();
     }
 
-    public String parseADRFile(String owner, String repoName, String filePath, String branch) {
+    public String parseADRFileToHTML(String owner, String repoName, String filePath, String branch) {
         String markdown = fetchADRFile(owner, repoName, filePath, branch);
-        return ADRParser.convertMarkdown(markdown);
+        return ADRParser.convertMarkdownToHTML(markdown);
     }
+
+    public Object parseADRFile(String owner, String repoName, String filePath, String branch) throws JsonProcessingException {
+        String markdown = fetchADRFile(owner, repoName, filePath, branch);
+        String html = ADRParser.convertMarkdownToHTML(markdown);
+        ADR adr = ADRParser.convertHTMLToADR(html);
+
+        //return new ObjectMapper().writeValue(adr);
+        return new ResponseEntity<Object>(adr, HttpStatus.OK);
+    }
+
+
 }
