@@ -56,4 +56,8 @@ class AdrViewerApplicationTests {
 		assertThat(githubService.fetchADRFile(owner, repoName, filePath, branch)).isNotNull();
 	}
 
+	@Test
+	void convertADRtoHTML() {
+		assertThat(githubService.parseADRFileToHTML(owner, repoName, filePath, branch)).isNotNull();
+	}
 }
