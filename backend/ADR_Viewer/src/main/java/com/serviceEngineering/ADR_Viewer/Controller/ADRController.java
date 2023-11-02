@@ -1,5 +1,6 @@
 package com.serviceEngineering.ADR_Viewer.Controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.serviceEngineering.ADR_Viewer.ADRParser;
 import com.serviceEngineering.ADR_Viewer.entity.RestResponse;
 import com.serviceEngineering.ADR_Viewer.service.GithubService;
@@ -21,9 +22,9 @@ public class ADRController {
     public RestResponse[] scanADRs(
             @RequestParam String owner,
             @RequestParam String repoName,
-            @RequestParam String filePath,
+            @RequestParam String directoryPath,
             @RequestParam String branch) {
-        return githubService.fetchRepositoryContent(owner, repoName, filePath, branch);
+        return githubService.fetchRepositoryContent(owner, repoName, directoryPath, branch);
     }
 
     @GetMapping("/fetchFile")
@@ -33,5 +34,25 @@ public class ADRController {
             @RequestParam String filePath,
             @RequestParam String branch) {
         return githubService.fetchADRFile(owner, repoName, filePath, branch);
+    }
+
+    @GetMapping("/parseFile")
+    public Object parseFile(
+            @RequestParam String owner,
+            @RequestParam String repoName,
+            @RequestParam String filePath,
+            @RequestParam String branch
+    ) throws JsonProcessingException {
+        return githubService.parseADRFile(owner, repoName, filePath, branch);
+    }
+
+    @GetMapping("/convertFile")
+    public Object convertFileToHtml(
+            @RequestParam String owner,
+            @RequestParam String repoName,
+            @RequestParam String filePath,
+            @RequestParam String branch
+    ) {
+        return githubService.parseADRFileToHTML(owner, repoName, filePath, branch);
     }
 }
