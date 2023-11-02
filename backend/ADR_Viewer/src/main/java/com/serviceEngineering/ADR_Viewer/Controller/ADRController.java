@@ -22,9 +22,9 @@ public class ADRController {
     public RestResponse[] scanADRs(
             @RequestParam String owner,
             @RequestParam String repoName,
-            @RequestParam String filePath,
+            @RequestParam String directoryPath,
             @RequestParam String branch) {
-        return githubService.fetchRepositoryContent(owner, repoName, filePath, branch);
+        return githubService.fetchRepositoryContent(owner, repoName, directoryPath, branch);
     }
 
     @GetMapping("/fetchFile")
