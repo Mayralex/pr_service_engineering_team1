@@ -11,6 +11,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -29,22 +31,59 @@ public class ADRParser {
         ADR adr = new ADR();
 
         adr.setTitle(Objects.requireNonNull(document.selectFirst("h1")).textNodes().get(0).toString());
-        Elements h2 = document.select("h2");
-        for (Element element : h2) {
-            /*
-            TODO: big big here: The following code takes all text fields after the section.
-             Meaning that inside Context we have every text until section Commit.
-                --> refine the functionality to only take the relevant part
-             */
-            Elements pElements = element.nextElementSiblings().select("p");
-            if (element.text().equals("Context")) adr.setContext(pElements.text());
-            if (element.text().equals("Decision")) adr.setDecision(pElements.text());
-            if (element.text().equals("Status")) adr.setStatus(Status.valueOf(pElements.get(0).text().toUpperCase()));
-            if (element.text().equals("Consequences")) adr.setConsequences(pElements.text());
-            if (element.text().equals("Artifacts")) adr.setArtifacts(pElements.dataNodes().toString());
-            if (element.text().equals("Relations")) adr.setRelations(pElements.dataNodes().toString());
-        }
-
+        adr.setContext(extractSectionText(document, "Context"));
+        adr.setDecision(extractSectionText(document, "Decision"));
+        adr.setStatus(Status.valueOf(extractSectionText(document, "Status").toUpperCase()));
+        adr.setConsequences(extractSectionText(document, "Consequences"));
+        adr.setArtifacts(extractLinks(document, "Artifacts").toString());
+        adr.setRelations(extractLinks(document, "Relations").toString());
         return adr;
     }
+
+
+    private static String extractSectionText(Document doc, String sectionHeader) {
+        Element h2 = doc.select("h2:contains(" + sectionHeader + ")").first();
+        if (h2 != null) {
+            Element nextSibling = h2.nextElementSibling();
+            StringBuilder text = new StringBuilder();
+
+            while (nextSibling != null && !nextSibling.tagName().equals("h2")) {
+                if (nextSibling.tagName().equals("p")) {
+                    text.append(nextSibling.text()).append("\n");
+                }
+                nextSibling = nextSibling.nextElementSibling();
+            }
+
+            return text.toString().trim();
+        } else {
+            return "";
+        }
+    }
+
+    private static Map<String, String> extractLinks(Document doc, String sectionHeader) {
+        Map<String, String> linksMap = new HashMap<>();
+        Element h2 = doc.select("h2:contains(" + sectionHeader + ")").first();
+
+        if (h2 != null) {
+            Element nextSibling = h2.nextElementSibling();
+
+            while (nextSibling != null && !nextSibling.tagName().equals("h2")) {
+                if (nextSibling.tagName().equals("ul")) {
+                    Elements listItems = nextSibling.select("li");
+                    for (Element listItem : listItems) {
+                        Element link = listItem.selectFirst("a");
+                        if (link != null) {
+                            String linkText = link.text();
+                            String linkHref = link.attr("href");
+                            linksMap.put(linkText, linkHref);
+                        }
+                    }
+                }
+                nextSibling = nextSibling.nextElementSibling();
+            }
+        }
+
+        return linksMap;
+    }
 }
+
