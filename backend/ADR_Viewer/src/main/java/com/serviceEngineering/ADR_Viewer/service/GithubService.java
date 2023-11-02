@@ -43,6 +43,13 @@ public class GithubService {
         return responseEntity.getBody();
     }
 
+    /**
+     * @param owner    GitHub Username of the person created the GitHub repository
+     * @param repoName Name of the repository stored in GitHub
+     * @param filePath Path to the markdown file
+     * @param branch   GitHub branch
+     * @return Markdown file as String
+     */
     public String fetchADRFile(String owner, String repoName, String filePath, String branch) {
         if (filePath.endsWith(".md")) {
             String apiUrl = String.format("%s/repos/%s/%s/contents/%s?ref=%s", githubApiUrl, owner, repoName, filePath, branch);
@@ -52,16 +59,31 @@ public class GithubService {
         } else throw new ServiceException("Path not pointing to markdown file", filePath);
     }
 
+    /**
+     * @param owner    GitHub Username of the person created the GitHub repository
+     * @param repoName Name of the repository stored in GitHub
+     * @param filePath Path to the markdown file
+     * @param branch   GitHub branch
+     * @return Converted markdown file into HTML
+     */
     public String parseADRFileToHTML(String owner, String repoName, String filePath, String branch) {
         String markdown = fetchADRFile(owner, repoName, filePath, branch);
         return ADRParser.convertMarkdownToHTML(markdown);
     }
 
-    public Object parseADRFile(String owner, String repoName, String filePath, String branch) {
+    /**
+     *
+     * @param owner    GitHub Username of the person created the GitHub repository
+     * @param repoName Name of the repository stored in GitHub
+     * @param filePath Path to the markdown file
+     * @param branch   GitHub branch
+     * @return JSON representation parsed ADR
+     */
+    public ResponseEntity<Object> parseADRFile(String owner, String repoName, String filePath, String branch) {
         String markdown = fetchADRFile(owner, repoName, filePath, branch);
         String html = ADRParser.convertMarkdownToHTML(markdown);
         ADR adr = ADRParser.convertHTMLToADR(html);
-        return new ResponseEntity<Object>(adr, HttpStatus.OK);
+        return new ResponseEntity<>(adr, HttpStatus.OK);
     }
 
 
