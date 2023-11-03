@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+
+github:
+  api:
+    url: https://api.github.com
+    token: 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
