@@ -1,11 +1,10 @@
-package com.serviceEngineering.ADR_Viewer.service;
+package org.serviceEngineering.adrViewer.service;
 
-import com.serviceEngineering.ADR_Viewer.ADRParser;
-import com.serviceEngineering.ADR_Viewer.entity.ADR;
-import com.serviceEngineering.ADR_Viewer.entity.RestResponse;
-import com.serviceEngineering.ADR_Viewer.exceptions.ServiceException;
-import com.serviceEngineering.ADR_Viewer.repository.ADRRepository;
-import lombok.extern.java.Log;
+import org.serviceEngineering.adrViewer.div.ADRParser;
+import org.serviceEngineering.adrViewer.entity.ADR;
+import org.serviceEngineering.adrViewer.entity.RestResponse;
+import org.serviceEngineering.adrViewer.exceptions.ServiceException;
+import org.serviceEngineering.adrViewer.repository.ADRRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import javax.cache.annotation.CacheResult;
 import java.util.Objects;
 
 @Service
-@Log
 @CacheDefaults(cacheName = "adr")
 public class ADRService {
     private final RestTemplate restTemplate;
@@ -30,7 +28,7 @@ public class ADRService {
     private String githubApiToken;
     private final ADRRepository aDRRepository;
 
-    private final Logger LOG = LoggerFactory.getLogger(ADRService.class);
+    private final Logger log = LoggerFactory.getLogger(ADRService.class);
 
     @Autowired
     public ADRService(RestTemplate restTemplate,
@@ -46,7 +44,7 @@ public class ADRService {
      * @param repoName: Name of the repository stored in GitHub
      * @param directoryPath: Path to the directory where to ADRs are stores ---> To be decommissioned
      * @param branch: Github branch
-     * @return: Array of RestResponse. Class in JSON
+     * @return Array of RestResponse. Class in JSON
      */
     public RestResponse[] fetchRepositoryContent(String owner, String repoName, String directoryPath, String branch) {
         String apiUrl = String.format("%s/repos/%s/%s/contents/%s?ref=%s", githubApiUrl, owner, repoName, directoryPath, branch);
@@ -102,7 +100,7 @@ public class ADRService {
     @CacheResult
     public ADR getADR(long id) {
         ADR adr =  aDRRepository.getReferenceById(id);
-        LOG.info("Fetched adr from memory: \n {}", adr);
+        log.info("Fetched adr from memory: \n {}", adr);
         return adr;
     }
 }

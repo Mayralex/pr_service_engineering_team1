@@ -1,7 +1,5 @@
-package com.serviceEngineering.ADR_Viewer;
+package org.serviceEngineering.adrViewer.div;
 
-import com.serviceEngineering.ADR_Viewer.div.Status;
-import com.serviceEngineering.ADR_Viewer.entity.ADR;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
@@ -9,15 +7,18 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Service;
+import org.serviceEngineering.adrViewer.entity.ADR;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 
-@Service
 public class ADRParser {
+
+    private ADRParser() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Converts Markdown content to HTML format using a common Markdown parser and renderer.

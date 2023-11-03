@@ -1,4 +1,4 @@
-package com.serviceEngineering.ADR_Viewer.div;
+package org.serviceEngineering.adrViewer.div;
 
 public enum Status {
     //TODO

@@ -1,4 +1,4 @@
-package com.serviceEngineering.ADR_Viewer.div;
+package org.serviceEngineering.adrViewer.config;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;

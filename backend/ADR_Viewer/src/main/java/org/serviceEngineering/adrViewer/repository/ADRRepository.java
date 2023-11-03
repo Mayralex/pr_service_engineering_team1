@@ -1,6 +1,6 @@
-package com.serviceEngineering.ADR_Viewer.repository;
+package org.serviceEngineering.adrViewer.repository;
 
-import com.serviceEngineering.ADR_Viewer.entity.ADR;
+import org.serviceEngineering.adrViewer.entity.ADR;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ADRRepository extends JpaRepository<ADR, Long> {

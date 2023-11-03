@@ -1,20 +1,17 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://www.ehcache.org/v3"
-        xmlns:jsr107="http://www.ehcache.org/v3/jsr107"
-        xsi:schemaLocation="
-            http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd
-            http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd">
+        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
 
     <cache alias="adr">
         <key-type>java.lang.Long</key-type>
-        <value-type>com.serviceEngineering.ADR_Viewer.entity.ADR</value-type>
+        <value-type>org.serviceEngineering.adrViewer.entity.ADR</value-type>
         <expiry>
-            <ttl unit="seconds">30</ttl>
+            <ttl>30</ttl>
         </expiry>
 
         <listeners>
             <listener>
-                <class>com.serviceEngineering.ADR_Viewer.config.CacheEventLogger</class>
+                <class>org.serviceEngineering.adrViewer.config.CacheEventLogger</class>
                 <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
                 <event-ordering-mode>UNORDERED</event-ordering-mode>
                 <events-to-fire-on>CREATED</events-to-fire-on>
@@ -23,7 +20,7 @@
         </listeners>
 
         <resources>
-            <heap unit="entries">2</heap>
+            <heap>2</heap>
             <offheap unit="MB">10</offheap>
         </resources>
     </cache>
