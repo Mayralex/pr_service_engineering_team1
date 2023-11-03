@@ -39,6 +39,7 @@ public class ADRService {
     }
 
     /***
+     * Service method for fetching the contents of a GitHub repository directory, including ADR files.
      * TODO: create search methode in order to search for ADRs inside a project ---> Goal is that, the user does not have to specify
      *  the path to the folder
      * @param owner: GitHub Username of the person created the GitHub repository
@@ -56,6 +57,7 @@ public class ADRService {
     }
 
     /**
+     *  Service method for fetching the content of a specific ADR file from a GitHub repository.
      * @param owner    GitHub Username of the person created the GitHub repository
      * @param repoName Name of the repository stored in GitHub
      * @param filePath Path to the markdown file
@@ -72,6 +74,7 @@ public class ADRService {
     }
 
     /**
+     * Service method for parsing an ADR markdown file to HTML format
      * @param owner    GitHub Username of the person created the GitHub repository
      * @param repoName Name of the repository stored in GitHub
      * @param filePath Path to the markdown file
@@ -84,7 +87,8 @@ public class ADRService {
     }
 
     /**
-     *
+     * !!DEPRECATED!!
+     * Service method for parsing an ADR markdown file to JSON format.
      * @param owner    GitHub Username of the person created the GitHub repository
      * @param repoName Name of the repository stored in GitHub
      * @param filePath Path to the markdown file
@@ -98,17 +102,37 @@ public class ADRService {
         return new ResponseEntity<>(aDRRepository.save(adr), HttpStatus.OK);
     }
 
+    /**
+     * Service method for parsing an ADR markdown file to an ADR object.
+     *
+     * @param owner    GitHub Username of the person who created the GitHub repository.
+     * @param repoName Name of the repository stored in GitHub.
+     * @param filePath Path to the markdown file.
+     * @param branch   GitHub branch.
+     * @return Parsed ADR object.
+     */
     public ADR parseADRFile(String owner, String repoName, String filePath, String branch) {
         String markdown = fetchADRFile(owner, repoName, filePath, branch);
         String html = ADRParser.convertMarkdownToHTML(markdown);
         return ADRParser.convertHTMLToADR(html);
     }
 
+    /**
+     * Service method for saving a list of ADR objects to the database.
+     *
+     * @param adrList List of ADRs to be saved.
+     */
     public void saveAll(List<ADR> adrList) {
         log.info("Saving {} ADRs from bulk parsing", adrList.size());
         aDRRepository.saveAll(adrList);
     }
 
+    /**
+     * Service method for retrieving an ADR by its unique identifier.
+     *
+     * @param id The unique identifier of the ADR to retrieve.
+     * @return The retrieved ADR object.
+     */
     @CacheResult
     public ADR getADR(long id) {
         ADR adr =  aDRRepository.getReferenceById(id);
@@ -116,6 +140,11 @@ public class ADRService {
         return adr;
     }
 
+    /**
+     * Service method for retrieving all ADRs from the memory.
+     *
+     * @return List of all ADRs.
+     */
     public List<ADR> getAll() {
         return aDRRepository.findAll();
     }
