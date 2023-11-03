@@ -4,6 +4,10 @@ import com.serviceEngineering.ADR_Viewer.ADRParser;
 import com.serviceEngineering.ADR_Viewer.entity.ADR;
 import com.serviceEngineering.ADR_Viewer.entity.RestResponse;
 import com.serviceEngineering.ADR_Viewer.exceptions.ServiceException;
+import com.serviceEngineering.ADR_Viewer.repository.ADRRepository;
+import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -11,19 +15,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.cache.annotation.CacheDefaults;
+import javax.cache.annotation.CacheResult;
 import java.util.Objects;
 
 @Service
-public class GithubService {
+@Log
+@CacheDefaults(cacheName = "adr")
+public class ADRService {
     private final RestTemplate restTemplate;
     @Value("${github.api.url}")
     private String githubApiUrl;
     @Value("${github.api.token}")
     private String githubApiToken;
+    private final ADRRepository aDRRepository;
+
+    private final Logger LOG = LoggerFactory.getLogger(ADRService.class);
 
     @Autowired
-    public GithubService(RestTemplate restTemplate) {
+    public ADRService(RestTemplate restTemplate,
+                      ADRRepository aDRRepository) {
         this.restTemplate = restTemplate;
+        this.aDRRepository = aDRRepository;
     }
 
     /***
@@ -83,8 +96,13 @@ public class GithubService {
         String markdown = fetchADRFile(owner, repoName, filePath, branch);
         String html = ADRParser.convertMarkdownToHTML(markdown);
         ADR adr = ADRParser.convertHTMLToADR(html);
-        return new ResponseEntity<>(adr, HttpStatus.OK);
+        return new ResponseEntity<>(aDRRepository.save(adr), HttpStatus.OK);
     }
 
-
+    @CacheResult
+    public ADR getADR(long id) {
+        ADR adr =  aDRRepository.getReferenceById(id);
+        LOG.info("Fetched adr from memory: \n {}", adr);
+        return adr;
+    }
 }
