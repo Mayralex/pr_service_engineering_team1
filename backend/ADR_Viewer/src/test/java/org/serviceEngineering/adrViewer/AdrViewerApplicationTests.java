@@ -67,7 +67,7 @@ class AdrViewerApplicationTests {
 
 	@Test
 	void parseSingleADRToJSONNotNull() {
-		assertThat(ADRService.parseADRFile(owner, repoName, filePath, branch)).isNotNull();
+		assertThat(ADRService.parseADRFileDeprecated(owner, repoName, filePath, branch)).isNotNull();
 	}
 
 	@Test
