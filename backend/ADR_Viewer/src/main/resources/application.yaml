@@ -11,6 +11,10 @@ spring:
       settings:
         web-allow-others: true
 
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
+
 github:
   api:
     url: https://api.github.com
