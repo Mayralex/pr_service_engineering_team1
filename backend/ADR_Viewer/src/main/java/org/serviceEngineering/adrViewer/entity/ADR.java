@@ -2,10 +2,7 @@ package org.serviceEngineering.adrViewer.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.serviceEngineering.adrViewer.div.Status;
 
 @AllArgsConstructor
@@ -15,6 +12,7 @@ import org.serviceEngineering.adrViewer.div.Status;
 @Entity
 @Table(name = "ADR")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@ToString
 public class ADR {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
