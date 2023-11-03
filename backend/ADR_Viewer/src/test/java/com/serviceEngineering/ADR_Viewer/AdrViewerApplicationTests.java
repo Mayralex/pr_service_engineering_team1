@@ -3,7 +3,7 @@ package com.serviceEngineering.ADR_Viewer;
 import com.serviceEngineering.ADR_Viewer.Controller.ADRController;
 import com.serviceEngineering.ADR_Viewer.div.Status;
 import com.serviceEngineering.ADR_Viewer.entity.ADR;
-import com.serviceEngineering.ADR_Viewer.service.GithubService;
+import com.serviceEngineering.ADR_Viewer.service.ADRService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,7 +28,7 @@ class AdrViewerApplicationTests {
 	private MockMvc mvc;
 
 	@Autowired
-	private GithubService githubService;
+	private ADRService ADRService;
 
 	@Autowired
 	private ADRController adrController;
@@ -53,29 +53,29 @@ class AdrViewerApplicationTests {
 
 	@Test
 	public void contextLoads() throws Exception {
-		assertThat(githubService).isNotNull();
+		assertThat(ADRService).isNotNull();
 		assertThat(adrController).isNotNull();
 	}
 
 	@Test
 	void connectGithub() {
-		assertThat(githubService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).isNotNull();
+		assertThat(ADRService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).isNotNull();
 	}
 
 	@Test
 	void extractADRsAndCheckNumberOfADRs() {
-		assertThat(githubService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).hasSize(nunADRs);
+		assertThat(ADRService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).hasSize(nunADRs);
 	}
 
 	@Test
 	void parseSingleADRToJSONNotNull() {
-		assertThat(githubService.parseADRFile(owner, repoName, filePath, branch)).isNotNull();
+		assertThat(ADRService.parseADRFile(owner, repoName, filePath, branch)).isNotNull();
 	}
 
 	@Test
 	void parseADRToEntity() {
 		ADR adr = initTestADR();
-		String markdown = githubService.fetchADRFile(owner, repoName, filePath, branch);
+		String markdown = ADRService.fetchADRFile(owner, repoName, filePath, branch);
 		String html = ADRParser.convertMarkdownToHTML(markdown);
 		ADR result = ADRParser.convertHTMLToADR(html);
 		assertThat(result.getTitle()).isEqualTo(adr.getTitle());
@@ -89,11 +89,11 @@ class AdrViewerApplicationTests {
 
 	@Test
 	void readSingleADR() {
-		assertThat(githubService.fetchADRFile(owner, repoName, filePath, branch)).isNotNull();
+		assertThat(ADRService.fetchADRFile(owner, repoName, filePath, branch)).isNotNull();
 	}
 
 	@Test
 	void convertADRtoHTML() {
-		assertThat(githubService.parseADRFileToHTML(owner, repoName, filePath, branch)).isNotNull();
+		assertThat(ADRService.parseADRFileToHTML(owner, repoName, filePath, branch)).isNotNull();
 	}
 }

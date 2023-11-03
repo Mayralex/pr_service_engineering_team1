@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Objects;
 
 @Service
-public class GithubService {
+public class ADRService {
     private final RestTemplate restTemplate;
     @Value("${github.api.url}")
     private String githubApiUrl;
@@ -22,7 +22,7 @@ public class GithubService {
     private String githubApiToken;
 
     @Autowired
-    public GithubService(RestTemplate restTemplate) {
+    public ADRService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

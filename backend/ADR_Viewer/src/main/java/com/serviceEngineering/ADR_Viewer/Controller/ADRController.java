@@ -3,7 +3,7 @@ package com.serviceEngineering.ADR_Viewer.Controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.serviceEngineering.ADR_Viewer.ADRParser;
 import com.serviceEngineering.ADR_Viewer.entity.RestResponse;
-import com.serviceEngineering.ADR_Viewer.service.GithubService;
+import com.serviceEngineering.ADR_Viewer.service.ADRService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +16,7 @@ public class ADRController {
     private ADRParser adrParser;
 
     @Autowired
-    private GithubService githubService;
+    private ADRService ADRService;
 
     @GetMapping("/scanADRs")
     public RestResponse[] scanADRs(
@@ -24,7 +24,7 @@ public class ADRController {
             @RequestParam String repoName,
             @RequestParam String directoryPath,
             @RequestParam String branch) {
-        return githubService.fetchRepositoryContent(owner, repoName, directoryPath, branch);
+        return ADRService.fetchRepositoryContent(owner, repoName, directoryPath, branch);
     }
 
     @GetMapping("/fetchFile")
@@ -33,7 +33,7 @@ public class ADRController {
             @RequestParam String repoName,
             @RequestParam String filePath,
             @RequestParam String branch) {
-        return githubService.fetchADRFile(owner, repoName, filePath, branch);
+        return ADRService.fetchADRFile(owner, repoName, filePath, branch);
     }
 
     @GetMapping("/parseFile")
@@ -43,7 +43,7 @@ public class ADRController {
             @RequestParam String filePath,
             @RequestParam String branch
     ) throws JsonProcessingException {
-        return githubService.parseADRFile(owner, repoName, filePath, branch);
+        return ADRService.parseADRFile(owner, repoName, filePath, branch);
     }
 
     @GetMapping("/convertFile")
@@ -53,6 +53,6 @@ public class ADRController {
             @RequestParam String filePath,
             @RequestParam String branch
     ) {
-        return githubService.parseADRFileToHTML(owner, repoName, filePath, branch);
+        return ADRService.parseADRFileToHTML(owner, repoName, filePath, branch);
     }
 }
