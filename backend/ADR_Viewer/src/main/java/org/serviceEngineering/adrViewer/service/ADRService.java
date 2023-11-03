@@ -115,4 +115,8 @@ public class ADRService {
         log.info("Fetched adr from memory: \n {}", adr);
         return adr;
     }
+
+    public List<ADR> getAll() {
+        return aDRRepository.findAll();
+    }
 }
