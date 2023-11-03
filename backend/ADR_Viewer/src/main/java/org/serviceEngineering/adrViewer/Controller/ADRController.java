@@ -44,7 +44,7 @@ public class ADRController {
             @RequestParam String filePath,
             @RequestParam String branch
     ) {
-        return adrService.parseADRFile(owner, repoName, filePath, branch);
+        return adrService.parseADRFileDeprecated(owner, repoName, filePath, branch);
     }
 
     @GetMapping("/convertFile")

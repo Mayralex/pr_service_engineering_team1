@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.cache.annotation.CacheDefaults;
 import javax.cache.annotation.CacheResult;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -90,11 +91,22 @@ public class ADRService {
      * @param branch   GitHub branch
      * @return JSON representation parsed ADR
      */
-    public ResponseEntity<Object> parseADRFile(String owner, String repoName, String filePath, String branch) {
+    public ResponseEntity<Object> parseADRFileDeprecated(String owner, String repoName, String filePath, String branch) {
         String markdown = fetchADRFile(owner, repoName, filePath, branch);
         String html = ADRParser.convertMarkdownToHTML(markdown);
         ADR adr = ADRParser.convertHTMLToADR(html);
         return new ResponseEntity<>(aDRRepository.save(adr), HttpStatus.OK);
+    }
+
+    public ADR parseADRFile(String owner, String repoName, String filePath, String branch) {
+        String markdown = fetchADRFile(owner, repoName, filePath, branch);
+        String html = ADRParser.convertMarkdownToHTML(markdown);
+        return ADRParser.convertHTMLToADR(html);
+    }
+
+    public void saveAll(List<ADR> adrList) {
+        log.info("Saving {} ADRs from bulk parsing", adrList.size());
+        aDRRepository.saveAll(adrList);
     }
 
     @CacheResult
