@@ -8,14 +8,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.serviceEngineering.adrViewer.entity.ADR;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class ADRParser {
 
+    private static final Logger log = LoggerFactory.getLogger(ADRParser.class);
     private ADRParser() {
         throw new IllegalStateException("Utility class");
     }
@@ -44,7 +46,14 @@ public class ADRParser {
     public static ADR convertHTMLToADR(String html) {
         Document document = Jsoup.parse(html);
         ADR adr = new ADR();
-        adr.setTitle(Objects.requireNonNull(document.selectFirst("h1")).textNodes().get(0).toString());
+        log.info(html);
+        String title = null;
+        try {
+            title = document.selectFirst("h1").textNodes().get(0).toString();
+        } catch (NullPointerException e) {
+            log.warn(e.getMessage());
+        }
+        adr.setTitle(((title == null) ? "PLACEHOLDER TITLE" : title));
         adr.setContext(extractSectionText(document, "Context"));
         adr.setDecision(extractSectionText(document, "Decision"));
         try {
