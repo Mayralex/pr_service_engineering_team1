@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,29 +68,32 @@ public class ADRControllerV2 {
      * @param branch The branch in the repository from which ADRs should be fetched.
      * @return ResponseEntity containing an array of ADR objects if ADRs are found, or an empty array if no ADRs are available.
      */
-    @GetMapping(value = "/getAllADRs")
-    public ResponseEntity<ADR[]> getAllADRs(
+    @GetMapping(value = "/getAllADRs", produces = MediaType.APPLICATION_JSON_VALUE)
+    //public List<ADR> getAllADRs(
+    public ResponseEntity<Object> getAllADRs(
             @RequestParam String repoOwner,
             @RequestParam String repoName,
             @RequestParam String directoryPath,
             @RequestParam String branch
     ) {
         List<ADR> result = adrService.getAll();
-        if (!result.isEmpty()) return restTemplate.getForEntity(
-                result.toString(),
-                ADR[].class);
+        log.info(result.toString());
+        if (!result.isEmpty()) new ResponseEntity<>(result, HttpStatus.OK);
         RestResponse[] list = adrService.fetchRepositoryContent(repoOwner, repoName, directoryPath, branch);
 
         for (RestResponse response : list) {
             if (!response.getType().equals("file")) continue;
             String filepath = response.getPath();
             log.info(filepath);
-            result.add(adrService.parseADRFile(repoOwner, repoName, filepath, branch));
+            ADR adr = adrService.parseADRFile(repoOwner, repoName, filepath, branch);
+            adrService.save(adr);
+            result.add(adr);
         }
-        adrService.saveAll(result);
-        return restTemplate.getForEntity(
-                result.toString(),
-                ADR[].class);
+        //adrService.saveAll(result);
+        //return result;
+        //return restTemplate.getForEntity(result.toString(), RestResponse[].class).getBody();
+        log.info(result.toString());
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 

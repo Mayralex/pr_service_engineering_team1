@@ -1,5 +1,6 @@
 package org.serviceEngineering.adrViewer.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.serviceEngineering.adrViewer.div.ADRParser;
 import org.serviceEngineering.adrViewer.entity.ADR;
 import org.serviceEngineering.adrViewer.entity.RestResponse;
@@ -127,6 +128,11 @@ public class ADRService {
         aDRRepository.saveAll(adrList);
     }
 
+    public void save(ADR adr) {
+        log.info("Saving adr #{} titled {}", adr.getId(), adr.getTitle());
+        aDRRepository.save(adr);
+    }
+
     /**
      * Service method for retrieving an ADR by its unique identifier.
      *
@@ -134,10 +140,15 @@ public class ADRService {
      * @return The retrieved ADR object.
      */
     @CacheResult
-    public ADR getADR(long id) {
-        ADR adr =  aDRRepository.getReferenceById(id);
-        log.info("Fetched adr from memory: \n {}", adr);
-        return adr;
+    public ADR getADR(long id) throws EntityNotFoundException {
+        try {
+            ADR adr = aDRRepository.getReferenceById(id);
+            log.info("Fetched adr from memory: \n {}", adr);
+            return adr;
+        } catch (EntityNotFoundException exception) {
+            log.info(exception.getMessage());
+            return null;
+        }
     }
 
     /**
