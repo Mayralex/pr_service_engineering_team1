@@ -10,9 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.cache.annotation.CacheDefaults;
@@ -51,9 +55,12 @@ public class ADRService {
      */
     public RestResponse[] fetchRepositoryContent(String owner, String repoName, String directoryPath, String branch) {
         String apiUrl = String.format("%s/repos/%s/%s/contents/%s?ref=%s", githubApiUrl, owner, repoName, directoryPath, branch);
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add("Content-Type", "application/json");
+        headers.add("Authorization", "Bearer " + githubApiToken);
 
         ResponseEntity<RestResponse[]> responseEntity =
-                restTemplate.getForEntity(apiUrl, RestResponse[].class);
+                restTemplate.exchange(apiUrl, HttpMethod.GET, new HttpEntity<Object>(headers), RestResponse[].class);
         return responseEntity.getBody();
     }
 
@@ -67,10 +74,13 @@ public class ADRService {
      */
     public String fetchADRFile(String owner, String repoName, String filePath, String branch) {
         if (filePath.endsWith(".md")) {
+            MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+            headers.add("Content-Type", "application/json");
+            headers.add("Authorization", "Bearer " + githubApiToken);
             String apiUrl = String.format("%s/repos/%s/%s/contents/%s?ref=%s", githubApiUrl, owner, repoName, filePath, branch);
             ResponseEntity<RestResponse> responseEntity =
-                    restTemplate.getForEntity(apiUrl, RestResponse.class);
-            return restTemplate.getForEntity(Objects.requireNonNull(responseEntity.getBody()).getDownload_url(), String.class).getBody();
+                    restTemplate.exchange(apiUrl, HttpMethod.GET, new HttpEntity<Object>(headers), RestResponse.class);
+            return restTemplate.exchange(Objects.requireNonNull(responseEntity.getBody()).getDownload_url(), HttpMethod.GET, new HttpEntity<Object>(headers), String.class).getBody();
         } else throw new ServiceException("Path not pointing to markdown file", filePath);
     }
 
