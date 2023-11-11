@@ -1,10 +1,12 @@
 package org.serviceEngineering.adrViewer;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.serviceEngineering.adrViewer.Controller.ADRController;
 import org.serviceEngineering.adrViewer.Controller.ADRControllerV2;
 import org.serviceEngineering.adrViewer.div.ADRParser;
 import org.serviceEngineering.adrViewer.entity.ADR;
+import org.serviceEngineering.adrViewer.repository.ADRRepository;
 import org.serviceEngineering.adrViewer.service.ADRService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,6 +41,9 @@ class AdrViewerApplicationTests {
 	private ADRControllerV2 adrControllerV2;
 
 	@Autowired
+	private ADRRepository adrRepository;
+
+	@Autowired
 	private MockMvc mockMvc;
 
 	private static ADR initTestADR() {
@@ -66,6 +71,11 @@ class AdrViewerApplicationTests {
 		params.add("directoryPath", directoryPath);
 		params.add("branch", branch);
 		return params;
+	}
+
+	@BeforeEach
+	public void deleteAll() {
+		adrRepository.deleteAll();
 	}
 
 
