@@ -1,0 +1,20 @@
+# v2
+
+###
+# @name get single ADR
+GET localhost:8080/api/v2/getADR?
+    id=1
+
+###
+# @name List of ADRs (BULK PARSE)
+GET localhost:8080/api/v2/getAllADRs?
+    repoOwner=flohuemer&
+    repoName=graal&
+    directoryPath=wasm/docs/arch&
+    branch=adrs
+BEARER: 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
+
+###
+# @name get by status
+GET localhost:8080/api/v2/getByStatus?
+    status=ACTIVE

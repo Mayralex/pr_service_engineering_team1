@@ -80,6 +80,7 @@ public class ADRService {
             String apiUrl = String.format("%s/repos/%s/%s/contents/%s?ref=%s", githubApiUrl, owner, repoName, filePath, branch);
             ResponseEntity<RestResponse> responseEntity =
                     restTemplate.exchange(apiUrl, HttpMethod.GET, new HttpEntity<Object>(headers), RestResponse.class);
+            log.info(String.valueOf(responseEntity));
             return restTemplate.exchange(Objects.requireNonNull(responseEntity.getBody()).getDownload_url(), HttpMethod.GET, new HttpEntity<Object>(headers), String.class).getBody();
         } else throw new ServiceException("Path not pointing to markdown file", filePath);
     }
