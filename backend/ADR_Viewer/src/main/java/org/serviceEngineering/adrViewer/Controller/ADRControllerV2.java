@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -23,12 +22,9 @@ import java.util.List;
 public class ADRControllerV2 {
 
     private final ADRService adrService;
-    private final RestTemplate restTemplate;
     private final Logger log = LoggerFactory.getLogger(ADRControllerV2.class);
     @Autowired
-    public ADRControllerV2(RestTemplate restTemplate,
-                           ADRService adrService) {
-        this.restTemplate = restTemplate;
+    public ADRControllerV2(ADRService adrService) {
         this.adrService = adrService;
     }
 
@@ -69,7 +65,6 @@ public class ADRControllerV2 {
      * @return ResponseEntity containing an array of ADR objects if ADRs are found, or an empty array if no ADRs are available.
      */
     @GetMapping(value = "/getAllADRs", produces = MediaType.APPLICATION_JSON_VALUE)
-    //public List<ADR> getAllADRs(
     public ResponseEntity<Object> getAllADRs(
             @RequestParam String repoOwner,
             @RequestParam String repoName,
@@ -77,8 +72,11 @@ public class ADRControllerV2 {
             @RequestParam String branch
     ) {
         List<ADR> result = adrService.getAll();
-        log.info(result.toString());
-        if (!result.isEmpty()) new ResponseEntity<>(result, HttpStatus.OK);
+        if (!result.isEmpty()) {
+            log.info("List of ADRs consists of {} adrs", result.toArray().length);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        log.info("parsing adrs from repo {}", repoName);
         RestResponse[] list = adrService.fetchRepositoryContent(repoOwner, repoName, directoryPath, branch);
 
         for (RestResponse response : list) {
@@ -89,10 +87,14 @@ public class ADRControllerV2 {
             adrService.save(adr);
             result.add(adr);
         }
-        //adrService.saveAll(result);
-        //return result;
-        //return restTemplate.getForEntity(result.toString(), RestResponse[].class).getBody();
-        log.info(result.toString());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getByStatus", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getByStatus(
+            @RequestParam String status
+    ) {
+        List<ADR> result = adrService.getByStatus(status);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

@@ -169,4 +169,8 @@ public class ADRService {
     public List<ADR> getAll() {
         return aDRRepository.findAll();
     }
+
+    public List<ADR> getByStatus(String status) {
+        return aDRRepository.getStatus(status.toLowerCase());
+    }
 }
