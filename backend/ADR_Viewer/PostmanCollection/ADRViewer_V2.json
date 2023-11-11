@@ -1,0 +1,116 @@
+{
+  "info": {
+    "_postman_id": "dad3c738-c169-46c7-be4e-eae6e6ba3ab3",
+    "name": "v2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "8343042",
+    "_collection_link": "https://warped-comet-261015.postman.co/workspace/ADR_Viewer~15535e86-9dcb-4d56-8768-141a9dbc25ec/collection/8343042-dad3c738-c169-46c7-be4e-eae6e6ba3ab3?action=share&source=collection_link&creator=8343042"
+  },
+  "item": [
+    {
+      "name": "get single ADR",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/v2/getADR?id=1",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v2",
+            "getADR"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List of ADRs (BULK PARSE)",
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "key",
+              "value": "BEARER",
+              "type": "string"
+            },
+            {
+              "key": "value",
+              "value": "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",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/v2/getAllADRs?repoOwner=flohuemer&repoName=graal&directoryPath=wasm/docs/arch&branch=adrs",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v2",
+            "getAllADRs"
+          ],
+          "query": [
+            {
+              "key": "repoOwner",
+              "value": "flohuemer"
+            },
+            {
+              "key": "repoName",
+              "value": "graal"
+            },
+            {
+              "key": "directoryPath",
+              "value": "wasm/docs/arch"
+            },
+            {
+              "key": "branch",
+              "value": "adrs"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get by status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/v2/getByStatus?status=ACTIVE",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v2",
+            "getByStatus"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "ACTIVE"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

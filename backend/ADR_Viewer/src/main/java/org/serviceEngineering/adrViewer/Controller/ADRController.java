@@ -1,9 +1,7 @@
-package com.serviceEngineering.ADR_Viewer.Controller;
+package org.serviceEngineering.adrViewer.Controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.serviceEngineering.ADR_Viewer.ADRParser;
-import com.serviceEngineering.ADR_Viewer.entity.RestResponse;
-import com.serviceEngineering.ADR_Viewer.service.ADRService;
+import org.serviceEngineering.adrViewer.entity.RestResponse;
+import org.serviceEngineering.adrViewer.service.ADRService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class ADRController {
 
-    @Autowired
-    private ADRParser adrParser;
+    private final ADRService adrService;
 
     @Autowired
-    private ADRService ADRService;
+    public ADRController(ADRService adrService) {
+        this.adrService = adrService;
+    }
 
     @GetMapping("/scanADRs")
     public RestResponse[] scanADRs(
@@ -26,7 +25,7 @@ public class ADRController {
             @RequestParam String repoName,
             @RequestParam String directoryPath,
             @RequestParam String branch) {
-        return ADRService.fetchRepositoryContent(owner, repoName, directoryPath, branch);
+        return adrService.fetchRepositoryContent(owner, repoName, directoryPath, branch);
     }
 
     @GetMapping("/fetchFile")
@@ -35,7 +34,7 @@ public class ADRController {
             @RequestParam String repoName,
             @RequestParam String filePath,
             @RequestParam String branch) {
-        return ADRService.fetchADRFile(owner, repoName, filePath, branch);
+        return adrService.fetchADRFile(owner, repoName, filePath, branch);
     }
 
     @GetMapping("/parseFile")
@@ -44,8 +43,8 @@ public class ADRController {
             @RequestParam String repoName,
             @RequestParam String filePath,
             @RequestParam String branch
-    ) throws JsonProcessingException {
-        return ADRService.parseADRFile(owner, repoName, filePath, branch);
+    ) {
+        return adrService.parseADRFileDeprecated(owner, repoName, filePath, branch);
     }
 
     @GetMapping("/convertFile")
@@ -55,6 +54,6 @@ public class ADRController {
             @RequestParam String filePath,
             @RequestParam String branch
     ) {
-        return ADRService.parseADRFileToHTML(owner, repoName, filePath, branch);
+        return adrService.parseADRFileToHTML(owner, repoName, filePath, branch);
     }
 }

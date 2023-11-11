@@ -1,7 +1,5 @@
-package com.serviceEngineering.ADR_Viewer;
+package org.serviceEngineering.adrViewer.div;
 
-import com.serviceEngineering.ADR_Viewer.div.Status;
-import com.serviceEngineering.ADR_Viewer.entity.ADR;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
@@ -9,15 +7,20 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Service;
+import org.serviceEngineering.adrViewer.entity.ADR;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 
-@Service
 public class ADRParser {
+
+    private static final Logger log = LoggerFactory.getLogger(ADRParser.class);
+    private ADRParser() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Converts Markdown content to HTML format using a common Markdown parser and renderer.
@@ -43,14 +46,22 @@ public class ADRParser {
     public static ADR convertHTMLToADR(String html) {
         Document document = Jsoup.parse(html);
         ADR adr = new ADR();
-        adr.setTitle(Objects.requireNonNull(document.selectFirst("h1")).textNodes().get(0).toString());
+        log.info(html);
+        String title = null;
+        try {
+            title = document.selectFirst("h1").textNodes().get(0).toString();
+        } catch (NullPointerException e) {
+            log.warn(e.getMessage());
+        }
+        adr.setTitle(((title == null) ? "PLACEHOLDER TITLE" : title));
         adr.setContext(extractSectionText(document, "Context"));
         adr.setDecision(extractSectionText(document, "Decision"));
-        try {
-            adr.setStatus(Status.valueOf(extractSectionText(document, "Status").toUpperCase()));
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Error parsing ADR status from the HTML content.", e);
-        }
+        //try {
+        //adr.setStatus(Status.valueOf(extractSectionText(document, "Status").toUpperCase()));
+        //} catch (IllegalArgumentException e) {
+        //    throw new IllegalArgumentException("Error parsing ADR status from the HTML content.", e);
+        //}
+        adr.setStatus(extractSectionText(document, "Status"));
         adr.setConsequences(extractSectionText(document, "Consequences"));
         adr.setArtifacts(extractLinks(document, "Artifacts").toString());
         adr.setRelations(extractLinks(document, "Relations").toString());

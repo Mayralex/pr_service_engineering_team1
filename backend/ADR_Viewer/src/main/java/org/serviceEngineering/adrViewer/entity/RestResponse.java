@@ -1,4 +1,4 @@
-package com.serviceEngineering.ADR_Viewer.entity;
+package org.serviceEngineering.adrViewer.entity;
 
 import lombok.*;
 
@@ -12,6 +12,4 @@ public class RestResponse {
     private String path;
     private String download_url;
     private String type;
-    private String content;
-    private String encoding;
 }

@@ -1,12 +1,8 @@
-package com.serviceEngineering.ADR_Viewer.entity;
+package org.serviceEngineering.adrViewer.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.serviceEngineering.ADR_Viewer.div.Status;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +11,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "ADR")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@ToString
 public class ADR {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -31,7 +28,7 @@ public class ADR {
     private String decision;
 
     @Column(name = "Status")
-    private Status status;
+    private String status;
 
     @Column(name = "Consequences", length =  999999)
     private String consequences;

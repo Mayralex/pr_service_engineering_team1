@@ -1,0 +1,41 @@
+# v1
+
+###
+# @name List of ADRs
+GET localhost:8080/api/v1/scanADRs?
+    owner=flohuemer&
+    repoName=graal&
+    directoryPath=wasm/docs/arch&
+    branch=adrs
+
+###
+# @name single ADR File
+GET localhost:8080/api/v1/fetchFile?
+    owner=flohuemer&
+    repoName=graal&
+    filePath=wasm/docs/arch/adr-009.md&
+    branch=adrs
+
+###
+# @name fetch file
+GET localhost:8080/api/v1/fetchFile?
+    owner=flohuemer&
+    repoName=graal&
+    filePath=wasm/docs/arch/adr-001.md&
+    branch=adrs
+
+###
+# @name parse ADR
+GET localhost:8080/api/v1/parseFile?
+    owner=flohuemer&
+    repoName=graal&
+    filePath=wasm/docs/arch/adr-010.md&
+    branch=adrs
+
+###
+# @name convert to html
+GET localhost:8080/api/v1/convertFile?
+    owner=flohuemer&
+    repoName=graal&
+    filePath=wasm/docs/arch/adr-009.md&
+    branch=adrs
