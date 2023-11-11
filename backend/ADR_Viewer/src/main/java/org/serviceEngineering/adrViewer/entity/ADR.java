@@ -3,7 +3,6 @@ package org.serviceEngineering.adrViewer.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
-import org.serviceEngineering.adrViewer.div.Status;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,7 +28,7 @@ public class ADR {
     private String decision;
 
     @Column(name = "Status")
-    private Status status;
+    private String status;
 
     @Column(name = "Consequences", length =  999999)
     private String consequences;

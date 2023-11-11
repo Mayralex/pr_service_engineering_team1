@@ -56,11 +56,12 @@ public class ADRParser {
         adr.setTitle(((title == null) ? "PLACEHOLDER TITLE" : title));
         adr.setContext(extractSectionText(document, "Context"));
         adr.setDecision(extractSectionText(document, "Decision"));
-        try {
-            adr.setStatus(Status.valueOf(extractSectionText(document, "Status").toUpperCase()));
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Error parsing ADR status from the HTML content.", e);
-        }
+        //try {
+        //adr.setStatus(Status.valueOf(extractSectionText(document, "Status").toUpperCase()));
+        //} catch (IllegalArgumentException e) {
+        //    throw new IllegalArgumentException("Error parsing ADR status from the HTML content.", e);
+        //}
+        adr.setStatus(extractSectionText(document, "Status"));
         adr.setConsequences(extractSectionText(document, "Consequences"));
         adr.setArtifacts(extractLinks(document, "Artifacts").toString());
         adr.setRelations(extractLinks(document, "Relations").toString());
