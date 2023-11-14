@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +41,7 @@ public class ADRControllerV2 {
      * @return ResponseEntity containing the ADR object if found, or an error message with an appropriate
      * HTTP status code if the ADR is not found or if there's a service exception.
      */
+    @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
     @GetMapping(value = "/getADR")
     public ResponseEntity<Object> getADR(@RequestParam long id) {
         try{
@@ -64,6 +66,7 @@ public class ADRControllerV2 {
      * @param branch The branch in the repository from which ADRs should be fetched.
      * @return ResponseEntity containing an array of ADR objects if ADRs are found, or an empty array if no ADRs are available.
      */
+    @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
     @GetMapping(value = "/getAllADRs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getAllADRs(
             @RequestParam String repoOwner,
@@ -90,6 +93,7 @@ public class ADRControllerV2 {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
     @GetMapping(value = "/getByStatus", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getByStatus(
             @RequestParam String status
