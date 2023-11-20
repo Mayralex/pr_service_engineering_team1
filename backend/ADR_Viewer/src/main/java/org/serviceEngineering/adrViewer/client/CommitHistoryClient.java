@@ -2,7 +2,6 @@ package org.serviceEngineering.adrViewer.client;
 
 import org.serviceEngineering.adrViewer.div.GraphqlRequestBody;
 import org.serviceEngineering.adrViewer.div.GraphqlSchemaReaderUtil;
-import org.serviceEngineering.adrViewer.entity.CommitDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +36,7 @@ public class CommitHistoryClient {
      * @return object representing the commit history of the file.
      * @throws IOException Signals that an I/O exception to some sort has occurred.
      */
-    public CommitDTO getHistory(String owner, String repoName, String filePath, String branch) throws IOException {
+    public Object getHistory(String owner, String repoName, String filePath, String branch) throws IOException {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add("Content-Type", "application/json");
         headers.add("Authorization", "Bearer " + githubApiToken);
@@ -61,7 +60,7 @@ public class CommitHistoryClient {
                 .bodyValue(graphQLRequestBody)
                 .headers(consumer)
                 .retrieve()
-                .bodyToMono(CommitDTO.class)
+                .bodyToMono(String.class)
                 .log()
                 .block();
     }

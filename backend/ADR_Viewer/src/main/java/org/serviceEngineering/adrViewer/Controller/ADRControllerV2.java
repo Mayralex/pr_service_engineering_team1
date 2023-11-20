@@ -2,7 +2,6 @@ package org.serviceEngineering.adrViewer.Controller;
 
 import org.serviceEngineering.adrViewer.client.CommitHistoryClient;
 import org.serviceEngineering.adrViewer.entity.ADR;
-import org.serviceEngineering.adrViewer.entity.CommitDTO;
 import org.serviceEngineering.adrViewer.entity.RestResponse;
 import org.serviceEngineering.adrViewer.exceptions.ServiceException;
 import org.serviceEngineering.adrViewer.service.ADRService;
@@ -134,7 +133,7 @@ public class ADRControllerV2 {
             @RequestParam String filePath,
             @RequestParam String branch
     ) throws IOException {
-        CommitDTO result = commitHistoryClient.getHistory(repoOwner, repoName, filePath, branch);
+        Object result = commitHistoryClient.getHistory(repoOwner, repoName, filePath, branch);
         log.info(result.toString());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
