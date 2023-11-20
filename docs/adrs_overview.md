@@ -18,3 +18,5 @@
   - Interaction with Repos (GitHub API), Architecture, Endpoints, etc.
 - Frontend decisions: 
   - Bootstrap lib, visualization libs, UI design decision
+- Backend Restructuring
+  - GraphQL Calls auf die GitHub API
