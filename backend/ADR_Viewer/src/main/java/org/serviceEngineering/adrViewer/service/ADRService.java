@@ -14,6 +14,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -21,8 +22,10 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.cache.annotation.CacheDefaults;
 import javax.cache.annotation.CacheResult;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @CacheDefaults(cacheName = "adr")
@@ -171,7 +174,37 @@ public class ADRService {
         return aDRRepository.findAll();
     }
 
+    /**
+     * Service method for retrieving ADRs from the memory which have the same status as requested.
+     *
+     * @return List of ADRs with the corresponding status.
+     */
     public List<ADR> getByStatus(String status) {
         return aDRRepository.getStatus(status.toLowerCase());
+    }
+
+    /**
+     * Asynchronously parses a list of RestResponse items representing ADR files from a repository.
+     * Parses each ADR file, saves it to the memory, and returns a CompletableFuture containing a list of parsed ADR objects.
+     *
+     * @param list      Array of RestResponse items obtained from the repository directory.
+     * @param repoOwner GitHub Username of the person who created the GitHub repository.
+     * @param repoName  Name of the repository stored in GitHub.
+     * @param branch    GitHub branch.
+     * @return CompletableFuture containing a List of parsed ADR objects saved in the database.
+     */
+    @Async
+    public CompletableFuture<List<ADR>> parseList(RestResponse[] list, String repoOwner, String repoName, String branch) {
+        List<ADR> result = new ArrayList<>();
+        log.info("parsing adrs from repo {}", repoName);
+        for (RestResponse response : list) {
+            if (!response.getType().equals("file")) continue;
+            String filepath = response.getPath();
+            log.info(filepath);
+            ADR adr = parseADRFile(repoOwner, repoName, filepath, branch);
+            save(adr);
+            result.add(adr);
+        }
+        return CompletableFuture.completedFuture(result);
     }
 }

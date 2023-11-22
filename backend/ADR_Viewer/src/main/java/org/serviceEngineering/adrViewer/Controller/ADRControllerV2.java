@@ -62,7 +62,8 @@ public class ADRControllerV2 {
      * This endpoint allows you to fetch ADRs from a specific repository by specifying the repository owner,
      * repository name, directory path, and branch. It first checks if there are any ADRs in the memory,
      * and if so, it returns them. If not, it fetches ADRs from the specified repository using a REST API call
-     * and saves them in the database for future use.
+     * and saves them in the database for future use. If the memory is empty, the parsing function is call in an
+     * asynchronous way to improve performance
      *
      * @param repoOwner The owner of the repository where ADRs are stored.
      * @param repoName The name of the repository where ADRs are stored.
@@ -85,16 +86,8 @@ public class ADRControllerV2 {
         }
         log.info("parsing adrs from repo {}", repoName);
         RestResponse[] list = adrService.fetchRepositoryContent(repoOwner, repoName, directoryPath, branch);
-
-        for (RestResponse response : list) {
-            if (!response.getType().equals("file")) continue;
-            String filepath = response.getPath();
-            log.info(filepath);
-            ADR adr = adrService.parseADRFile(repoOwner, repoName, filepath, branch);
-            adrService.save(adr);
-            result.add(adr);
-        }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        adrService.parseList(list, repoOwner, repoName, branch);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     /**

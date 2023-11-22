@@ -46,7 +46,7 @@ public class ADRParser {
     public static ADR convertHTMLToADR(String html) {
         Document document = Jsoup.parse(html);
         ADR adr = new ADR();
-        log.info(html);
+        //log.info(html);
         String title = null;
         try {
             title = document.selectFirst("h1").textNodes().get(0).toString();
