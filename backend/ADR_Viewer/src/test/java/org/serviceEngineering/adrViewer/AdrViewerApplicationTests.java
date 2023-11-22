@@ -88,12 +88,14 @@ class AdrViewerApplicationTests {
 
 	@Test
 	void connectGithub() {
+		adrRepository.deleteAll();
 		assertThat(ADRService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).isNotNull();
 	}
 
 	@Test
 	void extractADRsAndCheckNumberOfADRs() {
 		int nunADRs = 27;
+		adrRepository.deleteAll();
 		assertThat(ADRService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).hasSize(nunADRs);
 	}
 
@@ -134,12 +136,25 @@ class AdrViewerApplicationTests {
 	}
 
 	@Test
-	void getAll() {
+	void getAll() throws InterruptedException {
+		//assertThat(adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
+		adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch);
+		try {
+			Thread.sleep(25000);
+		} catch (InterruptedException e) {
+			throw e;
+		}
 		assertThat(adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
 	}
 
 	@Test
-	void getByStatus() {
+	void getByStatus() throws InterruptedException {
+		adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch);
+		try {
+			Thread.sleep(25000);
+		} catch (InterruptedException e) {
+			throw e;
+		}
 		assertThat(adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
 		assertThat(adrControllerV2.getByStatus("active").getBody()).asList().hasSize(19);
 		assertThat(adrControllerV2.getByStatus("deprecated").getBody()).asList().hasSize(8);
