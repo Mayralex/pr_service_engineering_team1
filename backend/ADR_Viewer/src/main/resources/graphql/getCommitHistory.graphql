@@ -1,0 +1,17 @@
+query ( $_name: String!, $_path: String!, $_owner: String!, $_branch: String!) {
+    repository(name: $_name, owner: $_owner) {
+        ref(qualifiedName: $_branch) {
+            target {
+                ... on Commit {
+                    history(path: $_path, first: 100) {
+                        nodes {
+                            oid
+                            committedDate
+                            message
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

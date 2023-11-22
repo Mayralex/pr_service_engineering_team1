@@ -19,3 +19,4 @@ github:
   api:
     url: https://api.github.com
     token: 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
+    graphql: https://api.github.com/graphql
