@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -63,6 +65,8 @@ class AdrViewerApplicationTests {
 		adr.setRelations("{ADR 003=./adr-003.md, ADR 005=./adr-005.md, ADR 008=./adr-008.md}");
 		return adr;
 	}
+
+	private final String commitHistory = "{\"data\":{\"repository\":{\"ref\":{\"target\":{\"history\":{\"nodes\":[{\"oid\":\"08a8ec645b96ce7781d81ffd2512dec6b5fa5c3b\",\"committedDate\":\"2023-04-10T09:06:18Z\",\"message\":\"Added architecture decision records.\\nThis documents passed decisions and helps to understand the design of the WebAssembly runtime.\"}]}}}}}}";
 
 	private static MultiValueMap<String, String> setUpParams() {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -158,5 +162,10 @@ class AdrViewerApplicationTests {
 		assertThat(result.getConsequences()).isEqualTo(adr.getConsequences());
 		assertThat(result.getArtifacts()).isEqualTo(adr.getArtifacts());
 		assertThat(result.getRelations()).isEqualTo(adr.getRelations());
+	}
+
+	@Test
+	void getCommitHistory() throws IOException {
+		assertThat(adrControllerV2.getHistory(owner, repoName, directoryPath, branch).getBody()).isEqualTo(commitHistory);
 	}
 }
