@@ -27,7 +27,7 @@ export class ListviewComponent implements OnInit {
 
   onSelect(adr: ADR): void {
     this.selectedADR = adr;
-    this.messageService.add(`HeroesComponent: Selected hero id=${adr.id}`);
+    this.messageService.add(`ADRComponent: Selected adr id=${adr.id}`);
   }
 
   getAllADRs(repoOwner: string, repoName: string, directoryPath: string, branch: string): void {
