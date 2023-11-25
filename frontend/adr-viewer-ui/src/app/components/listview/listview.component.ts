@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ADR} from "../../interfaces/adr";
 import {AdrService} from "../../services/adr.service";
 import {MessageService} from "../../services/message.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-listview',
@@ -10,19 +11,31 @@ import {MessageService} from "../../services/message.service";
 })
 export class ListviewComponent implements OnInit {
 
+  userData: { repoOwner: string; repoName: string; directoryPath: string; branch: string };
+
+  showADRs = false;
+  showEmpty = false;
+  isLoading = true;
+
   selectedADR?: ADR;
-  adrs = {} as ADR[];
+  adrs = [] as ADR[];
   adrById = {} as ADR;
 
   constructor(
     private adrService: AdrService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-    //TODO: Change to Input from User Interface
-    this.getAllADRs("flohuemer", "graal", "wasm/docs/arch", "adrs");
-    this.getAdrById(2);
+    this.userData = { repoOwner: '', repoName: '' , directoryPath: '' , branch: '' };
+    this.route.queryParams.subscribe(params => {
+      this.userData.repoOwner = params['repoOwner'];
+      this.userData.repoName = params['repoName'];
+      this.userData.directoryPath = params['directoryPath'];
+      this.userData.branch = params['branch'];
+    });
+    this.getAllADRs(this.userData.repoOwner, this.userData.repoName, this.userData.directoryPath, this.userData.branch);
   }
 
   onSelect(adr: ADR): void {
@@ -32,7 +45,16 @@ export class ListviewComponent implements OnInit {
 
   getAllADRs(repoOwner: string, repoName: string, directoryPath: string, branch: string): void {
     this.adrService.getAllADRs(repoOwner, repoName, directoryPath, branch)
-      .subscribe(adrs => this.adrs = adrs);
+      .subscribe(adrs => {
+        if(adrs && adrs.length > 0){
+          this.adrs = adrs;
+          this.isLoading = false;
+          this.showADRs = true;
+        } else{
+          this.isLoading = false;
+          this.showEmpty = true;
+        }
+      });
   }
 
   getAdrById(id: number): void {

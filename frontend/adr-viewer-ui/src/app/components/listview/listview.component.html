@@ -1,24 +1,23 @@
-<h2 class="m-lg-3">ADRs in project:</h2>
-<ul class="adrs m-lg-3 list-group">
-  <li class="list-group-item list-group-item-info" *ngFor="let adr of adrs">
-    <div><span class="">id: </span>{{adr.id}}</div>
-    <div><span>title: </span>{{adr.title}}</div>
-    <div><span>context: </span>{{adr.context}}</div>
-    <div><span>decision: </span>{{adr.decision}}</div>
-    <div><span>status: </span>{{adr.status}}</div>
-    <div><span>consequences: </span>{{adr.consequences}}</div>
-    <div><span>artifacts: </span>{{adr.artifacts}}</div>
-    <div><span>relations: </span>{{adr.relations}}</div>
-  </li>
-</ul>
+<div *ngIf="showADRs">
+  <h2 class="m-lg-3">ADRs in project:</h2>
+  <ul class="adrs m-lg-3 list-group">
+    <li class="list-group-item list-group-item-info" *ngFor="let adr of adrs">
+      <div><span class="">id: </span>{{adr.id}}</div>
+      <div><span>title: </span>{{adr.title}}</div>
+      <div><span>context: </span>{{adr.context}}</div>
+      <div><span>decision: </span>{{adr.decision}}</div>
+      <div><span>status: </span>{{adr.status}}</div>
+      <div><span>consequences: </span>{{adr.consequences}}</div>
+      <div><span>artifacts: </span>{{adr.artifacts}}</div>
+      <div><span>relations: </span>{{adr.relations}}</div>
+    </li>
+  </ul>
+</div>
 
-<br>
+<div *ngIf="showEmpty">
+  The requested repository has no ADRs...
+</div>
 
-<div><span>id: </span>{{adrById.id}}</div>
-<div><span>title: </span>{{adrById.title}}</div>
-<div><span>context: </span>{{adrById.context}}</div>
-<div><span>decision: </span>{{adrById.decision}}</div>
-<div><span>status: </span>{{adrById.status}}</div>
-<div><span>consequences: </span>{{adrById.consequences}}</div>
-<div><span>artifacts: </span>{{adrById.artifacts}}</div>
-<div><span>relations: </span>{{adrById.relations}}</div>
+<div *ngIf="isLoading">
+  Loading data...
+</div>

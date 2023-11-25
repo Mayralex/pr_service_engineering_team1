@@ -1,2 +1,27 @@
-<h2 class="m-lg-3">Home</h2>
-<p class="m-lg-3">The Home page (Dashboard page) for our ADRs. </p>
+<form (submit)="onSubmit()">
+  <div class="form-group">
+    <label for="repoOwner">Repository owner:</label>
+    <input type="text" id="repoOwner" class="form-control" placeholder="Enter the username of the repository owner..."
+           name="repoOwner" [(ngModel)]="userData.repoOwner" required>
+  </div>
+
+  <div class="form-group">
+    <label for="repoName">Repository name:</label>
+    <input type="text" id="repoName" class="form-control" placeholder="Enter the name of the repository..."
+           name="repoName" [(ngModel)]="userData.repoName" required>
+  </div>
+
+  <div class="form-group">
+    <label for="directoryPath">Directory path:</label>
+    <input type="text" id="directoryPath" class="form-control" placeholder="Enter the path to the folder where the ADRs are stored..."
+           name="directoryPath" [(ngModel)]="userData.directoryPath" required>
+  </div>
+
+  <div class="form-group">
+    <label for="branch">Branch:</label>
+    <input type="text" id="branch" class="form-control" placeholder="Enter the desired branch of the repository..."
+           name="branch" [(ngModel)]="userData.branch" required>
+  </div>
+  <br>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
