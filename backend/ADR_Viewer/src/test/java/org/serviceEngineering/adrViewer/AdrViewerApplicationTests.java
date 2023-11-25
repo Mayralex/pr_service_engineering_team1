@@ -3,7 +3,6 @@ package org.serviceEngineering.adrViewer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.serviceEngineering.adrViewer.Controller.ADRController;
-import org.serviceEngineering.adrViewer.Controller.ADRControllerV2;
 import org.serviceEngineering.adrViewer.div.ADRParser;
 import org.serviceEngineering.adrViewer.entity.ADR;
 import org.serviceEngineering.adrViewer.repository.ADRRepository;
@@ -38,9 +37,6 @@ class AdrViewerApplicationTests {
 
 	@Autowired
 	private ADRController adrController;
-
-	@Autowired
-	private ADRControllerV2 adrControllerV2;
 
 	@Autowired
 	private ADRRepository adrRepository;
@@ -87,7 +83,6 @@ class AdrViewerApplicationTests {
 	void contextLoads() {
 		assertThat(ADRService).isNotNull();
 		assertThat(adrController).isNotNull();
-		assertThat(adrControllerV2).isNotNull();
 	}
 
 	@Test
@@ -142,33 +137,33 @@ class AdrViewerApplicationTests {
 	@Test
 	void getAll() throws InterruptedException {
 		//assertThat(adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
-		adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch);
+		adrController.getAllADRs(owner, repoName, directoryPath, branch);
 		try {
 			Thread.sleep(25000);
 		} catch (InterruptedException e) {
 			throw e;
 		}
-		assertThat(adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
+		assertThat(adrController.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
 	}
 
 	@Test
 	void getByStatus() throws InterruptedException {
-		adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch);
+		adrController.getAllADRs(owner, repoName, directoryPath, branch);
 		try {
 			Thread.sleep(25000);
 		} catch (InterruptedException e) {
 			throw e;
 		}
-		assertThat(adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
-		assertThat(adrControllerV2.getByStatus("active").getBody()).asList().hasSize(19);
-		assertThat(adrControllerV2.getByStatus("deprecated").getBody()).asList().hasSize(8);
+		assertThat(adrController.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
+		assertThat(adrController.getByStatus("active").getBody()).asList().hasSize(19);
+		assertThat(adrController.getByStatus("deprecated").getBody()).asList().hasSize(8);
 	}
 
 	//@Test
 	void getById() {
 		ADR adr = initTestADR();
 		//TODO: solve error: org.hibernate.LazyInitializationException: could not initialize proxy
-		ADR result = (ADR) adrControllerV2.getADR(1).getBody();
+		ADR result = (ADR) adrController.getADR(1).getBody();
 		assertThat(result).isNotNull();
 		assertThat(result.getTitle()).isEqualTo(adr.getTitle());
 		assertThat(result.getContext()).isEqualTo(adr.getContext());
@@ -181,6 +176,6 @@ class AdrViewerApplicationTests {
 
 	@Test
 	void getCommitHistory() throws IOException {
-		assertThat(adrControllerV2.getHistory(owner, repoName, directoryPath, branch).getBody()).isEqualTo(commitHistory);
+		assertThat(adrController.getHistory(owner, repoName, directoryPath, branch).getBody()).isEqualTo(commitHistory);
 	}
 }
