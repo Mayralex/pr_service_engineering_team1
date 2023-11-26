@@ -68,7 +68,7 @@ export class AdrService {
    *
    * @param message - the message that should be logged
    */
-  private static log(message: string) {
+  private log(message: string) {
     //TODO: Message Service aus Projekt entfernen und normale console logs verwenden
     console.log(message); //this.messageService.add(`ADR-Service: ${message}`);
   }
