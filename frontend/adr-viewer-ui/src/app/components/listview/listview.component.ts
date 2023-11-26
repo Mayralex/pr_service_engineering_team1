@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ADR} from "../../interfaces/adr";
 import {AdrService} from "../../services/adr.service";
 import {MessageService} from "../../services/message.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-listview',
@@ -17,14 +17,13 @@ export class ListviewComponent implements OnInit {
   showEmpty = false;
   isLoading = true;
 
-  selectedADR?: ADR;
   adrs = [] as ADR[];
-  adrById = {} as ADR;
 
   constructor(
     private adrService: AdrService,
     private messageService: MessageService,
     private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -39,8 +38,11 @@ export class ListviewComponent implements OnInit {
   }
 
   onSelect(adr: ADR): void {
-    this.selectedADR = adr;
-    this.messageService.add(`ADRComponent: Selected adr id=${adr.id}`);
+    this.router.navigate(['/detailview'], {
+      queryParams:{
+        id: adr.id,
+      }
+    });
   }
 
   getAllADRs(repoOwner: string, repoName: string, directoryPath: string, branch: string): void {
@@ -55,11 +57,6 @@ export class ListviewComponent implements OnInit {
           this.showEmpty = true;
         }
       });
-  }
-
-  getAdrById(id: number): void {
-    this.adrService.getAdrById(id)
-      .subscribe(adr => this.adrById = adr);
   }
 
   isActive(status: string): boolean {
