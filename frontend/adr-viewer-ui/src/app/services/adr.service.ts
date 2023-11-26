@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {ADR} from "../interfaces/adr";
 import {Observable, of} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {MessageService} from "./message.service";
 import {catchError, tap} from 'rxjs/operators';
 
 
@@ -18,8 +17,7 @@ export class AdrService {
   private allADRsUrl = 'getAllADRs';
 
   constructor(
-    private http: HttpClient,
-    private messageService: MessageService
+    private http: HttpClient
   ) {
   }
 
@@ -71,7 +69,8 @@ export class AdrService {
    * @param message - the message that should be logged
    */
   private log(message: string) {
-    this.messageService.add(`ADR-Service: ${message}`);
+    //TODO: Message Service aus Projekt entfernen und normale console logs verwenden
+    console.log(message); //this.messageService.add(`ADR-Service: ${message}`);
   }
 
   /**

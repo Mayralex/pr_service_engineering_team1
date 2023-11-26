@@ -12,6 +12,7 @@ import {ListviewComponent} from './components/listview/listview.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavComponent } from './components/nav/nav.component';
 import { AdrDetailViewComponent } from './components/adr-detail-view/adr-detail-view.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AdrDetailViewComponent } from './components/adr-detail-view/adr-detail-
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
-    NgFor
+    NgFor,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
