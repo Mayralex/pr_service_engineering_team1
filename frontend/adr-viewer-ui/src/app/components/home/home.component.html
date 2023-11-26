@@ -1,7 +1,4 @@
 <br>
-<div class="container text-center">
-  <button (click)="useGraal()" type="button" class="btn btn-outline-success">Use Graal Project</button>
-</div>
 <div class="container">
   <form (submit)="onSubmit()" #adrForm="ngForm">
     <div class="form-group mx-5">
@@ -31,4 +28,7 @@
 
     <button type="submit" [disabled]="!adrForm.form.valid" class="btn btn-primary mt-2 mx-5">Submit</button>
   </form>
+</div>
+<div class="container text-center">
+  <button (click)="useGraal()" type="button" class="btn btn-outline-success">use graal-project instead</button>
 </div>
