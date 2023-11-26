@@ -27,4 +27,17 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+  // Used for easy access to Graal Project for testing, etc. - can be deleted when not needed anymore
+  useGraal() {
+    // Navigate to target component with user information
+    this.router.navigate(['/listview'], {
+      queryParams:{
+        repoOwner: "flohuemer",
+        repoName: "graal",
+        directoryPath: "wasm/docs/arch",
+        branch: "adrs",
+      }
+    });
+  }
 }
