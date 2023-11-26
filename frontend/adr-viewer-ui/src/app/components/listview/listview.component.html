@@ -1,15 +1,33 @@
-<div *ngIf="showADRs">
-  <h2 class="m-lg-3">ADRs in project:</h2>
-  <ul class="adrs m-lg-3 list-group">
-    <li class="list-group-item list-group-item-info" *ngFor="let adr of adrs">
-      <div><span class="">id: </span>{{adr.id}}</div>
-      <div><span>title: </span>{{adr.title}}</div>
-      <div><span>context: </span>{{adr.context}}</div>
-      <div><span>decision: </span>{{adr.decision}}</div>
-      <div><span>status: </span>{{adr.status}}</div>
-      <div><span>consequences: </span>{{adr.consequences}}</div>
-      <div><span>artifacts: </span>{{adr.artifacts}}</div>
-      <div><span>relations: </span>{{adr.relations}}</div>
+<div class="container" *ngIf="showADRs">
+  <ul class="list-group m-lg-3">
+    <li class="list-group-item list-group-item-dark" *ngFor="let adr of adrs">
+      <div class="row align-items-center">
+        <div class="col-sm">
+          {{adr.title}}
+        </div>
+
+        <div class="col-sm-2" *ngIf="isActive(adr.status); then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+          <div class="col-sm-2">
+            <div class="text-end text-success">
+              {{adr.status}}
+            </div>
+          </div>
+        </ng-template>
+        <ng-template #elseBlock>
+          <div class="col-sm-2">
+            <div class="text-end text-danger">
+              {{adr.status}}
+            </div>
+          </div>
+        </ng-template>
+
+        <div class="col-sm-2">
+          <div class="text-end">
+            <button type="button" class="btn btn-link">Details</button>
+          </div>
+        </div>
+      </div>
     </li>
   </ul>
 </div>
