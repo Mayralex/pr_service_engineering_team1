@@ -4,31 +4,31 @@
 </div>
 <div class="container">
   <form (submit)="onSubmit()" #adrForm="ngForm">
-    <div class="form-group">
+    <div class="form-group mx-5">
       <label for="repoOwner">Repository owner:</label>
       <input type="text" id="repoOwner" class="form-control" placeholder="Enter the username of the repository owner..."
              name="repoOwner" [(ngModel)]="userData.repoOwner" required>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mx-5">
       <label for="repoName">Repository name:</label>
       <input type="text" id="repoName" class="form-control" placeholder="Enter the name of the repository..."
              name="repoName" [(ngModel)]="userData.repoName" required>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mx-5">
       <label for="directoryPath">Directory path:</label>
       <input type="text" id="directoryPath" class="form-control"
              placeholder="Enter the path to the folder where the ADRs are stored..."
              name="directoryPath" [(ngModel)]="userData.directoryPath" required>
     </div>
 
-    <div class="form-group">
+    <div class="form-group mx-5">
       <label for="branch">Branch:</label>
       <input type="text" id="branch" class="form-control" placeholder="Enter the desired branch of the repository..."
              name="branch" [(ngModel)]="userData.branch" required>
     </div>
-    <br>
-    <button type="submit" [disabled]="!adrForm.form.valid" class="btn btn-primary">Submit</button>
+
+    <button type="submit" [disabled]="!adrForm.form.valid" class="btn btn-primary mt-2 mx-5">Submit</button>
   </form>
 </div>

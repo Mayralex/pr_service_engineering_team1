@@ -1,11 +1,12 @@
-
-<app-nav></app-nav>
-<h1 class="text-center">{{title}}</h1>
-<nav class="text-center">
-  <a routerLink="/home">Home</a>
-  <br>
-  <a routerLink="/listview">ADR-List</a>
-</nav>
-<router-outlet></router-outlet>
-<app-messages></app-messages>
-<footer class="bg-black text-light blockquote-footer text-center fixed-bottom">Team 1</footer>
+<app-nav id="header"></app-nav>
+<div>
+  <h1 class="text-center">{{title}}</h1>
+  <nav class="text-center">
+    <a routerLink="/home">Home</a>
+    <br>
+    <a routerLink="/listview">ADR-List</a>
+  </nav>
+  <router-outlet></router-outlet>
+  <app-messages></app-messages>
+</div>
+<footer id="footer" class="bg-black text-light blockquote-footer text-center mt-5">Team 1</footer>
