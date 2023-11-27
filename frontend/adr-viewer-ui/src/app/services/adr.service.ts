@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ADR} from "../interfaces/adr";
-import {Observable, of} from "rxjs";
+import {Observable, of, timer} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {catchError, tap} from 'rxjs/operators';
+import {catchError, tap, switchMap} from 'rxjs/operators';
 
 
 /**
@@ -15,6 +15,12 @@ export class AdrService {
   private url = 'http://localhost:8080/api/v2';
   private adrByIdUrl = 'getADR';
   private allADRsUrl = 'getAllADRs';
+
+  // polling variables
+  private pollingInterval = 3000;
+  private continuePolling = true;
+  private expNumOfADRs = 0;
+  private currentNumOfADRs = -1;
 
   constructor(
     private http: HttpClient
@@ -39,11 +45,39 @@ export class AdrService {
     queryParams = queryParams.append("directoryPath", directoryPath);
     queryParams = queryParams.append("branch", branch);
 
-    return this.http.get<ADR[]>(requestUrl, {params: queryParams})
-      .pipe(
-        tap(_ => this.log('fetched ADRs')),
-        catchError(this.handleError<ADR[]>('getAllADRs', []))
-      );
+    return timer(0, this.pollingInterval).pipe(
+      switchMap(() => {
+        if(!this.continuePolling){
+          throw new Error('Polling stopped');
+        }
+        return this.http.get<ADR[]>(requestUrl, {params: queryParams})
+          .pipe(
+            tap(_ => this.checkFetchingStatus(_)),
+            catchError(this.handleError<ADR[]>('getAllADRs', []))
+          );
+        })
+    );
+  }
+
+  checkFetchingStatus(adrs: ADR[]): void {
+    if(adrs.length > this.expNumOfADRs) {
+      this.expNumOfADRs = adrs.length;
+      console.log('Expected ADRs: ', adrs.length);
+    }
+    else if (this.currentNumOfADRs == this.expNumOfADRs) {
+      this.stopPolling();
+      this.currentNumOfADRs = -1;
+      this.expNumOfADRs = 0;
+    }
+    else {
+      this.currentNumOfADRs = adrs.length;
+      console.log('Currently loaded ADRs: ', adrs.length, ' | Expected: ', this.expNumOfADRs);
+    }
+
+  }
+
+  stopPolling(): void {
+    this.continuePolling = false;
   }
 
   /** GET a single ADR by its ID
