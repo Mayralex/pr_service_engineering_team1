@@ -20,3 +20,5 @@
   - Bootstrap lib, visualization libs, UI design decision
 - Backend Restructuring
   - GraphQL Calls auf die GitHub API
+- Ronald:
+  - Implementation of MessageService and deletion/deprecation of it --> 2 separat ADRs
