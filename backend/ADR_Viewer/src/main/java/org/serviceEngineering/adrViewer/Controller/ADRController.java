@@ -1,5 +1,9 @@
 package org.serviceEngineering.adrViewer.Controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.serviceEngineering.adrViewer.client.CommitHistoryClient;
 import org.serviceEngineering.adrViewer.entity.ADR;
 import org.serviceEngineering.adrViewer.entity.RestResponse;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
+@Tag(name = "ADR", description = "ADR Api")
 @RestController
 @RequestMapping("/api/")
 public class ADRController {
@@ -31,6 +36,12 @@ public class ADRController {
         this.commitHistoryClient = commitHistoryClient;
     }
 
+    @Operation(
+            summary = "Get list of ADRs",
+            description = "Get a list of ADRs from single repository over the GitHub API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
     @GetMapping("v1/scanADRs")
     public RestResponse[] scanADRs(
             @RequestParam String owner,
@@ -40,6 +51,12 @@ public class ADRController {
         return adrService.fetchRepositoryContent(owner, repoName, directoryPath, branch);
     }
 
+    @Operation(
+            summary = "Fetch single adr",
+            description = "Fetches single ADR in markdown format from the GitHub API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
     @GetMapping("v1/fetchFile")
     public String fetchFile(
             @RequestParam String owner,
@@ -49,6 +66,12 @@ public class ADRController {
         return adrService.fetchADRFile(owner, repoName, filePath, branch);
     }
 
+    @Operation(
+            summary = "Parse single adr",
+            description = "Parses single ADR into Java Object from the GitHub API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
     @GetMapping("v1/parseFile")
     public Object parseFile(
             @RequestParam String owner,
@@ -59,6 +82,12 @@ public class ADRController {
         return adrService.parseADRFileDeprecated(owner, repoName, filePath, branch);
     }
 
+    @Operation(
+            summary = "Convert single adr",
+            description = "Converts single ADR in HTML format from the GitHub API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
     @GetMapping("v1/convertFile")
     public Object convertFileToHtml(
             @RequestParam String owner,
@@ -82,6 +111,13 @@ public class ADRController {
      * @return ResponseEntity containing the ADR object if found, or an error message with an appropriate
      * HTTP status code if the ADR is not found or if there's a service exception.
      */
+    @Operation(
+            summary = "Get single adr",
+            description = "Fetches single ADR from storage via ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation"),
+            @ApiResponse(responseCode = "404", description = "resource not found")
+    })
     @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
     @GetMapping(value = "v2/getADR")
     public ResponseEntity<Object> getADR(@RequestParam long id) {
@@ -108,6 +144,12 @@ public class ADRController {
      * @param branch        The branch in the repository from which ADRs should be fetched.
      * @return ResponseEntity containing an array of ADR objects if ADRs are found, or an empty array if no ADRs are available.
      */
+    @Operation(
+            summary = "Parse all ADRs",
+            description = "Parse all ADRs from single repository into Java objects over the GitHub API and store in memory")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
     @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
     @GetMapping(value = "v2/getAllADRs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getAllADRs(
@@ -134,6 +176,12 @@ public class ADRController {
      * @param status The status of ADRs to retrieve.
      * @return ResponseEntity containing a list of ADRs filtered by the specified status with an HTTP status of 200 (OK).
      */
+    @Operation(
+            summary = "Get list of ADRs by status",
+            description = "Get a list of ADRs from storage with provided status")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
     @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
     @GetMapping(value = "v2/getByStatus", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getByStatus(
@@ -155,6 +203,12 @@ public class ADRController {
      * @return ResponseEntity containing the commit history of the specified file with an HTTP status of 200 (OK).
      * @throws IOException Signals that an I/O exception to some sort has occurred.
      */
+    @Operation(
+            summary = "Get commit history",
+            description = "Get the complete commit history to a single file")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
     @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
     @GetMapping(value = "v2/getHistory", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getHistory(
