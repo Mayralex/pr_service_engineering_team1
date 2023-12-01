@@ -14,7 +14,7 @@ export class NavComponent implements OnInit {
   navbarItems = [
     ["/home", "Home"],
     ["/listview", "ADR-List"],
-    ["", "Dashboard"]
+    ["/dashboard", "Dashboard"]
   ];
   constructor() { }
 

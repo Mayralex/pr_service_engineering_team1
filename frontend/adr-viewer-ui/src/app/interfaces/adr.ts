@@ -1,4 +1,4 @@
-export interface ADR {
+export class ADR {
   id: number;
   title: string;
   context: string;

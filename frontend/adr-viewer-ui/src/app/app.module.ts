@@ -13,6 +13,8 @@ import { HomeComponent } from './components/home/home.component';
 import { NavComponent } from './components/nav/nav.component';
 import { AdrDetailViewComponent } from './components/adr-detail-view/adr-detail-view.component';
 import {FormsModule} from "@angular/forms";
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import {NgChartsModule} from "ng2-charts";
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import {FormsModule} from "@angular/forms";
     ListviewComponent,
     HomeComponent,
     NavComponent,
-    AdrDetailViewComponent
+    AdrDetailViewComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,8 @@ import {FormsModule} from "@angular/forms";
     NgbModule,
     HttpClientModule,
     NgFor,
-    FormsModule
+    FormsModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
