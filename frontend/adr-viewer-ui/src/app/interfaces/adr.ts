@@ -1,10 +1,10 @@
-export interface ADR {
+export class ADR {
   id: number;
   title: string;
   context: string;
   decision: string;
   status: string;
   consequences: string;
-  artifacts: string;
+  artifacts: string[];
   relations: string;
 }
