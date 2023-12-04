@@ -1,8 +1,0 @@
-<div *ngIf="messageService.messages.length">
-  <ngb-toast
-    [class.toast]="true"
-    [autohide]="false"
-    header="Messages">
-    <div *ngFor='let message of messageService.messages'> {{message}} </div>
-  </ngb-toast>
-</div>

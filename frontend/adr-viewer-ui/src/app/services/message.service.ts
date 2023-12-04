@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 /**
+ * @deprecated This service should NOT be used.
  * Service to display toast messages on the user interface
  */
 @Injectable({
