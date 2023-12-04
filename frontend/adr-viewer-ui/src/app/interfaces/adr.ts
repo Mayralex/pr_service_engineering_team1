@@ -5,6 +5,6 @@ export class ADR {
   decision: string;
   status: string;
   consequences: string;
-  artifacts: string;
+  artifacts: string[];
   relations: string;
 }
