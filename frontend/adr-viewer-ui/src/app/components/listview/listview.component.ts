@@ -77,13 +77,12 @@ export class ListviewComponent implements OnInit, OnDestroy {
           }
         },
         (error) => {
-          console.log(error.toString(), 'Finished loading ADRs.');
+          console.log('Something went wrong:', error);
         }
       );
   }
 
   ngOnDestroy(): void {
-    //this.adrService.stopPolling();
     if (this.adrSubscription) {
       this.adrSubscription.unsubscribe();
     }
