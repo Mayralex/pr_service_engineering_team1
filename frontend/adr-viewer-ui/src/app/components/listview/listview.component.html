@@ -1,6 +1,8 @@
 <div class="container" *ngIf="showADRs">
+
+  <input type="text" [(ngModel)]="searchText" placeholder="Search..." />
   <ul class="list-group m-lg-3">
-    <li class="list-group-item list-group-item-dark" *ngFor="let adr of adrs">
+    <li class="list-group-item list-group-item-dark" *ngFor="let adr of adrs | search: searchText">
       <div class="row align-items-center">
         <div class="col-sm">
           {{adr.title}}

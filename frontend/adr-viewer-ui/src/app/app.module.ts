@@ -14,6 +14,7 @@ import { AdrDetailViewComponent } from './components/adr-detail-view/adr-detail-
 import { FormsModule } from "@angular/forms";
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NgChartsModule } from "ng2-charts";
+import { SearchPipe } from './pipes/search.pipe';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { NgChartsModule } from "ng2-charts";
     HomeComponent,
     NavComponent,
     AdrDetailViewComponent,
-    DashboardComponent
+    DashboardComponent,
+    SearchPipe
   ],
   imports: [
     BrowserModule,
