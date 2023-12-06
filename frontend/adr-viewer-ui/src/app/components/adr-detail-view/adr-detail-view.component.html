@@ -1,13 +1,103 @@
-<h2 class="m-lg-3">{{adrById.title}}</h2>
-<ul class="adrs m-lg-3 list-group">
-  <li class="list-group-item list-group-item-info">
-    <div><span class="">id: </span>{{adrById.id}}</div>
-    <div><span>title: </span>{{adrById.title}}</div>
-    <div><span>context: </span>{{adrById.context}}</div>
-    <div><span>decision: </span>{{adrById.decision}}</div>
-    <div><span>status: </span>{{adrById.status}}</div>
-    <div><span>consequences: </span>{{adrById.consequences}}</div>
-    <div><span>artifacts: </span>{{adrById.artifacts}}</div>
-    <div><span>relations: </span>{{adrById.relations}}</div>
-  </li>
-</ul>
+<div class="grid-container">
+  <h2 class="m-lg-3">
+    <svg xmlns="http://www.w3.org/2000/svg" width="8%" height="100%" fill="currentColor"
+         class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16" id="icon1">
+      <path fill-rule="evenodd"
+            d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
+    </svg>
+    {{adrById.title}}</h2>
+
+  <div *ngIf="isActive(adrById.status)then active; else deprecated"></div>
+  <ng-template #active>
+    <div class="child">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="forestgreen">
+        <circle cx="8" cy="8" r="8"/>
+      </svg>
+      {{adrById.status}}
+    </div>
+  </ng-template>
+  <ng-template #deprecated>
+    <div class="child">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red">
+        <circle cx="8" cy="8" r="8"/>
+      </svg>
+      {{adrById.status}}
+    </div>
+  </ng-template>
+</div>
+
+
+<div class="accordion" id="adrDetailview">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#context"
+              aria-expanded="true" aria-controls="context">
+        Context
+      </button>
+    </h2>
+    <div id="context" class="accordion-collapse collapse show">
+      <div class="accordion-body">
+        {{adrById.context}}
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#decision"
+              aria-expanded="false" aria-controls="decision">
+        Decision
+      </button>
+    </h2>
+    <div id="decision" class="accordion-collapse collapse">
+      <div class="accordion-body">
+        {{adrById.decision}}
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#consequences" aria-expanded="false" aria-controls="consequences">
+        Consequences
+      </button>
+    </h2>
+    <div id="consequences" class="accordion-collapse collapse">
+      <div class="accordion-body">
+        {{adrById.consequences}}
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#artifacts" aria-expanded="false" aria-controls="artifacts">
+          Artifacts
+        </button>
+      </h2>
+      <div id="artifacts" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          {{adrById.artifacts}}
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#relations"
+                  aria-expanded="false" aria-controls="relations">
+            Relations
+          </button>
+        </h2>
+        <div id="relations" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            {{adrById.relations}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Solange Commit nicht ausgelesen wird auskommentiert -->
+    <!--  <div id="commit">
+        <svg xmlns="http://www.w3.org/2000/svg"  class="bi bi-link-45deg" id="icon2">
+          <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+          <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
+        </svg>
+      </div> -->
+
+
