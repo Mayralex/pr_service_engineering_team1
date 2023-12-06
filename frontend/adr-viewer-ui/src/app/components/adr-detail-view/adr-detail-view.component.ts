@@ -33,4 +33,8 @@ export class AdrDetailViewComponent implements OnInit {
     this.adrService.getAdrById(id)
       .subscribe(adr => this.adrById = adr);
   }
+
+  isActive(status: string): boolean {
+    return status === 'Active'
+  }
 }
