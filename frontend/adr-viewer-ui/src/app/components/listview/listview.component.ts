@@ -25,6 +25,9 @@ export class ListviewComponent implements OnInit, OnDestroy {
   // variable for fetched ADRs
   adrs = [] as ADR[];
 
+  // for search by status
+  searchText: string = '';
+
   constructor(
     private adrService: AdrService,
     private route: ActivatedRoute,
