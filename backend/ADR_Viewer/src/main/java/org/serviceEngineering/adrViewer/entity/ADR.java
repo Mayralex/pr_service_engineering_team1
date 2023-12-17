@@ -39,4 +39,10 @@ public class ADR {
     @Column(name = "Relations", length =  999999)
     private String relations; //TODO: find correct type ----> probably custom type Relation
 
+    @Column(name = "Date")
+    private String date;
+
+    @Column(name = "Commit")
+    private String commit;
+
 }
