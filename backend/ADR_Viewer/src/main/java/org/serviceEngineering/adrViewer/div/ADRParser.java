@@ -65,6 +65,14 @@ public class ADRParser {
         adr.setConsequences(extractSectionText(document, "Consequences"));
         adr.setArtifacts(extractLinks(document, "Artifacts").toString());
         adr.setRelations(extractLinks(document, "Relations").toString());
+        String date = null;
+        try {
+            date = extractSectionText(document, "Date");
+        } catch (NullPointerException e) {
+            log.warn(e.getMessage());
+        }
+        adr.setDate(((date == null) ? "9999-12-31" : date));
+        adr.setCommit(extractSectionText(document, "Commit"));
         return adr;
     }
 
