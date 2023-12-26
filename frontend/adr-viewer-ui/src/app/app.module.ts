@@ -14,6 +14,8 @@ import { AdrDetailViewComponent } from './components/adr-detail-view/adr-detail-
 import { FormsModule } from "@angular/forms";
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NgChartsModule } from "ng2-charts";
+import {BarchartComponent} from "./components/visualizations/barchart/barchart.component";
+import { LinechartComponent } from './components/visualizations/linechart/linechart.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { NgChartsModule } from "ng2-charts";
     HomeComponent,
     NavComponent,
     AdrDetailViewComponent,
-    DashboardComponent
+    DashboardComponent,
+    BarchartComponent,
+    LinechartComponent
   ],
   imports: [
     BrowserModule,
