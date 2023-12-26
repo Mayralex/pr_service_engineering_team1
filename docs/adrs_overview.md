@@ -6,7 +6,9 @@
 - [ADR 003: Naming Conventions and Guidelines](./adrs/adr-003.md)
 - [ADR 004: Angular Frontend Project Structure](./adrs/adr-004.md)
 - [ADR 005: ADR Service Definition and Responsibilities](./adrs/adr-005.md)
-
+- [ADR 006: Message Service Implementation and Usage](./adrs/adr-006.md)
+- [ADR 007: Deprecating the Message Service](./adrs/adr-007.md)
+- [ADR 008: Refactoring ADR Service for Polling-based ADR Retrieval](./adrs/adr-008.md)
 
 
 ## ADRs still missing for:
@@ -20,6 +22,3 @@
   - Bootstrap lib, visualization libs, UI design decision
 - Backend Restructuring
   - GraphQL Calls auf die GitHub API
-- Ronald:
-  - Implementation of MessageService and deletion/deprecation of it --> 2 separat ADRs
-  - Polling 

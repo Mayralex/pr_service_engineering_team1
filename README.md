@@ -44,11 +44,12 @@
 - Aussagekräftiger Titel - [RESEARCH], [DOCUMENTATION], [FRONTEND], [BACKEND], [ORGANIZATION], [REFINEMENT], [TESTING]
 - Klare Beschreibung inklusive aller relevanten Informationen
 - Wenn möglich Screenshots verwenden
-- Priorisierung der Tickets (eventuell über 2. Label)
+- Priorisierung der Tickets: EPIC für größere Themengebiete (Tickets, die zum EPIC gehören als Checkbox)
 
 ### GitHub Projects
 - TaskBoard immer up-to-date halten
 - Regelmäßig über die Tickets gehen, Tickets sofort zuweisen
+- Derzeitigen Sprint (Development) mit Ticket verlinken
 
 ### Meetings
 - Es gibt regelmäßige Meetings (wenn möglich wöchentlich).
