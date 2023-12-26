@@ -12,7 +12,8 @@ export class BarchartComponent implements OnInit {
   @Input() adrArtifactNumbers: number[] = [];
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-  constructor() {}
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.updateChartData();
