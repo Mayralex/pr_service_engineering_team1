@@ -1,22 +1,14 @@
-<div class="m-lg-3" >
-  <button class="btn btn-outline-secondary" type="button"
-          (click)="loadAdrs()">
-    Load ADRs
-  </button>
+<div class="m-lg-3">
+  <label class="mb-2 m-lg-1" for="visualizationType">Select Visualization Type:</label>
+  <select class="form-select" id="visualizationType" aria-label="Select Visualization Type" [(ngModel)]="selectedVisualization">
+    <option selected value="bar" (click)="loadAdrs()">BarChart</option>
+    <option value="line" (click)="loadAdrs()">LineChart</option>
+</select>
 </div>
 
 <div class="flex" *ngIf="adrsLoaded; else noADRs">
-  <div class="flex-item">
-    <div style="display: block;">
-      <canvas baseChart width="400" height=200
-              [data]="barChartData"
-              [options]="barChartOptions"
-              [plugins]="barChartPlugins"
-              [legend]="barChartLegend"
-              [type]="'bar'">
-      </canvas>
-    </div>
-  </div>
+  <app-barchart *ngIf="selectedVisualization === 'bar'" [adrLabels]="adrLabels" [adrArtifactNumbers]="adrArtifactNumbers"></app-barchart>
+  <app-linechart *ngIf="selectedVisualization === 'line'" [adrLabels]="adrLabels" [adrArtifactNumbers]="adrArtifactNumbers"></app-linechart>
 </div>
 
 <ng-template #noADRs>
