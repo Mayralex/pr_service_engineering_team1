@@ -27,7 +27,7 @@ import { SearchPipe } from './pipes/search.pipe';
     AdrDetailViewComponent,
     DashboardComponent,
     BarchartComponent,
-    LinechartComponent
+    LinechartComponent,
     SearchPipe
   ],
   imports: [
