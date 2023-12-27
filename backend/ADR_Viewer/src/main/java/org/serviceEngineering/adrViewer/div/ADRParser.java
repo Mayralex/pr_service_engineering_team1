@@ -6,6 +6,7 @@ import org.commonmark.renderer.html.HtmlRenderer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.serviceEngineering.adrViewer.entity.ADR;
 import org.slf4j.Logger;
@@ -76,6 +77,28 @@ public class ADRParser {
         return adr;
     }
 
+
+    private static String extractSectionText(Element element) {
+        StringBuilder text = new StringBuilder();
+
+        for (org.jsoup.nodes.Node node : element.childNodes()) {
+            if (node instanceof TextNode) {
+                text.append(((TextNode) node).text()).append("\n");
+            } else if (node instanceof Element) {
+                Element childElement = (Element) node;
+                if (childElement.tagName().equals("p") ||
+                        childElement.tagName().equals("b") ||
+                        childElement.tagName().equals("i")) {
+                    text.append(childElement.text()).append("\n");
+                } else {
+                    text.append(extractSectionText(childElement));
+                }
+            }
+        }
+
+        return text.toString().trim();
+    }
+
     /**
      * Extracts and returns the text content of a specific section identified by its header.
      * The method searches for the given section header (h2 tag) in the provided Jsoup Document.
@@ -93,9 +116,7 @@ public class ADRParser {
             StringBuilder text = new StringBuilder();
 
             while (nextSibling != null && !nextSibling.tagName().equals("h2")) {
-                if (nextSibling.tagName().equals("p")) {
-                    text.append(nextSibling.text()).append("\n");
-                }
+                text.append(extractSectionText(nextSibling));
                 nextSibling = nextSibling.nextElementSibling();
             }
 
