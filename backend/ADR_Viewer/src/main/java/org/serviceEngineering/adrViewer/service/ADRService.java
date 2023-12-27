@@ -207,4 +207,9 @@ public class ADRService {
         }
         return CompletableFuture.completedFuture(result);
     }
+
+
+    public void clear() {
+        this.aDRRepository.deleteAll();
+    }
 }

@@ -222,4 +222,17 @@ public class ADRController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Clear cache",
+            description = "Remove all objects from cache")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
+    @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
+    @GetMapping(value = "v2/clear")
+    public void clear() {
+        log.info("Clearing cache");
+        adrService.clear();
+    }
+
 }
