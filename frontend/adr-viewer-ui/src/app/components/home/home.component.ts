@@ -15,13 +15,19 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userData = {repoOwner: '', repoName: '', directoryPath: '', branch: ''};
+    this.userData = {repoOwner: "", repoName: "", directoryPath: "", branch: ""};
   }
 
-  /** Navigate to listview component with user information
+  /** Navigate to listview component with user information and store input variables
    *
    */
   onSubmit() {
+    // store input variables
+    localStorage.setItem('repoOwner', JSON.stringify(this.userData.repoOwner));
+    localStorage.setItem('repoName', JSON.stringify(this.userData.repoName));
+    localStorage.setItem('directoryPath', JSON.stringify(this.userData.directoryPath));
+    localStorage.setItem('branch', JSON.stringify(this.userData.branch));
+
     this.router.navigate(['/listview'], {
       queryParams: {
         repoOwner: this.userData.repoOwner,
@@ -34,6 +40,12 @@ export class HomeComponent implements OnInit {
 
   // Used for easy access to Graal Project for testing, etc. - can be deleted when not needed anymore
   useGraal() {
+    // store input variables
+    localStorage.setItem('repoOwner', JSON.stringify("flohuemer"));
+    localStorage.setItem('repoName', JSON.stringify("graal"));
+    localStorage.setItem('directoryPath', JSON.stringify("wasm/docs/arch"));
+    localStorage.setItem('branch', JSON.stringify("adrs"));
+
     // Navigate to target component with user information
     this.router.navigate(['/listview'], {
       queryParams: {
