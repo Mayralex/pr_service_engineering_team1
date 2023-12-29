@@ -86,10 +86,12 @@ public class ADRParser {
                 text.append(((TextNode) node).text()).append("\n");
             } else if (node instanceof Element) {
                 Element childElement = (Element) node;
-                if (childElement.tagName().equals("p") ||
-                        childElement.tagName().equals("b") ||
-                        childElement.tagName().equals("i")) {
+                if (childElement.tagName().equals("p")) {
                     text.append(childElement.text()).append("\n");
+                }
+                if (childElement.tagName().equals("b") ||
+                        childElement.tagName().equals("i")) {
+                    text.append(childElement.text());
                 } else {
                     text.append(extractSectionText(childElement));
                 }
