@@ -1,34 +1,54 @@
-<br>
-<div class="container">
-  <form (submit)="onSubmit()" #adrForm="ngForm">
-    <div class="form-group mx-5">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark p-2">
+  <a class="navbar-brand link-light px-3">ADR-Viewer</a>
+  <div *ngIf="!hideButton" class="container-fluid collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item px-4">
+        <button (click)="prevProject()" type="button" class="nav-link active text-info px-4">
+          Go back to previous project
+        </button>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container border border-dark rounded my-5 p-3" id="repo-form">
+  <h3 id="repo-form-header">Repository information </h3>
+  <form (submit)="onSubmit()" #adrForm="ngForm" class="bg-white p-1 rounded">
+    <div class="form-group mx-2">
       <label for="repoOwner">Repository owner:</label>
-      <input type="text" id="repoOwner" class="form-control" placeholder="Enter the username of the repository owner..."
+      <input type="text" id="repoOwner" class="form-control"
+             placeholder="Enter the username of the repository owner..."
              name="repoOwner" [(ngModel)]="userData.repoOwner" required>
     </div>
 
-    <div class="form-group mx-5">
+    <div class="form-group mt-3 mx-2">
       <label for="repoName">Repository name:</label>
       <input type="text" id="repoName" class="form-control" placeholder="Enter the name of the repository..."
              name="repoName" [(ngModel)]="userData.repoName" required>
     </div>
 
-    <div class="form-group mx-5">
+    <div class="form-group mt-3 mx-2">
       <label for="directoryPath">Directory path:</label>
       <input type="text" id="directoryPath" class="form-control"
              placeholder="Enter the path to the folder where the ADRs are stored..."
              name="directoryPath" [(ngModel)]="userData.directoryPath" required>
     </div>
 
-    <div class="form-group mx-5">
+    <div class="form-group mt-3 mx-2">
       <label for="branch">Branch:</label>
       <input type="text" id="branch" class="form-control" placeholder="Enter the desired branch of the repository..."
              name="branch" [(ngModel)]="userData.branch" required>
     </div>
 
-    <button type="submit" [disabled]="!adrForm.form.valid" class="btn btn-primary mt-2 mx-5">Submit</button>
+    <div class="text-center">
+      <button type="submit" [disabled]="!adrForm.form.valid" class="btn btn-outline-info mt-4 mx-2">Search for ADRs
+      </button>
+    </div>
+    <div class="text-center mt-1">or</div>
+    <div class="text-center">
+      <button (click)="useGraal()" type="button" class="btn btn-outline-secondary mt-1 mx-2">Use example-project
+      </button>
+    </div>
   </form>
 </div>
-<div class="container text-center">
-  <button (click)="useGraal()" type="button" class="btn btn-outline-success">use graal-project instead</button>
-</div>
+
