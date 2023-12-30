@@ -20,12 +20,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = {repoOwner: "", repoName: "", directoryPath: "", branch: ""};
-    if(sessionStorage.getItem('previousProject') === 'true'){
-      this.hideButton = false;
-    }
-    else{
-      this.hideButton = true;
-    }
+    this.hideButton = sessionStorage.getItem('previousProject') !== 'true';
   }
 
   /** Navigate to listview component with user information and store input variables
