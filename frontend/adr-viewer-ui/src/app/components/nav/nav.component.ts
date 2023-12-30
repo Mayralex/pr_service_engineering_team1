@@ -26,10 +26,10 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {
     this.repoData = {repoOwner: "", repoName: "", directoryPath: "", branch: ""};
     // access repo data
-    this.repoData.repoOwner = localStorage.getItem('repoOwner');
-    this.repoData.repoName = localStorage.getItem('repoName');
-    this.repoData.directoryPath = localStorage.getItem('directoryPath');
-    this.repoData.branch = localStorage.getItem('branch');
+    this.repoData.repoOwner = sessionStorage.getItem('repoOwner');
+    this.repoData.repoName = sessionStorage.getItem('repoName');
+    this.repoData.directoryPath = sessionStorage.getItem('directoryPath');
+    this.repoData.branch = sessionStorage.getItem('branch');
   }
 
 }

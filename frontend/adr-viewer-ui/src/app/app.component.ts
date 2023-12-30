@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import {Component} from '@angular/core';
+import {Router, NavigationEnd} from '@angular/router';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,12 @@ export class AppComponent {
     ).subscribe(event => {
       // Check if the current route needs to hide the navbar
       // @ts-ignore
-      this.hideNavbar = event.url.includes('home');
+      if (event.url === '/') {
+        this.hideNavbar = true;
+      } else {
+        // @ts-ignore
+        this.hideNavbar = event.url.includes('home');
+      }
     });
   }
 }
