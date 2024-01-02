@@ -86,9 +86,8 @@ export class ListviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.adrSubscription) {
-      this.adrSubscription.unsubscribe();
-    }
+
+
     console.log('Listview component was destroyed.');
   }
 

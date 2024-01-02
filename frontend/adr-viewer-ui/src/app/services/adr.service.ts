@@ -20,7 +20,6 @@ export class AdrService {
   // Polling variables used in getAllADRs
   private pollingInterval = 3000;
   private continuePolling = true;
-  private expNumOfADRs = 0;
   private currentNumOfADRs = -1;
 
   constructor(
@@ -101,19 +100,21 @@ export class AdrService {
    * @param adrs the currently fetched ADR array
    */
   private checkFetchingStatus(adrs: ADR[]): void {
-    if (adrs.length > this.expNumOfADRs) {
-      this.expNumOfADRs = adrs.length;
+    let expNumOfADRs = Number(sessionStorage.getItem('expNumOfADRs')) || -1;
+    console.log('curr:', this.currentNumOfADRs, 'exp:', expNumOfADRs);
+    if (adrs.length > expNumOfADRs) {
+      sessionStorage.setItem('expNumOfADRs', JSON.stringify(adrs.length));
       console.log('Expected number of ADRs:', adrs.length);
-    } else if (this.currentNumOfADRs == this.expNumOfADRs) {
+    } else if (this.currentNumOfADRs == expNumOfADRs) {
       this.stopPolling();
 
       // Not necessary now, but maybe again if another repository should be fetched in the same session!
-      //this.currentNumOfADRs = -1;
+      this.currentNumOfADRs = -1;
       //this.expNumOfADRs = 0;
       console.log('ADRs fully loaded.')
     } else {
       this.currentNumOfADRs = adrs.length;
-      console.log('Currently loaded', adrs.length, 'ADRs. Expected:', this.expNumOfADRs);
+      console.log('Currently loaded', adrs.length, 'ADRs. Expected:', expNumOfADRs);
     }
 
   }
