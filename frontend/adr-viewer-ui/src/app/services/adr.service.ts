@@ -3,6 +3,7 @@ import {ADR} from "../interfaces/adr";
 import {Observable, of, timer} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {catchError, tap, switchMap, takeWhile} from 'rxjs/operators';
+import {AdrPage} from "../interfaces/adrPage";
 
 
 /**
@@ -16,6 +17,7 @@ export class AdrService {
   private url = 'http://localhost:8080/api/v2';
   private adrByIdUrl = 'getADR';
   private allADRsUrl = 'getAllADRs';
+  private nextADRsUrl = 'ADR';
 
   // Polling variables used in getAllADRs
   private pollingInterval = 3000;
@@ -77,6 +79,43 @@ export class AdrService {
       );
   }
 
+  /** GET all ADRs of a page, filter searchText
+   *
+   * @param repoOwner - owner of the repository
+   * @param repoName - name of the repository
+   * @param directoryPath - path to directory where ADRs are stored
+   * @param branch - branch of the repository
+   * @param searchText - filter ADRs by title
+   * @param pageOffset - offset of the current page
+   * @param limit - number of ADRs per page
+   *
+   * @returns a Page of the ADRs
+   */
+  getAdrs(repoOwner: string, repoName: string, directoryPath: string, branch: string, searchText: string, pageOffset: number, limit: number): Observable<AdrPage> {
+    let requestUrl = `${this.url}/${this.nextADRsUrl}`;
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("repoOwner", repoOwner);
+    queryParams = queryParams.append("repoName", repoName);
+    queryParams = queryParams.append("directoryPath", directoryPath);
+    queryParams = queryParams.append("branch", branch);
+    queryParams = queryParams.append("query", searchText);
+    queryParams = queryParams.append("pageOffset", pageOffset);
+    queryParams = queryParams.append("limit", limit);
+
+    this.continuePolling = true;
+    return timer(0, this.pollingInterval).pipe(
+      takeWhile(() => this.continuePolling),
+      switchMap(() => {
+        return this.http.get<AdrPage>(requestUrl, {params: queryParams})
+          .pipe(
+            tap(_ => this.checkFetchingStatus(_.data)),
+            catchError(this.handleError<AdrPage>('getADRs'))
+          );
+      })
+    );
+  }
+
   /** Checks if the service finished fetching all ADRs from endpoint
    *
    * @returns true if fetching has finished - false otherwise.
@@ -115,7 +154,6 @@ export class AdrService {
       this.currentNumOfADRs = adrs.length;
       console.log('Currently loaded', adrs.length, 'ADRs. Expected:', this.expNumOfADRs);
     }
-
   }
 
   /**
@@ -133,5 +171,4 @@ export class AdrService {
       return of(result as T);
     };
   }
-
 }

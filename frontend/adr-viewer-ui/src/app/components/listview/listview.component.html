@@ -1,9 +1,27 @@
 <div class="container" *ngIf="showADRs">
 
+  <div class="mt-4 ms-4">
+    <ngb-pagination
+      class="d-flex justify-content-center"
+      [collectionSize]="pageCount * limit"
+      [page]="pageOffset+1"
+      (pageChange)="onPage($event-1)"
+      [maxSize]="pageCount">
+        <ng-template ngbPaginationPrevious>Previous</ng-template>
+        <ng-template ngbPaginationNext>Next</ng-template>
+    </ngb-pagination>
+  </div>
+
   <ul class="list-group m-lg-3">
-    <input class="input-group my-3 bg-light border border-secondary rounded py-1" type="text" [(ngModel)]="searchText" placeholder="Search by title or status..." />
-    <li class="list-group-item list-group-item-dark" *ngFor="let adr of adrs | search: searchText">
-      <div class="row align-items-center">
+    <input class="input-group my-3 bg-light border border-secondary rounded py-1" type="text" [(ngModel)]="searchText" placeholder=" Search ADR by title..." />
+    <li [ngStyle]="{'background-color' : (i % 2 == 0) ? 'transparent' : 'whitesmoke'}"
+         class="list-group-item list-group-item-dark"
+         *ngFor="let adr of adrs; let i = index"
+         (click)="onSelect(adr)">
+      <div class="row align-items-center m-2">
+        <div class="col-sm-1">
+          {{adr.id}}
+        </div>
         <div class="col-sm">
           {{adr.title}}
         </div>
@@ -23,21 +41,21 @@
             </div>
           </div>
         </ng-template>
-
-        <div class="col-sm-2">
-          <div class="text-end">
-            <button (click)="onSelect(adr)" type="button" class="btn btn-link">Details</button>
-          </div>
-        </div>
       </div>
     </li>
   </ul>
 </div>
 
-<div *ngIf="showEmpty">
-  The requested repository has no ADRs...
-</div>
-
 <div *ngIf="isLoading">
-  Loading data...
+  <div class="container mt-4">
+    <div class="card bg-light">
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <p>Loading data ...</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
