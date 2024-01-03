@@ -25,8 +25,20 @@ export class ListviewComponent implements OnInit, OnDestroy {
   // variable for fetched ADRs
   adrs = [] as ADR[];
 
-  // for search by status
-  searchText: string = '';
+  // for search by title
+  _searchText: string = '';
+  get searchText(): string {
+    return this._searchText;
+  }
+  set searchText(value: string) {
+    this._searchText = value;
+    this.loadPage(this.userData.repoOwner, this.userData.repoName, this.userData.directoryPath, this.userData.branch, this.searchText, this.pageOffset, this.limit);
+  }
+
+  //pagination
+  limit: number = 8;
+  pageOffset: number = 0;
+  pageCount: number = 1;
 
   constructor(
     private adrService: AdrService,
@@ -44,7 +56,11 @@ export class ListviewComponent implements OnInit, OnDestroy {
       this.userData.directoryPath = params['directoryPath'];
       this.userData.branch = params['branch'];
     });
-    this.getAllADRs(this.userData.repoOwner, this.userData.repoName, this.userData.directoryPath, this.userData.branch);
+    this.loadPage(this.userData.repoOwner, this.userData.repoName, this.userData.directoryPath, this.userData.branch, this.searchText,0, this.limit);
+  }
+
+  onPage(pageNumber: number) : void {
+    this.loadPage(this.userData.repoOwner, this.userData.repoName, this.userData.directoryPath, this.userData.branch, this.searchText,pageNumber, this.limit);
   }
 
   /**
@@ -85,6 +101,27 @@ export class ListviewComponent implements OnInit, OnDestroy {
       );
   }
 
+  //TODO: Refactor (deprecated feature)
+  private loadPage(repoOwner: string, repoName: string, directoryPath: string, branch: string, searchText: string, pageOffset: number, limit: number): void {
+    this.adrSubscription = this.adrService.getAdrs(repoOwner, repoName, directoryPath, branch, searchText, pageOffset, limit)
+      .subscribe(page => {
+          if (page && page.data.length > 0) {
+            this.adrs = page.data;
+            this.pageOffset = page.paginationInfo.pageOffset;
+            this.pageCount = page.paginationInfo.pageCount;
+            this.isLoading = false;
+            this.showADRs = true;
+          } else {
+            this.isLoading = false;
+            this.showEmpty = true;
+          }
+        },
+        (error) => {
+          console.log('Get Next Adrs failed:', error);
+        }
+      );
+  }
+
   ngOnDestroy(): void {
 
 
@@ -98,5 +135,4 @@ export class ListviewComponent implements OnInit, OnDestroy {
   isActive(status: string): boolean {
     return status === 'Active'
   }
-
 }

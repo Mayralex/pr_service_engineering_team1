@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.serviceEngineering.adrViewer.client.CommitHistoryClient;
 import org.serviceEngineering.adrViewer.entity.ADR;
+import org.serviceEngineering.adrViewer.entity.ADRPageDTO;
 import org.serviceEngineering.adrViewer.entity.RestResponse;
 import org.serviceEngineering.adrViewer.exceptions.ServiceException;
 import org.serviceEngineering.adrViewer.service.ADRService;
@@ -36,7 +37,7 @@ public class ADRController {
         this.commitHistoryClient = commitHistoryClient;
     }
 
-    @Operation(
+   /* @Operation(
             summary = "Get list of ADRs",
             description = "Get a list of ADRs from single repository over the GitHub API")
     @ApiResponses(value = {
@@ -96,7 +97,7 @@ public class ADRController {
             @RequestParam String branch
     ) {
         return adrService.parseADRFileToHTML(owner, repoName, filePath, branch);
-    }
+    }*/
 
 
     /**
@@ -111,6 +112,7 @@ public class ADRController {
      * @return ResponseEntity containing the ADR object if found, or an error message with an appropriate
      * HTTP status code if the ADR is not found or if there's a service exception.
      */
+    /* TODO: Refactor get by id */
     @Operation(
             summary = "Get single adr",
             description = "Fetches single ADR from storage via ID")
@@ -192,6 +194,44 @@ public class ADRController {
     }
 
     /**
+     * Controller method for retrieving Architectural Decision Records (ADRs) by query, pageOffset and limit.
+     * This endpoint allows you to retrieve a number of ADRs based on pageOffset and limit and also considers filtering with query
+     *
+     * @param query searchText
+     * @param pageOffset offset of a page
+     * @param limit limit of ADRs per page
+     * @return ResponseEntity containing a list of ADRs
+     */
+    @Operation(
+            summary = "Get list of ADRs by offset and count",
+            description = "Get a list of ADRs from storage by offset and count")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
+    @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
+    @GetMapping(value = "v2/ADR", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getByPageOffsetAndLimit(
+            @RequestParam String repoOwner,
+            @RequestParam String repoName,
+            @RequestParam String directoryPath,
+            @RequestParam String branch,
+            @RequestParam(required = false, defaultValue = "") String query,
+            @RequestParam int pageOffset,
+            @RequestParam int limit
+
+    ) {
+        ADRPageDTO result = adrService.getADRsByPageOffsetAndLimit(query, pageOffset, limit);
+        if (!result.getData().isEmpty()) {
+            log.info("List of ADRs consists of {} adrs", result.getData().toArray().length);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        log.info("parsing adrs from repo {}", repoName);
+        RestResponse[] list = adrService.fetchRepositoryContent(repoOwner, repoName, directoryPath, branch);
+        adrService.parseList(list, repoOwner, repoName, branch);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    /**
      * Controller method for retrieving commit history for a specific file within a GitHub repository.
      * This endpoint allows you to fetch commit history for a particular file in a GitHub repository
      * based on the repository owner, repository name, file path, and branch.
@@ -221,5 +261,4 @@ public class ADRController {
         log.info(result.toString());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 }

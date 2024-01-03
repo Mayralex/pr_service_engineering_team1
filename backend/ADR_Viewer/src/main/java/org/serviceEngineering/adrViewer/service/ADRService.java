@@ -3,6 +3,7 @@ package org.serviceEngineering.adrViewer.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.serviceEngineering.adrViewer.div.ADRParser;
 import org.serviceEngineering.adrViewer.entity.ADR;
+import org.serviceEngineering.adrViewer.entity.ADRPageDTO;
 import org.serviceEngineering.adrViewer.entity.RestResponse;
 import org.serviceEngineering.adrViewer.exceptions.ServiceException;
 import org.serviceEngineering.adrViewer.repository.ADRRepository;
@@ -10,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -163,6 +166,21 @@ public class ADRService {
             log.info(exception.getMessage());
             return null;
         }
+    }
+
+    /**
+     * Service method for retrieving a page of ADRs.
+     *
+     * @param query searchText
+     * @param pageOffset offset of page
+     * @param limit limit per page
+     * @return a new ADRPageDTO with Data (ADR data) and PageinationInfo (metadata for pagination)
+     */
+    public ADRPageDTO getADRsByPageOffsetAndLimit(String query, int pageOffset, int limit) {
+        Pageable pageable = PageRequest.of(pageOffset, limit);
+        log.info("Fetched next adrs from memory: \n {}", pageable);
+        var page = aDRRepository.findAllByTitleContainingIgnoreCase(query, pageable);
+        return new ADRPageDTO(page.getContent(), new ADRPageDTO.PaginationInfo(page.getNumber(), page.getTotalPages(), limit));
     }
 
     /**
