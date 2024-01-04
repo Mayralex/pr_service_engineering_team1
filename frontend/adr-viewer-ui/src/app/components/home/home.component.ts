@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
   onSubmit() {
     // store session
     sessionStorage.setItem('previousProject', 'true');
+    sessionStorage.setItem('expNumOfADRs', JSON.stringify(-1));
 
     // store input variables
     sessionStorage.setItem('repoOwner', JSON.stringify(this.userData.repoOwner));
@@ -55,6 +56,7 @@ export class HomeComponent implements OnInit {
   useGraal() {
     // store session
     sessionStorage.setItem('previousProject', 'true');
+    sessionStorage.setItem('expNumOfADRs', JSON.stringify(-1));
 
     // store input variables
     sessionStorage.setItem('repoOwner', JSON.stringify("flohuemer"));

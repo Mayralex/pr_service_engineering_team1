@@ -3,6 +3,7 @@ import {ADR} from "../interfaces/adr";
 import {Observable, of, timer} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {catchError, tap, switchMap, takeWhile} from 'rxjs/operators';
+import {AdrPage} from "../interfaces/adrPage";
 
 
 /**
@@ -16,11 +17,11 @@ export class AdrService {
   private url = 'http://localhost:8080/api/v2';
   private adrByIdUrl = 'getADR';
   private allADRsUrl = 'getAllADRs';
+  private nextADRsUrl = 'ADR';
 
   // Polling variables used in getAllADRs
   private pollingInterval = 3000;
   private continuePolling = true;
-  private expNumOfADRs = 0;
   private currentNumOfADRs = -1;
 
   constructor(
@@ -77,6 +78,43 @@ export class AdrService {
       );
   }
 
+  /** GET all ADRs of a page, filter searchText
+   *
+   * @param repoOwner - owner of the repository
+   * @param repoName - name of the repository
+   * @param directoryPath - path to directory where ADRs are stored
+   * @param branch - branch of the repository
+   * @param searchText - filter ADRs by title
+   * @param pageOffset - offset of the current page
+   * @param limit - number of ADRs per page
+   *
+   * @returns a Page of the ADRs
+   */
+  getAdrs(repoOwner: string, repoName: string, directoryPath: string, branch: string, searchText: string, pageOffset: number, limit: number): Observable<AdrPage> {
+    let requestUrl = `${this.url}/${this.nextADRsUrl}`;
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("repoOwner", repoOwner);
+    queryParams = queryParams.append("repoName", repoName);
+    queryParams = queryParams.append("directoryPath", directoryPath);
+    queryParams = queryParams.append("branch", branch);
+    queryParams = queryParams.append("query", searchText);
+    queryParams = queryParams.append("pageOffset", pageOffset);
+    queryParams = queryParams.append("limit", limit);
+
+    this.continuePolling = true;
+    return timer(0, this.pollingInterval).pipe(
+      takeWhile(() => this.continuePolling),
+      switchMap(() => {
+        return this.http.get<AdrPage>(requestUrl, {params: queryParams})
+          .pipe(
+            tap(_ => this.checkFetchingStatus(_.data)),
+            catchError(this.handleError<AdrPage>('getADRs'))
+          );
+      })
+    );
+  }
+
   /** Checks if the service finished fetching all ADRs from endpoint
    *
    * @returns true if fetching has finished - false otherwise.
@@ -101,21 +139,22 @@ export class AdrService {
    * @param adrs the currently fetched ADR array
    */
   private checkFetchingStatus(adrs: ADR[]): void {
-    if (adrs.length > this.expNumOfADRs) {
-      this.expNumOfADRs = adrs.length;
+    let expNumOfADRs = Number(sessionStorage.getItem('expNumOfADRs')) || -1;
+    console.log('curr:', this.currentNumOfADRs, 'exp:', expNumOfADRs);
+    if (adrs.length > expNumOfADRs) {
+      sessionStorage.setItem('expNumOfADRs', JSON.stringify(adrs.length));
       console.log('Expected number of ADRs:', adrs.length);
-    } else if (this.currentNumOfADRs == this.expNumOfADRs) {
+    } else if (this.currentNumOfADRs == expNumOfADRs) {
       this.stopPolling();
 
       // Not necessary now, but maybe again if another repository should be fetched in the same session!
-      //this.currentNumOfADRs = -1;
+      this.currentNumOfADRs = -1;
       //this.expNumOfADRs = 0;
       console.log('ADRs fully loaded.')
     } else {
       this.currentNumOfADRs = adrs.length;
-      console.log('Currently loaded', adrs.length, 'ADRs. Expected:', this.expNumOfADRs);
+      console.log('Currently loaded', adrs.length, 'ADRs. Expected:', expNumOfADRs);
     }
-
   }
 
   /**
@@ -133,5 +172,4 @@ export class AdrService {
       return of(result as T);
     };
   }
-
 }
