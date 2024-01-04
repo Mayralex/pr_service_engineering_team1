@@ -6,8 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.serviceEngineering.adrViewer.client.CommitHistoryClient;
 import org.serviceEngineering.adrViewer.entity.ADR;
-import org.serviceEngineering.adrViewer.entity.ADRPageDTO;
-import org.serviceEngineering.adrViewer.entity.RestResponse;
+import org.serviceEngineering.adrViewer.dto.ADRPageDTO;
 import org.serviceEngineering.adrViewer.exceptions.ServiceException;
 import org.serviceEngineering.adrViewer.service.ADRService;
 import org.slf4j.Logger;
@@ -27,7 +26,6 @@ import java.util.List;
 public class ADRController {
 
     private final ADRService adrService;
-
     private final CommitHistoryClient commitHistoryClient;
     private final Logger log = LoggerFactory.getLogger(ADRController.class);
 
@@ -36,69 +34,6 @@ public class ADRController {
         this.adrService = adrService;
         this.commitHistoryClient = commitHistoryClient;
     }
-
-   /* @Operation(
-            summary = "Get list of ADRs",
-            description = "Get a list of ADRs from single repository over the GitHub API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation")
-    })
-    @GetMapping("v1/scanADRs")
-    public RestResponse[] scanADRs(
-            @RequestParam String owner,
-            @RequestParam String repoName,
-            @RequestParam String directoryPath,
-            @RequestParam String branch) {
-        return adrService.fetchRepositoryContent(owner, repoName, directoryPath, branch);
-    }
-
-    @Operation(
-            summary = "Fetch single adr",
-            description = "Fetches single ADR in markdown format from the GitHub API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation")
-    })
-    @GetMapping("v1/fetchFile")
-    public String fetchFile(
-            @RequestParam String owner,
-            @RequestParam String repoName,
-            @RequestParam String filePath,
-            @RequestParam String branch) {
-        return adrService.fetchADRFile(owner, repoName, filePath, branch);
-    }
-
-    @Operation(
-            summary = "Parse single adr",
-            description = "Parses single ADR into Java Object from the GitHub API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation")
-    })
-    @GetMapping("v1/parseFile")
-    public Object parseFile(
-            @RequestParam String owner,
-            @RequestParam String repoName,
-            @RequestParam String filePath,
-            @RequestParam String branch
-    ) {
-        return adrService.parseADRFileDeprecated(owner, repoName, filePath, branch);
-    }
-
-    @Operation(
-            summary = "Convert single adr",
-            description = "Converts single ADR in HTML format from the GitHub API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation")
-    })
-    @GetMapping("v1/convertFile")
-    public Object convertFileToHtml(
-            @RequestParam String owner,
-            @RequestParam String repoName,
-            @RequestParam String filePath,
-            @RequestParam String branch
-    ) {
-        return adrService.parseADRFileToHTML(owner, repoName, filePath, branch);
-    }*/
-
 
     /**
      * Controller method for retrieving an ADR by its unique identifier.
@@ -140,10 +75,6 @@ public class ADRController {
      * and saves them in the database for future use. If the memory is empty, the parsing function is call in an
      * asynchronous way to improve performance
      *
-     * @param repoOwner     The owner of the repository where ADRs are stored.
-     * @param repoName      The name of the repository where ADRs are stored.
-     * @param directoryPath The path to the directory within the repository where ADRs are located.
-     * @param branch        The branch in the repository from which ADRs should be fetched.
      * @return ResponseEntity containing an array of ADR objects if ADRs are found, or an empty array if no ADRs are available.
      */
     @Operation(
@@ -154,21 +85,10 @@ public class ADRController {
     })
     @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
     @GetMapping(value = "v2/getAllADRs", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getAllADRs(
-            @RequestParam String repoOwner,
-            @RequestParam String repoName,
-            @RequestParam String directoryPath,
-            @RequestParam String branch
-    ) {
+    public ResponseEntity<Object> getAllADRs() {
         List<ADR> result = adrService.getAll();
-        if (!result.isEmpty()) {
-            log.info("List of ADRs consists of {} adrs", result.toArray().length);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }
-        log.info("parsing adrs from repo {}", repoName);
-        RestResponse[] list = adrService.fetchRepositoryContent(repoOwner, repoName, directoryPath, branch);
-        adrService.parseList(list, repoOwner, repoName, branch);
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        log.info("List of ADRs consists of {} adrs", result.toArray().length);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     /**
@@ -211,24 +131,13 @@ public class ADRController {
     @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
     @GetMapping(value = "v2/ADR", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getByPageOffsetAndLimit(
-            @RequestParam String repoOwner,
-            @RequestParam String repoName,
-            @RequestParam String directoryPath,
-            @RequestParam String branch,
+            @RequestParam int importTaskId,
             @RequestParam(required = false, defaultValue = "") String query,
             @RequestParam int pageOffset,
             @RequestParam int limit
-
     ) {
-        ADRPageDTO result = adrService.getADRsByPageOffsetAndLimit(query, pageOffset, limit);
-        if (!result.getData().isEmpty()) {
-            log.info("List of ADRs consists of {} adrs", result.getData().toArray().length);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }
-        log.info("parsing adrs from repo {}", repoName);
-        RestResponse[] list = adrService.fetchRepositoryContent(repoOwner, repoName, directoryPath, branch);
-        adrService.parseList(list, repoOwner, repoName, branch);
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        ADRPageDTO result = adrService.getADRsByPageOffsetAndLimit(importTaskId, query, pageOffset, limit);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     /**

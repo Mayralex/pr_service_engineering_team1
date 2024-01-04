@@ -45,4 +45,7 @@ public class ADR {
     @Column(name = "Commit")
     private String commit;
 
+    @Column(name = "ImportTaskId")
+    private int importTaskId;
+
 }

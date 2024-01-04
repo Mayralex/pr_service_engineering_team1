@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
 import {ADR} from "../../interfaces/adr";
 import {AdrService} from "../../services/adr.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -12,7 +12,7 @@ import {Subscription} from "rxjs";
 export class ListviewComponent implements OnInit, OnDestroy {
 
   // User input data
-  userData: { repoOwner: string; repoName: string; directoryPath: string; branch: string };
+  importTaskId: number = -1;
 
   // Booleans for which HTML content to show
   showADRs = false;
@@ -32,7 +32,7 @@ export class ListviewComponent implements OnInit, OnDestroy {
   }
   set searchText(value: string) {
     this._searchText = value;
-    this.loadPage(this.userData.repoOwner, this.userData.repoName, this.userData.directoryPath, this.userData.branch, this.searchText, this.pageOffset, this.limit);
+    this.loadPage(this.searchText, this.pageOffset, this.limit);
   }
 
   //pagination
@@ -49,18 +49,27 @@ export class ListviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log('Listview component was created.');
-    this.userData = {repoOwner: '', repoName: '', directoryPath: '', branch: ''};
     this.route.queryParams.subscribe(params => {
-      this.userData.repoOwner = params['repoOwner'];
-      this.userData.repoName = params['repoName'];
-      this.userData.directoryPath = params['directoryPath'];
-      this.userData.branch = params['branch'];
+      this.importTaskId = params['importTaskId'];
     });
-    this.loadPage(this.userData.repoOwner, this.userData.repoName, this.userData.directoryPath, this.userData.branch, this.searchText,0, this.limit);
+    this.loadPage(this.searchText,parseInt(window.location.hash.substring(1)) || 0, this.limit);
+  }
+
+  /**
+   * allows the user to set the pageOffset from the URL
+   * @param e
+   */
+  @HostListener('window:hashchange', ['$event'])
+  onHashChange(e: HashChangeEvent) {
+    const hashvalue = window.location.hash;
+    const pageOffsetFromUrlHash = parseInt(hashvalue.replace('#',''))
+    if (!isNaN(pageOffsetFromUrlHash)) {
+      this.loadPage(this.searchText, pageOffsetFromUrlHash, this.limit);
+    }
   }
 
   onPage(pageNumber: number) : void {
-    this.loadPage(this.userData.repoOwner, this.userData.repoName, this.userData.directoryPath, this.userData.branch, this.searchText,pageNumber, this.limit);
+    this.loadPage(this.searchText,pageNumber, this.limit);
   }
 
   /**
@@ -101,10 +110,12 @@ export class ListviewComponent implements OnInit, OnDestroy {
       );
   }
 
-  //TODO: Refactor (deprecated feature)
-  private loadPage(repoOwner: string, repoName: string, directoryPath: string, branch: string, searchText: string, pageOffset: number, limit: number): void {
-    this.adrSubscription = this.adrService.getAdrs(repoOwner, repoName, directoryPath, branch, searchText, pageOffset, limit)
-      .subscribe(page => {
+  private loadPage(searchText: string, pageOffset: number, limit: number): void {
+    window.location.hash = pageOffset.toString();
+
+    this.adrSubscription = this.adrService.getAdrs(this.importTaskId, searchText, pageOffset, limit)
+      .subscribe({
+        next: page => {
           if (page && page.data.length > 0) {
             this.adrs = page.data;
             this.pageOffset = page.paginationInfo.pageOffset;
@@ -116,15 +127,13 @@ export class ListviewComponent implements OnInit, OnDestroy {
             this.showEmpty = true;
           }
         },
-        (error) => {
+        error: (error) => {
           console.log('Get Next Adrs failed:', error);
         }
-      );
+      });
   }
 
   ngOnDestroy(): void {
-
-
     console.log('Listview component was destroyed.');
   }
 

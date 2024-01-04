@@ -1,7 +1,8 @@
-package org.serviceEngineering.adrViewer.entity;
+package org.serviceEngineering.adrViewer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.serviceEngineering.adrViewer.entity.ADR;
 
 import java.util.List;
 
