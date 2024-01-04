@@ -1,0 +1,16 @@
+.navbar-brand{
+  font-size: 2em;
+}
+
+#repo-form{
+  width: 50%;
+  margin: 0 auto;
+}
+
+#repo-form-header{
+  text-align: center;
+}
+
+.nav-link{
+  font-size: 1.2em;
+}

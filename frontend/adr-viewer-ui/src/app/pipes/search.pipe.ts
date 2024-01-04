@@ -29,7 +29,7 @@ export class SearchPipe implements PipeTransform {
     // if search is equal to a status value --> return ADRs by status value; else return ADRs filtered by title
     if (uniqueStatusArray.includes(searchText)) {
       return adrs.filter(adr => {
-        return adr.status.toLowerCase().includes(searchText);
+        return adr.status.toLowerCase() === searchText;
       });
     } else {
       return adrs.filter(adr => {
