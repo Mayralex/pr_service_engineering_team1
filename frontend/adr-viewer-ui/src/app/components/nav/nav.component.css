@@ -5,3 +5,17 @@
 .nav-link{
   font-size: 1.2em;
 }
+#lightSwitch{
+  display: flex;
+  font-size:1.5em;
+  align-items: center;
+}
+svg{
+  width: 18px;
+  height:18px;
+  fill: white;
+  margin-top: 50%;
+}
+
+
+

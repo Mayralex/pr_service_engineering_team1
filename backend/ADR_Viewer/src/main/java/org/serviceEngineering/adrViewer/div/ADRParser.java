@@ -6,6 +6,7 @@ import org.commonmark.renderer.html.HtmlRenderer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.serviceEngineering.adrViewer.entity.ADR;
 import org.slf4j.Logger;
@@ -76,6 +77,30 @@ public class ADRParser {
         return adr;
     }
 
+
+    private static String extractSectionText(Element element) {
+        StringBuilder text = new StringBuilder();
+
+        for (org.jsoup.nodes.Node node : element.childNodes()) {
+            if (node instanceof TextNode) {
+                text.append(((TextNode) node).text()).append("\n");
+            } else if (node instanceof Element) {
+                Element childElement = (Element) node;
+                if (childElement.tagName().equals("p")) {
+                    text.append(childElement.text()).append("\n");
+                }
+                if (childElement.tagName().equals("b") ||
+                        childElement.tagName().equals("i")) {
+                    text.append(childElement.text());
+                } else {
+                    text.append(extractSectionText(childElement));
+                }
+            }
+        }
+
+        return text.toString().trim();
+    }
+
     /**
      * Extracts and returns the text content of a specific section identified by its header.
      * The method searches for the given section header (h2 tag) in the provided Jsoup Document.
@@ -93,9 +118,7 @@ public class ADRParser {
             StringBuilder text = new StringBuilder();
 
             while (nextSibling != null && !nextSibling.tagName().equals("h2")) {
-                if (nextSibling.tagName().equals("p")) {
-                    text.append(nextSibling.text()).append("\n");
-                }
+                text.append(extractSectionText(nextSibling));
                 nextSibling = nextSibling.nextElementSibling();
             }
 
@@ -119,6 +142,7 @@ public class ADRParser {
         if (h2 != null) {
             Element nextSibling = h2.nextElementSibling();
             while (nextSibling != null && !nextSibling.tagName().equals("h2")) {
+
                 if (nextSibling.tagName().equals("ul")) {
                     extractLinksFromList(linksMap, nextSibling);
                 }
@@ -140,10 +164,37 @@ public class ADRParser {
         for (Element listItem : listItems) {
             Element link = listItem.selectFirst("a");
             if (link != null) {
+                String relationType = getRelationType(listItem);
                 String linkText = link.text();
                 String linkHref = link.attr("href");
-                linksMap.put(linkText, linkHref);
+
+                String key = relationType + linkText;
+                linksMap.put(key, linkHref);
             }
+        }
+    }
+
+    private static String getRelationType(Element listItem) {
+        // Get the text before the <a> tag in the list item
+        String listItemText = listItem.ownText().trim();
+
+        // Determine the relation type based on the extracted text
+        if (listItemText.startsWith("enables")) {
+            return "enables ";
+        } else if (listItemText.startsWith("deprecates")) {
+            return "deprecates ";
+        } else if (listItemText.startsWith("extends")) {
+            return "extends ";
+        } else if (listItemText.startsWith("is enabled by")) {
+            return "is enabled by ";
+        } else if (listItemText.startsWith("is deprecated by")) {
+            return "is deprecated by ";
+        } else if (listItemText.startsWith("is related to")) {
+            return "is related to ";
+        } else if (listItemText.startsWith("is extended by")) {
+            return "is extended by ";
+        } else {
+            return ""; // Default value or handle other relation types
         }
     }
 
