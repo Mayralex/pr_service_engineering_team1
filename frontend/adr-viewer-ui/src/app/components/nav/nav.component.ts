@@ -20,6 +20,7 @@ export class NavComponent implements OnInit {
   ];
 
   repoData: { repoOwner: any; repoName: any; directoryPath: any; branch: any };
+  isChecked: boolean = false;
 
   constructor() { }
 
@@ -32,4 +33,19 @@ export class NavComponent implements OnInit {
     this.repoData.branch = sessionStorage.getItem('branch');
   }
 
+  /**
+   * Method for changing the theme in the index.html according to the toggle switch button
+   * @param $event
+   */
+  setTheme($event: any) {
+    if (this.isChecked) {
+      (document.getElementById("app") as HTMLElement).setAttribute('data-bs-theme', 'dark');
+      (document.getElementById("moon") as HTMLElement).setAttribute('display', 'none');
+      (document.getElementById("sun") as HTMLElement).setAttribute('display', 'center');
+    } else {
+      (document.getElementById("app") as HTMLElement).setAttribute('data-bs-theme', 'light');
+      (document.getElementById("sun") as HTMLElement).setAttribute('display', 'none');
+      (document.getElementById("moon") as HTMLElement).setAttribute('display', 'center');
+    }
+  }
 }
