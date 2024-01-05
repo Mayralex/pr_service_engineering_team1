@@ -26,10 +26,7 @@
 
 ## ADRs still missing for:
 
-- Backend decisions: 
-  - Interaction with Repos (GitHub API), Architecture, Endpoints, etc.
-- Backend Restructuring
-  - ImportTask (Controller, Service)
+
 - Pagination - ngb-bootstrap, ADRPage, Search, Pageable
 - Polling - Loading Page
-- Backend Restructuring - Rest conformity
+- Frontend Restructuring: Visualization Folder, ImportTask Service
