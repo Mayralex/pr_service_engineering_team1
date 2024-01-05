@@ -9,16 +9,20 @@
 - [ADR 006: Message Service Implementation and Usage](./adrs/adr-006.md)
 - [ADR 007: Deprecating the Message Service](./adrs/adr-007.md)
 - [ADR 008: Refactoring ADR Service for Polling-based ADR Retrieval](./adrs/adr-008.md)
+- [ADR 009: Refactoring ADR Service for Polling-based ADR Retrieval](./adrs/adr-009.md)
+- [ADR 010: Refactoring ADR Service for Polling-based ADR Retrieval](./adrs/adr-010.md)
+- [ADR 011: Refactoring ADR Service for Polling-based ADR Retrieval](./adrs/adr-011.md)
+- [ADR 012: Refactoring ADR Service for Polling-based ADR Retrieval](./adrs/adr-012.md)
+- [ADR 013: Refactoring ADR Service for Polling-based ADR Retrieval](./adrs/adr-013.md)
+- [ADR 014: Refactoring ADR Service for Polling-based ADR Retrieval](./adrs/adr-014.md)
 
 
 ## ADRs still missing for:
 
-- GitHub Workflow/Pipeline decision
-- Technology decisions: 
-  - DB, GraphQL
 - Backend decisions: 
   - Interaction with Repos (GitHub API), Architecture, Endpoints, etc.
-- Frontend decisions: 
-  - Bootstrap lib, visualization libs, UI design decision
 - Backend Restructuring
-  - GraphQL Calls auf die GitHub API
+  - ImportTask (Controller, Service)
+- Pagination - ngb-bootstrap, ADRPage, Search, Pageable
+- Polling - Loading Page
+- Backend Restructuring - Rest conformity
