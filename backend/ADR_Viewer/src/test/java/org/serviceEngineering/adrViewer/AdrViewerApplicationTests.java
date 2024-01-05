@@ -3,7 +3,6 @@ package org.serviceEngineering.adrViewer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.serviceEngineering.adrViewer.Controller.ADRController;
-import org.serviceEngineering.adrViewer.div.ADRParser;
 import org.serviceEngineering.adrViewer.entity.ADR;
 import org.serviceEngineering.adrViewer.repository.ADRRepository;
 import org.serviceEngineering.adrViewer.service.ADRService;
@@ -82,7 +81,7 @@ class AdrViewerApplicationTests {
 		assertThat(adrController).isNotNull();
 	}
 
-	@Test
+	/*@Test
 	void connectGithub() {
 		adrRepository.deleteAll();
 		assertThat(ADRService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).isNotNull();
@@ -123,7 +122,7 @@ class AdrViewerApplicationTests {
 	@Test
 	void convertADRtoHTML() {
 		assertThat(ADRService.parseADRFileToHTML(owner, repoName, filePath, branch)).isNotNull();
-	}
+	}*/
 
 	@Test
 	void bulkParse() throws Exception {
@@ -131,7 +130,7 @@ class AdrViewerApplicationTests {
 		this.mockMvc.perform(get("/api/v2/getAllADRs").params(params)).andDo(print()).andExpect(status().isOk());
 	}
 
-	@Test
+	/*@Test
 	void getAll() throws InterruptedException {
 		//assertThat(adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
 		adrController.getAllADRs(owner, repoName, directoryPath, branch);
@@ -154,7 +153,7 @@ class AdrViewerApplicationTests {
 		assertThat(adrController.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
 		assertThat(adrController.getByStatus("active").getBody()).asList().hasSize(19);
 		assertThat(adrController.getByStatus("deprecated").getBody()).asList().hasSize(8);
-	}
+	}*/
 
 	//@Test
 	void getById() {

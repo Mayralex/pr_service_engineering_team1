@@ -13,5 +13,5 @@ public interface ADRRepository extends JpaRepository<ADR, Long> {
     @Query("select a from ADR a where lower(a.status) like ?1")
     List<ADR> getStatus(@Nullable Object unknownAttr1);
 
-    Page<ADR> findAllByTitleContainingIgnoreCase(String title, Pageable pageable);
+    Page<ADR> findAllByTitleContainingIgnoreCaseAndImportTaskId(String title, int importTaskId, Pageable pageable);
 }

@@ -1,4 +1,4 @@
-package org.serviceEngineering.adrViewer.entity;
+package org.serviceEngineering.adrViewer.dto;
 
 import lombok.Getter;
 import lombok.ToString;

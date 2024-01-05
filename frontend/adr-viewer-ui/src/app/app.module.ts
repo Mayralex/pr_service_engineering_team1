@@ -17,6 +17,7 @@ import { NgChartsModule } from "ng2-charts";
 import {BarchartComponent} from "./components/visualizations/barchart/barchart.component";
 import { LinechartComponent } from './components/visualizations/linechart/linechart.component';
 import { SearchPipe } from './pipes/search.pipe';
+import { LoadingPageComponent } from './components/loading-page/loading-page.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { SearchPipe } from './pipes/search.pipe';
     DashboardComponent,
     BarchartComponent,
     LinechartComponent,
-    SearchPipe
+    SearchPipe,
+    LoadingPageComponent
   ],
   imports: [
     BrowserModule,

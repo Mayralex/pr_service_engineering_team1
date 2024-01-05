@@ -4,6 +4,7 @@ import {Observable, of, timer} from "rxjs";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {catchError, tap, switchMap, takeWhile} from 'rxjs/operators';
 import {AdrPage} from "../interfaces/adrPage";
+import {ImportTask} from "../interfaces/ImportTask";
 
 
 /**
@@ -78,41 +79,67 @@ export class AdrService {
       );
   }
 
-  /** GET all ADRs of a page, filter searchText
+  /**
+   * Start analysing a new repository
    *
    * @param repoOwner - owner of the repository
    * @param repoName - name of the repository
    * @param directoryPath - path to directory where ADRs are stored
    * @param branch - branch of the repository
-   * @param searchText - filter ADRs by title
-   * @param pageOffset - offset of the current page
-   * @param limit - number of ADRs per page
-   *
-   * @returns a Page of the ADRs
+   * @returns the requested ADR by ID - empty if ADR with given ID does not exist or an error occurs while fetching.
    */
-  getAdrs(repoOwner: string, repoName: string, directoryPath: string, branch: string, searchText: string, pageOffset: number, limit: number): Observable<AdrPage> {
-    let requestUrl = `${this.url}/${this.nextADRsUrl}`;
+  analyseRepository(repoOwner: string, repoName: string, directoryPath: string, branch: string): Observable<ImportTask> {
+    const requestUrl = `${this.url}/import_task`;
 
     let queryParams = new HttpParams();
     queryParams = queryParams.append("repoOwner", repoOwner);
     queryParams = queryParams.append("repoName", repoName);
     queryParams = queryParams.append("directoryPath", directoryPath);
     queryParams = queryParams.append("branch", branch);
+
+    return this.http.post<ImportTask>(requestUrl, {}, {params: queryParams})
+      .pipe(
+        tap(_ => console.log(`Started analysis`)),
+        catchError(this.handleError<ImportTask>(`Failed to start analysis`))
+      );
+  }
+
+  /**
+   * Retrieve an import task based on it's id
+   *
+   * @param id - ID of the import task
+   * @returns the requested import task - empty if ADR with given ID does not exist or an error occurs while fetching.
+   */
+  getImportTaskById(id: number): Observable<ImportTask> {
+    const requestUrl = `${this.url}/import_task/${id}`;
+
+    return this.http.get<ImportTask>(requestUrl)
+      .pipe(
+        tap(_ => console.log(`Fetched Import Task by ID =`, id)),
+        catchError(this.handleError<ImportTask>(`getImportTaskById id = ${id}`))
+      );
+  }
+
+
+  /** GET all ADRs of a page, filter searchText
+   *
+   * @param importTaskId - ID of the import task
+   * @param searchText - filter ADRs by title
+   * @param pageOffset - offset of the current page
+   * @param limit - number of ADRs per page
+   *
+   * @returns a Page of the ADRs
+   */
+  getAdrs(importTaskId: number, searchText: string, pageOffset: number, limit: number): Observable<AdrPage> {
+    let requestUrl = `${this.url}/${this.nextADRsUrl}`;
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("importTaskId", importTaskId);
     queryParams = queryParams.append("query", searchText);
     queryParams = queryParams.append("pageOffset", pageOffset);
     queryParams = queryParams.append("limit", limit);
 
-    this.continuePolling = true;
-    return timer(0, this.pollingInterval).pipe(
-      takeWhile(() => this.continuePolling),
-      switchMap(() => {
-        return this.http.get<AdrPage>(requestUrl, {params: queryParams})
-          .pipe(
-            tap(_ => this.checkFetchingStatus(_.data)),
-            catchError(this.handleError<AdrPage>('getADRs'))
-          );
-      })
-    );
+    return this.http.get<AdrPage>(requestUrl, {params: queryParams})
   }
 
   /** Checks if the service finished fetching all ADRs from endpoint
