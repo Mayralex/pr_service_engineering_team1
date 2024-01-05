@@ -78,4 +78,9 @@ public class ADRService {
     public List<ADR> getByStatus(String status) {
         return aDRRepository.getStatus(status.toLowerCase());
     }
+
+
+    public void clear() {
+        this.aDRRepository.deleteAll();
+    }
 }
