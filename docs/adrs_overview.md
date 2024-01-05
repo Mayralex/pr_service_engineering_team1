@@ -20,13 +20,11 @@
 - [ADR 017: REST-conformity - Controller refactoring](./adrs/adr-017.md)
 - [ADR 018: Introducing Pagination](./adrs/adr-018.md)
 - [ADR 019: Using ngb-bootstrap library](./adrs/adr-019.md)
-- [ADR 020: Polling](./adrs/adr-020.md)
+- [ADR 020: Display a loading page while polling](./adrs/adr-020.md)
 - [ADR 021: Introducing Swagger UI](./adrs/adr-021.md)
 
 
 ## ADRs still missing for:
 
-
-- Pagination - ngb-bootstrap, ADRPage, Search, Pageable
-- Polling - Loading Page
+- Swagger UI integration
 - Frontend Restructuring: Visualization Folder, ImportTask Service
