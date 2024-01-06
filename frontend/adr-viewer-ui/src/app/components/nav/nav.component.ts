@@ -20,7 +20,7 @@ export class NavComponent implements OnInit {
   ];
 
   repoData: { repoOwner: any; repoName: any; directoryPath: any; branch: any };
-  isChecked: boolean = false;
+  isChecked: boolean;
 
   constructor() { }
 

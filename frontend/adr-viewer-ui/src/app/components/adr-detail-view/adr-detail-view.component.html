@@ -9,7 +9,7 @@
 
   <div *ngIf="isActive(adrById.status)then active; else deprecated"></div>
   <ng-template #active>
-    <div class="child">
+    <div class="status">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="forestgreen">
         <circle cx="8" cy="8" r="8"/>
       </svg>
@@ -17,7 +17,7 @@
     </div>
   </ng-template>
   <ng-template #deprecated>
-    <div class="child">
+    <div class="status">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red">
         <circle cx="8" cy="8" r="8"/>
       </svg>
