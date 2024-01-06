@@ -26,6 +26,16 @@ export class LoadingPageComponent implements OnInit {
       this.importTaskId = params['importTaskId'];
       this.startPolling();
     });
+    let theme = (document.getElementById("lightSwitch") as HTMLInputElement);
+    if(theme.checked) {
+      (document.getElementById("app") as HTMLElement).setAttribute('data-bs-theme', 'dark');
+      (document.getElementById("moon") as HTMLElement).setAttribute('display', 'none');
+      (document.getElementById("sun") as HTMLElement).setAttribute('display', 'center');
+    } else {
+      (document.getElementById("app") as HTMLElement).setAttribute('data-bs-theme', 'light');
+      (document.getElementById("sun") as HTMLElement).setAttribute('display', 'none');
+      (document.getElementById("moon") as HTMLElement).setAttribute('display', 'center');
+    }
   }
 
   startPolling(): void {
