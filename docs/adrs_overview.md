@@ -27,4 +27,4 @@
 ## ADRs still missing for:
 
 - Swagger UI integration
-- Frontend Restructuring: Visualization Folder, ImportTask Service
+- Frontend Restructuring: Visualization Folder, Select For Use Case
