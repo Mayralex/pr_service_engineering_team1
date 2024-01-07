@@ -19,14 +19,15 @@ export class NavComponent implements OnInit {
     ["/dashboard", "Dashboard"]
   ];
 
-  repoData: { repoOwner: any; repoName: any; directoryPath: any; branch: any };
+  repoData: { importTaskId: any, repoOwner: any; repoName: any; directoryPath: any; branch: any };
   isChecked: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.repoData = {repoOwner: "", repoName: "", directoryPath: "", branch: ""};
+    this.repoData = {importTaskId: 0, repoOwner: "", repoName: "", directoryPath: "", branch: ""};
     // access repo data
+    this.repoData.importTaskId = sessionStorage.getItem(('importTaskId'))
     this.repoData.repoOwner = sessionStorage.getItem('repoOwner');
     this.repoData.repoName = sessionStorage.getItem('repoName');
     this.repoData.directoryPath = sessionStorage.getItem('directoryPath');

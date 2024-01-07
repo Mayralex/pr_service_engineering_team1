@@ -3,6 +3,7 @@ package org.serviceEngineering.adrViewer.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,37 +16,39 @@ import lombok.*;
 public class ADR {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "ID", nullable = false)
+    @Column(name = "adr_id", nullable = false)
     private int id;
 
-    @Column(name = "Title", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "Context", length =  999999)
+    @Column(name = "context", length =  999999)
     private String context;
 
-    @Column(name = "Decision", length =  999999)
+    @Column(name = "decision", length =  999999)
     private String decision;
 
-    @Column(name = "Status")
+    @Column(name = "status")
     private String status;
 
-    @Column(name = "Consequences", length =  999999)
+    @Column(name = "consequences", length =  999999)
     private String consequences;
 
-    @Column(name = "Artifacts", length =  999999)
-    private String artifacts; //TODO: find correct type
+    @OneToMany(mappedBy = "adr", cascade = CascadeType.ALL)
+    @Column(name = "artifacts")
+    private List<Artifact> artifacts;
 
-    @Column(name = "Relations", length =  999999)
-    private String relations; //TODO: find correct type ----> probably custom type Relation
+    @OneToMany(mappedBy = "adr", cascade = CascadeType.ALL)
+    @Column(name = "relations")
+    private List<Relation> relations;
 
-    @Column(name = "Date")
+    @Column(name = "date")
     private String date;
 
-    @Column(name = "Commit")
+    @Column(name = "commit")
     private String commit;
 
-    @Column(name = "ImportTaskId")
+    @Column(name = "import_task_id")
     private int importTaskId;
 
 }

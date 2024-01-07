@@ -37,6 +37,11 @@ export class HomeComponent implements OnInit {
       this.userData.branch
     ).subscribe({
       next: value => {
+        sessionStorage.setItem("importTaskId", JSON.stringify(value.id));
+        sessionStorage.setItem("repoOwner", JSON.stringify(this.userData.repoOwner));
+        sessionStorage.setItem("repoName", JSON.stringify(this.userData.repoName));
+        sessionStorage.setItem("directoryPath", JSON.stringify(this.userData.directoryPath));
+        sessionStorage.setItem("branch", JSON.stringify(this.userData.branch));
         this.router.navigate(['/loading'], {
           queryParams: {
             importTaskId: value.id
@@ -63,5 +68,21 @@ export class HomeComponent implements OnInit {
     this.userData.branch = "adrs";
 
     this.onSubmit();
+  }
+
+  useLastAnalyzed() {
+    this.adrService.getLastImportTask().subscribe({
+      next: value => {
+        this.userData.repoOwner = value.repoOwner
+        this.userData.repoName = value.repoName
+        this.userData.directoryPath = value.directoryPath
+        this.userData.branch = value.branch
+        this.router.navigate(['/loading'], {
+          queryParams: {
+            importTaskId: value.id
+          }
+        });
+      }, error: err => {"Retrieving the last import task was not successful"}
+    });
   }
 }

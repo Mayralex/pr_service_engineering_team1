@@ -1,3 +1,5 @@
+import {Artifact} from "./artifact";
+
 export class ADR {
   id: number;
   title: string;
@@ -5,6 +7,6 @@ export class ADR {
   decision: string;
   status: string;
   consequences: string;
-  artifacts: string[];
+  artifacts: Artifact[];
   relations: string;
 }

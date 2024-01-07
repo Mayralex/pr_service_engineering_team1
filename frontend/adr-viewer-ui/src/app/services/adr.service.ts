@@ -6,7 +6,6 @@ import {catchError, tap, switchMap, takeWhile} from 'rxjs/operators';
 import {AdrPage} from "../interfaces/adrPage";
 import {ImportTask} from "../interfaces/ImportTask";
 
-
 /**
  * Service to communicate with backend endpoints
  */
@@ -16,7 +15,7 @@ import {ImportTask} from "../interfaces/ImportTask";
 export class AdrService {
   // Backend endpoint information
   private url = 'http://localhost:8080/api/v2';
-  private adrByIdUrl = 'getADR';
+  private adrByIdUrl = 'adr';
   private allADRsUrl = 'getAllADRs';
   private nextADRsUrl = 'ADR';
 
@@ -68,11 +67,9 @@ export class AdrService {
    * @returns the requested ADR by ID - empty if ADR with given ID does not exist or an error occurs while fetching.
    */
   getAdrById(id: number): Observable<ADR> {
-    const requestUrl = `${this.url}/${this.adrByIdUrl}`;
-    let queryParams = new HttpParams();
-    queryParams = queryParams.append("id", id);
+    const requestUrl = `${this.url}/${this.adrByIdUrl}/${id}`;
 
-    return this.http.get<ADR>(requestUrl, {params: queryParams})
+    return this.http.get<ADR>(requestUrl)
       .pipe(
         tap(_ => console.log(`Fetched ADR by ID =`, id)),
         catchError(this.handleError<ADR>(`getAdrById id = ${id}`))
@@ -120,6 +117,18 @@ export class AdrService {
       );
   }
 
+  /**
+   * Retrieve the last analyzed import task
+   */
+  getLastImportTask(): Observable<ImportTask> {
+    const requestUrl = `${this.url}/import_task/last`;
+
+    return this.http.get<ImportTask>(requestUrl)
+      .pipe(
+        tap(_ => console.log(`Fetched last ImportTask`)),
+        catchError(this.handleError<ImportTask>(`getLastImportTask`))
+      )
+  }
 
   /** GET all ADRs of a page, filter searchText
    *

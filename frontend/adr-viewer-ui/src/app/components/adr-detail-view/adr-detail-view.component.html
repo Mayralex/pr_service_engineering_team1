@@ -75,7 +75,9 @@
       </h2>
       <div id="artifacts" class="accordion-collapse collapse">
         <div class="accordion-body">
-          {{adrById.artifacts}}
+          <div *ngFor="let artifact of adrById.artifacts">
+          {{artifact.name}}
+          <div>
         </div>
       </div>
       <div class="accordion-item">
@@ -101,3 +103,7 @@
       </div> -->
 
 
+    </div>
+    </div>
+  </div>
+</div>

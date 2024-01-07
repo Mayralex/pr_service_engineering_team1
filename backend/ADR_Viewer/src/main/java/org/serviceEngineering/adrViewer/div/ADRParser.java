@@ -9,10 +9,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.serviceEngineering.adrViewer.entity.ADR;
+import org.serviceEngineering.adrViewer.entity.Artifact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -47,7 +50,6 @@ public class ADRParser {
     public static ADR convertHTMLToADR(String html) {
         Document document = Jsoup.parse(html);
         ADR adr = new ADR();
-        //log.info(html);
         String title = null;
         try {
             title = document.selectFirst("h1").textNodes().get(0).toString();
@@ -64,8 +66,9 @@ public class ADRParser {
         //}
         adr.setStatus(extractSectionText(document, "Status"));
         adr.setConsequences(extractSectionText(document, "Consequences"));
-        adr.setArtifacts(extractLinks(document, "Artifacts").toString());
-        adr.setRelations(extractLinks(document, "Relations").toString());
+        adr.setArtifacts(extractArtifacts(document, "Artifacts", adr));
+        //TODO: set Relations
+        //adr.setRelations(extractLinks(document, "Relations"));
         String date = null;
         try {
             date = extractSectionText(document, "Date");
@@ -97,7 +100,6 @@ public class ADRParser {
                 }
             }
         }
-
         return text.toString().trim();
     }
 
@@ -149,9 +151,40 @@ public class ADRParser {
                 nextSibling = nextSibling.nextElementSibling();
             }
         }
-
         return linksMap;
-    }
+        }
+
+
+    /**
+     * Extract Artifacts from an unordered list element and adds it to a list of artifacts
+     * @param doc           The Jsoup Document containing the HTML content.
+     * @param sectionHeader The header of the section to extract links from.
+     * @param adr           The ADR the artifact belongs to
+     * @return A list of Artifacts
+     */
+        private static List<Artifact> extractArtifacts(Document doc, String sectionHeader, ADR adr) {
+            List<Artifact> artifacts = new ArrayList<>();
+            Element h2 = doc.select("h2:contains(" + sectionHeader + ")").first();
+
+            if (h2 != null) {
+                Element nextSibling = h2.nextElementSibling();
+                while (nextSibling != null && !nextSibling.tagName().equals("h2")) {
+                    if (nextSibling.tagName().equals("ul")) {
+                        Elements listItems = nextSibling.select("li");
+                        for (Element listItem : listItems) {
+                            String artifactName = listItem.text();
+                            Artifact artifact = new Artifact();
+                            artifact.setAdr(adr);
+                            artifact.setName(artifactName);
+                            artifacts.add(artifact);
+                        }
+                    }
+                    nextSibling = nextSibling.nextElementSibling();
+                }
+            }
+            return artifacts;
+        }
+
 
     /**
      * Extract links from an unordered list element and add them to the links map.

@@ -34,9 +34,9 @@ public class ADRService {
      * @return The retrieved ADR object.
      */
     @CacheResult
-    public ADR getADR(long id) throws EntityNotFoundException {
+    public ADR getADR(int id) throws EntityNotFoundException {
         try {
-            ADR adr = aDRRepository.getReferenceById(id);
+            ADR adr = aDRRepository.findADRById(id);
             log.info("Fetched adr from memory: \n {}", adr);
             return adr;
         } catch (EntityNotFoundException exception) {
