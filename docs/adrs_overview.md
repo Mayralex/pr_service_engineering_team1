@@ -9,16 +9,22 @@
 - [ADR 006: Message Service Implementation and Usage](./adrs/adr-006.md)
 - [ADR 007: Deprecating the Message Service](./adrs/adr-007.md)
 - [ADR 008: Refactoring ADR Service for Polling-based ADR Retrieval](./adrs/adr-008.md)
+- [ADR 009: Introduction of 'pipes' folder in Frontend Structure](./adrs/adr-009.md)
+- [ADR 010: Introducing a GitHub Actions Pipeline](./adrs/adr-010.md)
+- [ADR 011: Using GraphQL for Commit Information Retrieval](./adrs/adr-011.md)
+- [ADR 012: Adoption of Bootstrap Library](./adrs/adr-012.md)
+- [ADR 013: UI Design based on Sketches](./adrs/adr-013.md)
+- [ADR 014: Restructuring Backend for Consistent GitHub API Calls via GraphQL](./adrs/adr-014.md)
+- [ADR 015: Clear backend architecture](./adrs/adr-015.md)
+- [ADR 016: Backend restructuring - introducing ImportTask](./adrs/adr-016.md)
+- [ADR 017: REST-conformity - Controller refactoring](./adrs/adr-017.md)
+- [ADR 018: Introducing Pagination](./adrs/adr-018.md)
+- [ADR 019: Using ngb-bootstrap library](./adrs/adr-019.md)
+- [ADR 020: Display a loading page while polling](./adrs/adr-020.md)
+- [ADR 021: Introducing Swagger UI](./adrs/adr-021.md)
 
 
 ## ADRs still missing for:
 
-- GitHub Workflow/Pipeline decision
-- Technology decisions: 
-  - DB, GraphQL
-- Backend decisions: 
-  - Interaction with Repos (GitHub API), Architecture, Endpoints, etc.
-- Frontend decisions: 
-  - Bootstrap lib, visualization libs, UI design decision
-- Backend Restructuring
-  - GraphQL Calls auf die GitHub API
+- Swagger UI integration
+- Frontend Restructuring: Visualization Folder, ImportTask Service

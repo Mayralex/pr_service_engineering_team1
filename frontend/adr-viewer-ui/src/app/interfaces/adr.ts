@@ -9,4 +9,6 @@ export class ADR {
   consequences: string;
   artifacts: Artifact[];
   relations: string;
+  date: string;
+  commit: string;
 }

@@ -1,29 +1,48 @@
+.grid-container{
+  margin-top: 0.5%;
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  grid-gap: 0;
+}
+#icon1{
+  fill: var(--bs-primary);
+}
+#adrTitle{
+  font-size: calc(1.5vw + 1vh);
+}
+.status{
+  text-align: right;
+  margin-right: 10%;
+  margin-top:10%;
+  font-size: calc(1vw + 1vh);
+}
 
 #adrDetailview{
-  margin-top: 2%;
-  margin-left: 2.5%;
-  margin-right: 2.5%;
+  margin-left: 2%;
+  margin-right: 2%;
   height: 100%;
 }
-
 .accordion-button{
-  background-color: rgb(239,239,239);
-  color: rgb(46,84,235);
+  background-color: var(--bs-light-bg-subtle) !important;
+  color: var(--bs-primary);
 }
 
-#icon1{
-  fill: rgb(46,84,235);
+#commitIcon{
+  margin-left: 4%;
+  margin-right: 0.5%;
+  width: 30px;
+  height: 30px;
+  fill: var(--bs-primary);
+ }
+
+#commit{
+  text-align: left;
+  font-size: 1.1em;
 }
 
- .grid-container{
-   display: grid;
-   grid-template-columns: 1fr 1fr;
-   grid-gap: 0%;
- }
- .child{
-   text-align: right;
-   margin-right: 6%;
-   margin-top: 3%;
-   font-size: 20pt;
- }
+#date{
+  font-size: 1.1em;
+  text-align: right;
+  margin-right: 10%;
+}
 
