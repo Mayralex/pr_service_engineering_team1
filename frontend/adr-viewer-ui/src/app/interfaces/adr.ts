@@ -7,4 +7,6 @@ export class ADR {
   consequences: string;
   artifacts: string[];
   relations: string;
+  date: string;
+  commit: string;
 }
