@@ -21,7 +21,7 @@
     <ul class="navbar-nav ms-auto">
       <li class="nav-item px-4" *ngFor="let navbarItem of navbarItems">
         <a class="nav-link active" aria-current="page" routerLink={{navbarItem[0]}}
-           [queryParams]="{repoOwner: repoData.repoOwner, repoName: repoData.repoName, directoryPath: repoData.directoryPath, branch: repoData.branch}"
+           [queryParams]="{importTaskId: repoData.importTaskId, repoOwner: repoData.repoOwner, repoName: repoData.repoName, directoryPath: repoData.directoryPath, branch: repoData.branch}"
            queryParamsHandling="">
           {{navbarItem[1]}}
         </a>

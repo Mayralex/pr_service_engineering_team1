@@ -17,7 +17,7 @@ export class LinechartComponent implements OnInit {
     datasets: [
       {
         data: [5, 6, 2],
-        label: 'Architecture Decision Record',
+        label: 'Artifacts',
         pointBackgroundColor: ['rgba(255, 0, 0, 0.6)'],
         pointBorderColor: ['rgba(255, 0, 0, 0.8)'],
         borderWidth: 1,
@@ -36,7 +36,7 @@ export class LinechartComponent implements OnInit {
       datasets: [
         {
           data: this.adrArtifactNumbers,
-          label: 'Architecture Decision Record',
+          label: 'Artifacts',
           pointBackgroundColor: ['rgba(255, 0, 0, 0.6)'],
           pointBorderColor: ['rgba(255, 0, 0, 0.8)'],
           borderWidth: 1
@@ -67,15 +67,6 @@ export class LinechartComponent implements OnInit {
         {
           position: 'left',
         },
-      'y-axis-1': {
-        position: 'right',
-        grid: {
-          color: 'rgba(255,0,0,0.3)',
-        },
-        ticks: {
-          color: 'red'
-        }
-      }
     },
   };
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -21,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.cache.annotation.CacheDefaults;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Service
@@ -55,6 +57,14 @@ public class ImportService {
      */
     public ImportTask getImportTask(int id) {
         return importTaskRepository.findImportTaskById(id);
+    }
+
+    /**
+     * Retrieves the latest import task in the repsitory
+     * @return latest import task
+     */
+    public ImportTask getLastImportTask() {
+        return importTaskRepository.findFirstByOrderByIdDesc();
     }
 
     /**
@@ -115,9 +125,14 @@ public class ImportService {
         ResponseEntity<RestResponse[]> responseEntity =
                 restTemplate.exchange(apiUrl, HttpMethod.GET, new HttpEntity<>(headers), RestResponse[].class);
 
-        // TODO: Check for failure
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            return responseEntity.getBody();
+        } else {
+            HttpStatusCode statusCode = responseEntity.getStatusCode();
+            String responseBody = Arrays.toString(responseEntity.getBody());
+            throw new ServiceException("Failed to fetch repository content. Status code: " + statusCode + "Response Body: " + responseBody);
+        }
 
-        return responseEntity.getBody();
     }
 
     /**
@@ -167,7 +182,6 @@ public class ImportService {
         String html = ADRParser.convertMarkdownToHTML(markdown);
         return ADRParser.convertHTMLToADR(html);
     }
-
 
     /**
      *  Service method for fetching the content of a specific ADR file from a GitHub repository.

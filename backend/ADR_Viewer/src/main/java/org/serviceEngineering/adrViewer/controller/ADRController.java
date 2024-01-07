@@ -1,4 +1,4 @@
-package org.serviceEngineering.adrViewer.Controller;
+package org.serviceEngineering.adrViewer.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,7 +37,6 @@ public class ADRController {
 
     /**
      * Controller method for retrieving an ADR by its unique identifier.
-     * <p>
      * This endpoint allows you to fetch a specific ADR by providing its unique ID. If the ADR with the
      * specified ID is found in the database, it will be returned with an HTTP status of 200 (OK).
      * If the ADR is not found or if there's a service exception, it will return an appropriate HTTP
@@ -47,7 +46,6 @@ public class ADRController {
      * @return ResponseEntity containing the ADR object if found, or an error message with an appropriate
      * HTTP status code if the ADR is not found or if there's a service exception.
      */
-    /* TODO: Refactor get by id */
     @Operation(
             summary = "Get single adr",
             description = "Fetches single ADR from storage via ID")
@@ -56,8 +54,8 @@ public class ADRController {
             @ApiResponse(responseCode = "404", description = "resource not found")
     })
     @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
-    @GetMapping(value = "v2/getADR")
-    public ResponseEntity<Object> getADR(@RequestParam long id) {
+    @GetMapping(value = "v2/adr/{id}")
+    public ResponseEntity<Object> getADR(@PathVariable int id) {
         try {
             ADR adr = adrService.getADR(id);
             return new ResponseEntity<>(adr, HttpStatus.OK);
@@ -68,7 +66,6 @@ public class ADRController {
 
     /**
      * Controller method for retrieving ADRs from a repository.
-     * <p>
      * This endpoint allows you to fetch ADRs from a specific repository by specifying the repository owner,
      * repository name, directory path, and branch. It first checks if there are any ADRs in the memory,
      * and if so, it returns them. If not, it fetches ADRs from the specified repository using a REST API call
@@ -123,8 +120,8 @@ public class ADRController {
      * @return ResponseEntity containing a list of ADRs
      */
     @Operation(
-            summary = "Get list of ADRs by offset and count",
-            description = "Get a list of ADRs from storage by offset and count")
+            summary = "Get page of ADRs by pageOffset and limit",
+            description = "Get a page of ADRs from storage by pageOffset and limit")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })

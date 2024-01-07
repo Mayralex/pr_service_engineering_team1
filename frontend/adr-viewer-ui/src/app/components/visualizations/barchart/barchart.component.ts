@@ -27,7 +27,7 @@ export class BarchartComponent implements OnInit {
     datasets: [
       {
         data: this.adrArtifactNumbers,
-        label: 'Architecture Decision Record',
+        label: 'Artifacts',
         backgroundColor: ['rgba(255, 0, 0, 0.6)'],
         borderColor: ['rgba(255, 0, 0, 0.8)'],
         borderWidth: 1
@@ -41,7 +41,7 @@ export class BarchartComponent implements OnInit {
       datasets: [
         {
           data: this.adrArtifactNumbers,
-          label: 'Architecture Decision Record',
+          label: 'Artifacts',
           backgroundColor: ['rgba(255, 0, 0, 0.6)'],
           borderColor: ['rgba(255, 0, 0, 0.8)'],
           borderWidth: 1

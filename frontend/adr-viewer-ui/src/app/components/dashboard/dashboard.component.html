@@ -1,26 +1,28 @@
-<div class="m-lg-3">
-  <label class="mb-2 m-lg-1" for="visualizationType">Select Visualization Type:</label>
-  <select class="form-select" id="visualizationType" aria-label="Select Visualization Type" [(ngModel)]="selectedVisualization">
-    <option selected value="bar" (click)="loadAdrs()">BarChart</option>
-    <option value="line" (click)="loadAdrs()">LineChart</option>
-</select>
-</div>
+<div class="container">
+  <div class="m-lg-3">
+    <label class="mb-2 m-lg-1" for="visualizationType">Select Visualization Type:</label>
+    <select class="form-select" id="visualizationType" aria-label="Select Visualization Type" [(ngModel)]="selectedVisualization">
+      <option selected value="bar" (click)="loadAdrs()">BarChart</option>
+      <option value="line" (click)="loadAdrs()">LineChart</option>
+  </select>
+  </div>
 
-<div class="flex" *ngIf="adrsLoaded; else noADRs">
-  <app-barchart *ngIf="selectedVisualization === 'bar'" [adrLabels]="adrLabels" [adrArtifactNumbers]="adrArtifactNumbers"></app-barchart>
-  <app-linechart *ngIf="selectedVisualization === 'line'" [adrLabels]="adrLabels" [adrArtifactNumbers]="adrArtifactNumbers"></app-linechart>
-</div>
+  <div class="flex container" *ngIf="adrsLoaded; else noADRs">
+    <app-barchart *ngIf="selectedVisualization === 'bar'" [adrLabels]="adrLabels" [adrArtifactNumbers]="adrArtifactNumbers"></app-barchart>
+    <app-linechart *ngIf="selectedVisualization === 'line'" [adrLabels]="adrLabels" [adrArtifactNumbers]="adrArtifactNumbers"></app-linechart>
+  </div>
 
-<ng-template #noADRs>
-  <div class="container mt-4">
-    <div class="card bg-light">
-      <div class="card-body">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <p>No ADRs found. Please make sure you imported ADRs from a project successfully.</p>
-          </li>
-        </ul>
+  <ng-template #noADRs>
+    <div class="container mt-4">
+      <div class="card bg-light">
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <p>No ADRs found. Please make sure you imported ADRs from a project successfully.</p>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
-</ng-template>
+  </ng-template>
+</div>
