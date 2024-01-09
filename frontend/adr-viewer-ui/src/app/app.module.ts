@@ -19,7 +19,6 @@ import { LinechartComponent } from './components/visualizations/linechart/linech
 import { SearchPipe } from './pipes/search.pipe';
 import { LoadingPageComponent } from './components/loading-page/loading-page.component';
 import { RelationGraphComponent } from './components/visualizations/relation-graph/relation-graph.component';
-import {NgxGraphModule} from "@swimlane/ngx-graph";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
@@ -44,7 +43,6 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
         NgFor,
         FormsModule,
         NgChartsModule,
-        NgxGraphModule,
         BrowserAnimationsModule,
     ],
   providers: [],
