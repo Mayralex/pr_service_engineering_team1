@@ -21,7 +21,6 @@
     "@angular/router": "^14.3.0",
     "@ng-bootstrap/ng-bootstrap": "^13.0.0",
     "@popperjs/core": "^2.11.8",
-    "@swimlane/ngx-graph": "^8.2.4",
     "@types/d3-dispatch": "^3.0.6",
     "@types/d3-drag": "^3.0.7",
     "@types/d3-timer": "^3.0.2",
