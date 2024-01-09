@@ -8,13 +8,13 @@
   fill: var(--bs-primary);
 }
 #adrTitle{
-  font-size: calc(1.5vw + 1vh);
+  font-size: calc(1vw + 1vh);
 }
 .status{
   text-align: right;
-  margin-right: 10%;
-  margin-top:10%;
-  font-size: calc(1vw + 1vh);
+  margin-right: 30%;
+  margin-top:15%;
+  font-size: calc(0.5vw + 1vh);
 }
 
 #adrDetailview{
@@ -44,5 +44,17 @@
   font-size: 1.1em;
   text-align: right;
   margin-right: 10%;
+}
+
+.affectedAdr {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline;
+}
+
+.affectedAdr:hover {
+  color: darkblue;
+  text-decoration: underline;
 }
 

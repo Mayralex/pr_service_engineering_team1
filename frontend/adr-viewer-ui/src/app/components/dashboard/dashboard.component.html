@@ -1,15 +1,17 @@
 <div class="container">
   <div class="m-lg-3">
-    <label class="mb-2 m-lg-1" for="visualizationType">Select Visualization Type:</label>
+    <label class="mb-2 m-lg-1" for="visualizationType">Select Use Case:</label>
     <select class="form-select" id="visualizationType" aria-label="Select Visualization Type" [(ngModel)]="selectedVisualization">
-      <option selected value="bar" (click)="loadAdrs()">BarChart</option>
-      <option value="line" (click)="loadAdrs()">LineChart</option>
+      <option selected value="bar" (click)="loadAdrs()">Artifacts</option>
+     <!--<option value="line" (click)="loadAdrs()">LineChart</option>-->
+      <option selected value="graph" (click)="loadAdrs()">Relations</option>
   </select>
   </div>
 
   <div class="flex container" *ngIf="adrsLoaded; else noADRs">
-    <app-barchart *ngIf="selectedVisualization === 'bar'" [adrLabels]="adrLabels" [adrArtifactNumbers]="adrArtifactNumbers"></app-barchart>
-    <app-linechart *ngIf="selectedVisualization === 'line'" [adrLabels]="adrLabels" [adrArtifactNumbers]="adrArtifactNumbers"></app-linechart>
+    <app-barchart *ngIf="selectedVisualization === 'bar'" [adrs]="adrs"></app-barchart>
+    <!--<app-linechart *ngIf="selectedVisualization === 'line'" [adrLabels]="adrLabels" [adrArtifactNumbers]="adrArtifactNumbers"></app-linechart>-->
+    <app-relation-graph *ngIf="selectedVisualization === 'graph'" [adrs]="adrs"></app-relation-graph>
   </div>
 
   <ng-template #noADRs>

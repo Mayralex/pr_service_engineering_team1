@@ -17,7 +17,8 @@ export class AdrService {
   private url = 'http://localhost:8080/api/v2';
   private adrByIdUrl = 'adr';
   private allADRsUrl = 'getAllADRs';
-  private nextADRsUrl = 'ADR';
+  private pageADRsUrl = 'ADR';
+  private allADRsOfProjectUrl = 'getAllADRsOfProject';
 
   // Polling variables used in getAllADRs
   private pollingInterval = 3000;
@@ -38,26 +39,33 @@ export class AdrService {
    *
    * @returns an array of the ADRs in the repository - empty if repository does not exist or an error occurs while fetching.
    */
-  getAllADRs(repoOwner: string, repoName: string, directoryPath: string, branch: string): Observable<ADR[]> {
+  getAllADRs(): Observable<ADR[]> {
     const requestUrl = `${this.url}/${this.allADRsUrl}`;
-
-    let queryParams = new HttpParams();
-    queryParams = queryParams.append("repoOwner", repoOwner);
-    queryParams = queryParams.append("repoName", repoName);
-    queryParams = queryParams.append("directoryPath", directoryPath);
-    queryParams = queryParams.append("branch", branch);
 
     this.continuePolling = true; // needed to load ADRs again after component is destroyed
     return timer(0, this.pollingInterval).pipe(
       takeWhile(() => this.continuePolling),
       switchMap(() => {
-        return this.http.get<ADR[]>(requestUrl, {params: queryParams})
+        return this.http.get<ADR[]>(requestUrl)
           .pipe(
             tap(_ => this.checkFetchingStatus(_)),
             catchError(this.handleError<ADR[]>('getAllADRs', []))
           );
       })
     );
+  }
+
+  /**
+   * get all ADRs of a project (ADRs have the same importTaskId)
+   * @param importTaskId the ID of the importTask the ADR belongs to
+   */
+  getAllADRsOfProject(importTaskId: number): Observable<ADR[]> {
+    const requestUrl = `${this.url}/${this.allADRsOfProjectUrl}`;
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("importTaskId", importTaskId);
+
+    return this.http.get<ADR[]>(requestUrl, {params: queryParams});
   }
 
   /** GET a single ADR by its ID
@@ -75,6 +83,8 @@ export class AdrService {
         catchError(this.handleError<ADR>(`getAdrById id = ${id}`))
       );
   }
+
+
 
   /**
    * Start analysing a new repository
@@ -140,7 +150,7 @@ export class AdrService {
    * @returns a Page of the ADRs
    */
   getAdrs(importTaskId: number, searchText: string, pageOffset: number, limit: number): Observable<AdrPage> {
-    let requestUrl = `${this.url}/${this.nextADRsUrl}`;
+    let requestUrl = `${this.url}/${this.pageADRsUrl}`;
 
     let queryParams = new HttpParams();
     queryParams = queryParams.append("importTaskId", importTaskId);

@@ -10,6 +10,7 @@ import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.serviceEngineering.adrViewer.entity.ADR;
 import org.serviceEngineering.adrViewer.entity.Artifact;
+import org.serviceEngineering.adrViewer.entity.Relation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,16 +60,10 @@ public class ADRParser {
         adr.setTitle(((title == null) ? "PLACEHOLDER TITLE" : title));
         adr.setContext(extractSectionText(document, "Context"));
         adr.setDecision(extractSectionText(document, "Decision"));
-        //try {
-        //adr.setStatus(Status.valueOf(extractSectionText(document, "Status").toUpperCase()));
-        //} catch (IllegalArgumentException e) {
-        //    throw new IllegalArgumentException("Error parsing ADR status from the HTML content.", e);
-        //}
         adr.setStatus(extractSectionText(document, "Status"));
         adr.setConsequences(extractSectionText(document, "Consequences"));
         adr.setArtifacts(extractArtifacts(document, "Artifacts", adr));
-        //TODO: set Relations
-        //adr.setRelations(extractLinks(document, "Relations"));
+        adr.setRelations(extractRelations(document, "Relations", adr));
         String date = null;
         try {
             date = extractSectionText(document, "Date");
@@ -81,6 +76,11 @@ public class ADRParser {
     }
 
 
+    /**
+     * Extract the text from a section in the ADR
+     * @param element a HTML element
+     * @return a string of text
+     */
     private static String extractSectionText(Element element) {
         StringBuilder text = new StringBuilder();
 
@@ -131,34 +131,9 @@ public class ADRParser {
     }
 
     /**
-     * Extract links from a specific section identified by its header.
-     *
-     * @param doc           The Jsoup Document containing the HTML content.
-     * @param sectionHeader The header of the section to extract links from.
-     * @return A map containing link text as keys and link href as values.
-     */
-    private static Map<String, String> extractLinks(Document doc, String sectionHeader) {
-        Map<String, String> linksMap = new HashMap<>();
-        Element h2 = doc.select("h2:contains(" + sectionHeader + ")").first();
-
-        if (h2 != null) {
-            Element nextSibling = h2.nextElementSibling();
-            while (nextSibling != null && !nextSibling.tagName().equals("h2")) {
-
-                if (nextSibling.tagName().equals("ul")) {
-                    extractLinksFromList(linksMap, nextSibling);
-                }
-                nextSibling = nextSibling.nextElementSibling();
-            }
-        }
-        return linksMap;
-        }
-
-
-    /**
      * Extract Artifacts from an unordered list element and adds it to a list of artifacts
      * @param doc           The Jsoup Document containing the HTML content.
-     * @param sectionHeader The header of the section to extract links from.
+     * @param sectionHeader The header of the section to extract artifacts from.
      * @param adr           The ADR the artifact belongs to
      * @return A list of Artifacts
      */
@@ -185,28 +160,43 @@ public class ADRParser {
             return artifacts;
         }
 
-
     /**
-     * Extract links from an unordered list element and add them to the links map.
-     *
-     * @param linksMap   The map to store the extracted links.
-     * @param ulElement  The Jsoup Element representing an unordered list.
+     * Extract Relations from an unordered list element and adds it to a list of relations
+     * @param doc           The Jsoup Document containing the HTML content.
+     * @param sectionHeader The header of the section to extract relations from.
+     * @param adr           The ADR the relation belongs to
+     * @return A list of Relations
      */
-    private static void extractLinksFromList(Map<String, String> linksMap, Element ulElement) {
-        Elements listItems = ulElement.select("li");
-        for (Element listItem : listItems) {
-            Element link = listItem.selectFirst("a");
-            if (link != null) {
-                String relationType = getRelationType(listItem);
-                String linkText = link.text();
-                String linkHref = link.attr("href");
+    private static List<Relation> extractRelations(Document doc, String sectionHeader, ADR adr) {
+        List<Relation> relations = new ArrayList<>();
+        Element h2 = doc.select("h2:contains(" + sectionHeader + ")").first();
 
-                String key = relationType + linkText;
-                linksMap.put(key, linkHref);
+        if (h2 != null) {
+            Element nextSibling = h2.nextElementSibling();
+            while (nextSibling != null && !nextSibling.tagName().equals("h2")) {
+                if (nextSibling.tagName().equals("ul")) {
+                    Elements listItems = nextSibling.select("li");
+                    for (Element listItem : listItems) {
+                        Relation relation = new Relation();
+                        String relationType = getRelationType(listItem);
+                        relation.setAdr(adr);
+                        relation.setType(relationType);
+                        String affectedAdr = listItem.text().substring(listItem.text().lastIndexOf(" ") + 1);
+                        relation.setAffectedAdr(affectedAdr);
+                        relations.add(relation);
+                    }
+                }
+                nextSibling = nextSibling.nextElementSibling();
             }
         }
+        return relations;
     }
 
+    /**
+     * Parses the relation Type and returns it as a string
+     * @param listItem a list of relations
+     * @return relation type as string
+     */
     private static String getRelationType(Element listItem) {
         // Get the text before the <a> tag in the list item
         String listItemText = listItem.ownText().trim();
@@ -222,7 +212,11 @@ public class ADRParser {
             return "is enabled by ";
         } else if (listItemText.startsWith("is deprecated by")) {
             return "is deprecated by ";
+        } else if (listItemText.startsWith("deprecated by")) {
+            return "is deprecated by ";
         } else if (listItemText.startsWith("is related to")) {
+            return "is related to ";
+        } else if (listItemText.startsWith("related to")) {
             return "is related to ";
         } else if (listItemText.startsWith("is extended by")) {
             return "is extended by ";
@@ -230,6 +224,5 @@ public class ADRParser {
             return ""; // Default value or handle other relation types
         }
     }
-
 }
 

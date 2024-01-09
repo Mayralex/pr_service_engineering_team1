@@ -65,18 +65,14 @@ public class ADRController {
     }
 
     /**
-     * Controller method for retrieving ADRs from a repository.
-     * This endpoint allows you to fetch ADRs from a specific repository by specifying the repository owner,
-     * repository name, directory path, and branch. It first checks if there are any ADRs in the memory,
-     * and if so, it returns them. If not, it fetches ADRs from the specified repository using a REST API call
-     * and saves them in the database for future use. If the memory is empty, the parsing function is call in an
-     * asynchronous way to improve performance
+     * Controller method for retrieving ADRs
+     * This endpoint allows you to fetch all ADRs
      *
-     * @return ResponseEntity containing an array of ADR objects if ADRs are found, or an empty array if no ADRs are available.
+     * @return List of ADRs from memory
      */
     @Operation(
-            summary = "Parse all ADRs",
-            description = "Parse all ADRs from single repository into Java objects over the GitHub API and store in memory")
+            summary = "Get all adrs",
+            description = "Get a list of all ADRs")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
@@ -86,6 +82,31 @@ public class ADRController {
         List<ADR> result = adrService.getAll();
         log.info("List of ADRs consists of {} adrs", result.toArray().length);
         return new ResponseEntity<>(result, HttpStatus.OK);
+        //TODO: error handling if not successful
+    }
+
+
+    /**
+     * Controller method for retrieving ADRs from a repository.
+     * This endpoint allows you to fetch ADRs from a specific repository
+     *
+     * @return List of ADRs from memory
+     */
+    @Operation(
+            summary = "Get all adrs of current project",
+            description = "Get a list of all ADRs in the current project")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
+    @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
+    @GetMapping(value = "v2/getAllADRsOfProject", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getAllADRsOfCurrentProject(
+            @RequestParam int importTaskId
+    ) {
+        List<ADR> result = adrService.getAllByProject(importTaskId);
+        log.info("List of ADRs consists of {} adrs", result.toArray().length);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+        //TODO: error handling
     }
 
     /**
@@ -168,6 +189,9 @@ public class ADRController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /**
+     * Clears the cache of repositories
+     */
     @Operation(
             summary = "Clear cache",
             description = "Remove all objects from cache")
@@ -180,5 +204,4 @@ public class ADRController {
         log.info("Clearing cache");
         adrService.clear();
     }
-
 }
