@@ -71,6 +71,15 @@ public class ADRService {
     }
 
     /**
+     * Service method for retrieving ADRs with a given importTaskId from memory
+     *
+     * @return List of ADRs.
+     */
+    public List<ADR> getAllByProject(int importTaskId) {
+        return aDRRepository.findAllByImportTaskId(importTaskId);
+    }
+
+    /**
      * Service method for retrieving ADRs from the memory which have the same status as requested.
      *
      * @return List of ADRs with the corresponding status.

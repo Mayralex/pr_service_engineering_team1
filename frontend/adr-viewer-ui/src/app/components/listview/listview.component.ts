@@ -85,31 +85,12 @@ export class ListviewComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Subscribes to ADR service (adr.service.getAllADRs). Updates the view accordingly.
-   * @param repoOwner
-   * @param repoName
-   * @param directoryPath
-   * @param branch
+   * Loads a oage of ADRs
+   * @param searchText to filter the ADRs
+   * @param pageOffset current page
+   * @param limit limit of ADRs to display per page
    * @private
    */
-  private getAllADRs(repoOwner: string, repoName: string, directoryPath: string, branch: string): void {
-    this.adrSubscription = this.adrService.getAllADRs(repoOwner, repoName, directoryPath, branch)
-      .subscribe(adrs => {
-          if (adrs && adrs.length > 0) {
-            this.adrs = adrs;
-            this.isLoading = false;
-            this.showADRs = true;
-          } else {
-            this.isLoading = false;
-            this.showEmpty = true;
-          }
-        },
-        (error) => {
-          console.log('Something went wrong:', error);
-        }
-      );
-  }
-
   private loadPage(searchText: string, pageOffset: number, limit: number): void {
     window.location.hash = pageOffset.toString();
 

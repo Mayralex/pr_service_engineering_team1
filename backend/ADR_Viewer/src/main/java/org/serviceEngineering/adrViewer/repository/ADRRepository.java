@@ -28,4 +28,11 @@ public interface ADRRepository extends JpaRepository<ADR, Long> {
      * @return a page of ADRs
      */
     Page<ADR> findAllByTitleContainingIgnoreCaseAndImportTaskId(String title, int importTaskId, Pageable pageable);
+
+    /**
+     * returns a list of ADRs with the given importTaskId
+     * @param importTaskId the id of the importTask
+     * @return a list of ADRs with the given importTaskId
+     */
+    List<ADR> findAllByImportTaskId(int importTaskId);
 }

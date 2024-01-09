@@ -18,6 +18,9 @@ import {BarchartComponent} from "./components/visualizations/barchart/barchart.c
 import { LinechartComponent } from './components/visualizations/linechart/linechart.component';
 import { SearchPipe } from './pipes/search.pipe';
 import { LoadingPageComponent } from './components/loading-page/loading-page.component';
+import { RelationGraphComponent } from './components/visualizations/relation-graph/relation-graph.component';
+import {NgxGraphModule} from "@swimlane/ngx-graph";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -30,17 +33,20 @@ import { LoadingPageComponent } from './components/loading-page/loading-page.com
     BarchartComponent,
     LinechartComponent,
     SearchPipe,
-    LoadingPageComponent
+    LoadingPageComponent,
+    RelationGraphComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NgbModule,
-    HttpClientModule,
-    NgFor,
-    FormsModule,
-    NgChartsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        NgbModule,
+        HttpClientModule,
+        NgFor,
+        FormsModule,
+        NgChartsModule,
+        NgxGraphModule,
+        BrowserAnimationsModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

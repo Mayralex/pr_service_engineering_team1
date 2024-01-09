@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ChartConfiguration} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";
+import {ADR} from "../../../interfaces/adr";
 
 @Component({
   selector: 'app-barchart',
@@ -8,16 +9,42 @@ import {BaseChartDirective} from "ng2-charts";
   styleUrls: ['./barchart.component.css']
 })
 export class BarchartComponent implements OnInit {
-  @Input() adrLabels: string[] = [];
-  @Input() adrArtifactNumbers: number[] = [];
+  @Input() adrs: ADR[] = [];
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-  constructor() {
-  }
+  adrLabels: string[] = [];
+  adrArtifactNumbers: number[] = [];
+
+  constructor() {}
 
   ngOnInit(): void {
+    this.getAdrLabels();
+    this.getAdrArtifactNumbers();
     this.updateChartData();
   }
+
+  private getAdrLabels() {
+    for (var adr of this.adrs) {
+      if (adr != null && adr.title) {
+        const adrLabel = adr.title.split(':')[0];
+        this.adrLabels.push(adrLabel);
+      }
+    }
+  }
+
+  private getAdrArtifactNumbers() {
+    for (var adr of this.adrs) {
+      if (adr != null &&  Array.isArray(adr.artifacts)) {
+        const adrArtifactNumber = adr.artifacts.length;
+        this.adrArtifactNumbers.push(adrArtifactNumber);
+      } else {
+        // current behviour if no Artifacts or Artifacts coul not be parsed
+        this.adrArtifactNumbers.push(0);
+      }
+    }
+  }
+
+  /* --- BARCHART CONFIGURATION --- */
 
   public barChartLegend = true;
   public barChartPlugins = [];
