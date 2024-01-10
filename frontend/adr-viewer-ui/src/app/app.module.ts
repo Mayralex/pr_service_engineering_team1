@@ -20,6 +20,7 @@ import { SearchPipe } from './pipes/search.pipe';
 import { LoadingPageComponent } from './components/loading-page/loading-page.component';
 import { RelationGraphComponent } from './components/visualizations/relation-graph/relation-graph.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {PiechartComponent} from "./components/visualizations/piechart/piechart.component";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     LinechartComponent,
     SearchPipe,
     LoadingPageComponent,
-    RelationGraphComponent
+    RelationGraphComponent,
+    PiechartComponent,
   ],
     imports: [
         BrowserModule,
