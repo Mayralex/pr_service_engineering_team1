@@ -22,9 +22,10 @@
 - [ADR 019: Using ngb-bootstrap library](./adrs/adr-019.md)
 - [ADR 020: Display a loading page while polling](./adrs/adr-020.md)
 - [ADR 021: Introducing Swagger UI](./adrs/adr-021.md)
+- [ADR 022: Enhancing Dashboard with Visualization Components and Selection](./adrs/adr-022.md)
+- [ADR 023: Selecting Visualization Library for relation visualization](./adrs/adr-023.md)
 
 
 ## ADRs still missing for:
 
-- Frontend Restructuring: Visualization Folder with visualizations, Select For Use Case (Artifact, Relation, Status, Lifecycle)
-- Vis JS.for Relations (ngx-graph zu wenig Konfigurationsmöglichkeiten, Chart.js unterstützt keine Graphen)
+- 
