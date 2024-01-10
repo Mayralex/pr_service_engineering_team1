@@ -26,6 +26,5 @@
 
 ## ADRs still missing for:
 
-- Swagger UI integration
 - Frontend Restructuring: Visualization Folder with visualizations, Select For Use Case (Artifact, Relation, Status, Lifecycle)
 - Vis JS.for Relations (ngx-graph zu wenig Konfigurationsmöglichkeiten, Chart.js unterstützt keine Graphen)
