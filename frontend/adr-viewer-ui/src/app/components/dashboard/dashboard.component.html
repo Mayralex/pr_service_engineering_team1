@@ -5,6 +5,7 @@
       <option selected value="bar" (click)="loadAdrs()">Artifacts</option>
      <!--<option value="line" (click)="loadAdrs()">LineChart</option>-->
       <option selected value="graph" (click)="loadAdrs()">Relations</option>
+      <option selected value="pie" (click)="loadAdrs()">Piechart</option>
   </select>
   </div>
 
@@ -12,6 +13,7 @@
     <app-barchart *ngIf="selectedVisualization === 'bar'" [adrs]="adrs"></app-barchart>
     <!--<app-linechart *ngIf="selectedVisualization === 'line'" [adrLabels]="adrLabels" [adrArtifactNumbers]="adrArtifactNumbers"></app-linechart>-->
     <app-relation-graph *ngIf="selectedVisualization === 'graph'" [adrs]="adrs"></app-relation-graph>
+    <app-piechart *ngIf="selectedVisualization === 'pie'" [adrs]="adrs"></app-piechart>
   </div>
 
   <ng-template #noADRs>
