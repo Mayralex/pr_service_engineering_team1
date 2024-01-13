@@ -6,6 +6,7 @@
      <!--<option value="line" (click)="loadAdrs()">LineChart</option>-->
       <option selected value="graph" (click)="loadAdrs()">Relations</option>
       <option selected value="pie" (click)="loadAdrs()">Piechart</option>
+      <option selected value="lifecycle" (click)="loadAdrs()">ADR-Lifecycle</option>
   </select>
   </div>
 
@@ -14,6 +15,7 @@
     <!--<app-linechart *ngIf="selectedVisualization === 'line'" [adrLabels]="adrLabels" [adrArtifactNumbers]="adrArtifactNumbers"></app-linechart>-->
     <app-relation-graph *ngIf="selectedVisualization === 'graph'" [adrs]="adrs"></app-relation-graph>
     <app-piechart *ngIf="selectedVisualization === 'pie'" [adrs]="adrs"></app-piechart>
+    <app-lifecycle *ngIf="selectedVisualization === 'lifecycle'" [adrs]="adrs"></app-lifecycle>
   </div>
 
   <ng-template #noADRs>
