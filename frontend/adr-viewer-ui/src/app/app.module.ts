@@ -21,6 +21,8 @@ import { LoadingPageComponent } from './components/loading-page/loading-page.com
 import { RelationGraphComponent } from './components/visualizations/relation-graph/relation-graph.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {PiechartComponent} from "./components/visualizations/piechart/piechart.component";
+import { LifecycleComponent } from './components/visualizations/lifecycle/lifecycle/lifecycle.component';
+import {Ng2GoogleChartsModule} from "ng2-google-charts";
 
 @NgModule({
   declarations: [
@@ -36,17 +38,19 @@ import {PiechartComponent} from "./components/visualizations/piechart/piechart.c
     LoadingPageComponent,
     RelationGraphComponent,
     PiechartComponent,
+    LifecycleComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        NgbModule,
-        HttpClientModule,
-        NgFor,
-        FormsModule,
-        NgChartsModule,
-        BrowserAnimationsModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    HttpClientModule,
+    NgFor,
+    FormsModule,
+    NgChartsModule,
+    BrowserAnimationsModule,
+    Ng2GoogleChartsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
