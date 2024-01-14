@@ -1,5 +1,5 @@
 <div class="flex-item">
   <div id="timeline-chart">
-    <google-chart [data]="timelineChartData"></google-chart>
+    <google-chart [data]="timelineChartData" (chartSelect)="select($event)"> </google-chart>
   </div>
 </div>

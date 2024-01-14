@@ -1,6 +1,8 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ADR} from "../../../../interfaces/adr";
 import {BaseChartDirective} from "ng2-charts";
+import {ChartSelectEvent} from 'ng2-google-charts';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-lifecycle',
@@ -14,10 +16,23 @@ export class LifecycleComponent implements OnInit {
   adrsDates : string[] = [];
   adrsNames : string[] = [];
 
-  constructor() { }
+  constructor(private router: Router) {
+
+  }
 
   ngOnInit(): void {
     this.getAdrDate();
+  }
+
+  public select(event: ChartSelectEvent){
+    console.log(event.row);
+    if(event.row != null) {
+      this.router.navigate(['/detailview'], {
+        queryParams: {
+          id: event.row+1,
+        }
+      });
+    }
   }
 
   private getAdrDate() {
@@ -33,12 +48,19 @@ export class LifecycleComponent implements OnInit {
     chartType: 'Timeline',
     dataTable:
       [
-        ['Nome', 'De', 'Até', {type: 'string', role: 'tooltip', p: {html: true}}],
-        [ 'ADR 001', new Date(2023, 10, 30), new Date(2024, 1, 31), '<div>test</div>' ],
-        [ 'ADR 002', new Date(2023, 11, 25), new Date(2024, 1, 31), '<div>test</div>' ],
-        [ 'ADR 003',  new Date(2024, 1, 10), new Date(2024, 1, 31), '<div>test</div>' ]
+        ['Row label', 'Bar label', 'Start', 'End', {type: 'string', role: 'tooltip', p: {html: true}}],
+        [ '1', 'ADR 001: Initial Technology Stack Decisions', new Date(2023, 9, 30), new Date(2023, 11, 20), '<div>test</div>' ],
+        [ '2', 'ADR 002: Codebase Management and Project Organization', new Date(2023, 10, 25), new Date(2024, 0, 31), '<div>test</div>' ],
+        [ '3', 'ADR 003: Naming Conventions and Guidelines',  new Date(2024, 0, 10), new Date(2024, 0, 31), '<div>test</div>' ]
       ],
     options: {
+      // newly added
+      timeline: {
+        showRowLabels: false,
+        barLabelStyle: { fontName: 'Segoe UI', fontSize: 14 },
+      },
+      fontName: 'Segoe UI',
+      // Pre determined
       //focusTarget: 'category',
       animation: {
         startup: true,
@@ -90,12 +112,13 @@ export class LifecycleComponent implements OnInit {
         },
       },
       hAxis: {
+        title: 'Time',
         textStyle: {
           color: '#393939',
           bold: true,
           fontSize: 13,
         },
-        format: 'MMM d, y',
+        format: 'MMM y',
         gridlines: {
           count: 0,
           color: 'transparent'
@@ -116,34 +139,17 @@ export class LifecycleComponent implements OnInit {
           dataOpacity: 0.5,
         },
       },
-      colors: [
-        '#febd02',
-        '#a5a5a5',
-        '#0284ff',
+      colors: [ // use for coloring active green and deprecated red --> need to process adrs and save color array here
+        '#c96868',
+        '#7fc45b',
+        '#7fc45b',
       ],
       bar: {
         groupWidth: '35'
       },
       legend: {
-        position: 'none'
+        position: 'left'
       },
     }
-// ['Time', 'Maximum Temperature', 'Minimum Temperature', 'Precipitation', {type: 'string', role: 'tooltip', p: {html: true}}],
-//     [new Date(2020, 7, 26, 14), 19.4, 12, 22, '<div>test</div>']
-    // {
-    //   cols: [
-    //     {id: 'President', type: 'string'},
-    //     {id: 'dummy bar label', type: 'string'},
-    //     {role: 'tooltip', type: 'string'},
-    //     {id: 'Start', type: 'date'},
-    //     {id: 'End', type: 'date'}
-    //   ],
-
-    //   rows: [
-    //     {c: [{v: 'Washington'}, {v: null}, {v: 'George'}, {v: new Date(1789, 3, 30)}, {v: new Date(1797, 2, 4)}]},
-    //     {c: [{v: 'Adams'}, {v: null}, {v: 'John'}, {v: new Date(1797, 2, 3)}, {v: new Date(1801, 2, 3)}]},
-    //     {c: [{v: 'Jefferson'}, {v: null}, {v: 'Thomas'}, {v: new Date(1801, 2, 3)}, {v: new Date(1809, 2, 3)}]}
-    //   ]
-    // }
   }
 }
