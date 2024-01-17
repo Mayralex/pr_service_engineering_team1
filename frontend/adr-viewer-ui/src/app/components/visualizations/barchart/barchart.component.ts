@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {ChartConfiguration} from "chart.js";
+import {ChartConfiguration, TooltipItem} from "chart.js";
 import {BaseChartDirective} from "ng2-charts";
 import {ADR} from "../../../interfaces/adr";
 
@@ -13,6 +13,7 @@ export class BarchartComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   adrLabels: string[] = [];
+  adrLongLabel: string[] = [];
   adrArtifactNumbers: number[] = [];
 
   constructor() {}
@@ -28,6 +29,7 @@ export class BarchartComponent implements OnInit {
       if (adr != null && adr.title) {
         const adrLabel = adr.title.split(':')[0];
         this.adrLabels.push(adrLabel);
+        this.adrLongLabel.push(adr.title);
       }
     }
   }
@@ -99,6 +101,20 @@ export class BarchartComponent implements OnInit {
           text: 'Number of Artifacts'
         }
       }
-    }
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          title: context => {
+            const dataIndex = context[0]?.dataIndex ?? 0;
+            return this.adrLongLabel[dataIndex];
+          },
+          label: context => {
+            let label = context.dataset.data[context.dataIndex];
+            return label + "\n" + 'Artifacts';
+          }
+        }
+      }
+      }
   };
 }
