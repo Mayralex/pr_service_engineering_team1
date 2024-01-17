@@ -37,12 +37,10 @@ export class PiechartComponent implements OnInit {
     for (var adr of this.adrs) {
         this.adrsStatus.push(adr.status);
       if (adr.status == 'Active'){
-        const adrLabel = adr.title.split(':')[0];
-        this.activeAdrs.push(adrLabel);
+        this.activeAdrs.push(adr.title);
       }
       if (adr.status == 'Deprecated'){
-        const adrLabel = adr.title.split(':')[0];
-        this.deprecatedAdrs.push(adrLabel);
+        this.deprecatedAdrs.push(adr.title);
       }
       }
     }
@@ -52,7 +50,6 @@ export class PiechartComponent implements OnInit {
   }
 
   private getActiveAdrs() {
-    console.log("Aktive ADRS-Array",this.activeAdrs);
     this.activeAdrsCount = this.count(this.adrsStatus,'Active');
   }
 
@@ -102,7 +99,7 @@ export class PiechartComponent implements OnInit {
           }
         },
         bodyFont: {
-          size:20
+          size:15
         }
       }
     },
