@@ -157,13 +157,12 @@ public class ImportService {
 
             ADR adr = parseADRFile(repoOwner, repoName, filepath, branch);
             adr.setImportTaskId(importTaskId);
+            adr.setFilePath(filepath);
 
             if (Thread.currentThread().isInterrupted()) {
                 log.info("Parsing of adrs for import task {} has been aborted.", importTaskId);
                 break;
             }
-
-            log.info("Saving adr #{} titled {}", adr.getId(), adr.getTitle());
             aDRRepository.save(adr);
         }
     }

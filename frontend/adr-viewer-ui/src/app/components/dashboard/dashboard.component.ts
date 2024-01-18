@@ -10,7 +10,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 
 export class DashboardComponent implements OnInit {
-  selectedVisualization: 'bar' | 'line' | 'graph'| 'pie' | 'lifecycle' = 'bar';
+  selectedVisualization: 'bar' | 'line' | 'graph'| 'pie' | 'lifecycle' | 'timeline' = 'bar';
 
   adrsLoaded: boolean = false;
   adrs: ADR[] = [];

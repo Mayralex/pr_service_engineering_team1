@@ -51,4 +51,6 @@ public class ADR {
     @Column(name = "import_task_id")
     private int importTaskId;
 
+    @Column(name = "file_path")
+    private String filePath;
 }

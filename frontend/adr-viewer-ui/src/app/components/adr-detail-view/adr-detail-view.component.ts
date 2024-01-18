@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {ADR} from "../../interfaces/adr";
 import {AdrService} from "../../services/adr.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-adr-detail-view',
@@ -13,10 +12,8 @@ export class AdrDetailViewComponent implements OnInit {
 
   id: number;
   importTaskId: number;
-  adrById:ADR;
+  adrById?: ADR;
   adrs: ADR[];
-
-  private adrSubscription: Subscription;
 
   constructor(
     private adrService: AdrService,
@@ -27,14 +24,15 @@ export class AdrDetailViewComponent implements OnInit {
   ngOnInit(): void {
     //TODO: Exception handling für z.B. id bleibt -1
     this.id = -1;
-    this.getAllAdrs();
     this.route.queryParams.subscribe(params => {
       this.id = params['id'];
-      if  (this.id) {
+      this.importTaskId = params['importTaskId'];
+      if (this.id) {
         this.getAdrById(this.id)
       }
     });
     this.getAdrById(this.id);
+    this.getAllAdrsOfProject();
   }
 
   getAdrById(id: number): void {
@@ -42,7 +40,7 @@ export class AdrDetailViewComponent implements OnInit {
       .subscribe(adr => this.adrById = adr);
   }
 
-  isActive(status: string): boolean {
+  isActive(status: string | undefined): boolean {
     return status === 'Active'
   }
 
@@ -55,6 +53,7 @@ export class AdrDetailViewComponent implements OnInit {
         this.router.navigate(['/detailview'], {
           queryParams: {
             id: matchedAdrId,
+            importTaskId: this.importTaskId
           }
         });
       } else {
@@ -67,8 +66,8 @@ export class AdrDetailViewComponent implements OnInit {
     }
   }
 
-  private getAllAdrs(): void {
-    this.adrSubscription = this.adrService.getAllADRs()
+  private getAllAdrsOfProject(): void {
+    this.adrService.getAllADRsOfProject(this.importTaskId)
       .subscribe({
         next: adrs => {
           if (adrs && adrs.length > 0) {
@@ -76,7 +75,7 @@ export class AdrDetailViewComponent implements OnInit {
           }
         },
         error: (error) => {
-          console.log('Get Next Adrs failed:', error);
+          console.log('Get Adrs failed:', error);
         }
       });
   }

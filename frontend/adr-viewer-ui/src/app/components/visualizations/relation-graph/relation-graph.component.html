@@ -1,18 +1,19 @@
 <div class="container">
-  <div class="m-lg-3">
+  <div class="m-lg-3 mb-3">
     <label class="mb-2 m-lg-1" for="relationType">Choose relation:</label>
-    <select class="form-select" id="relationType" aria-label="Select Visualization Type" [(ngModel)]="selectedRelation" (change)="getRelationsByType(selectedRelation)">
-      <option selected value="enables ">enables</option>
-      <option selected value="is enabled by ">is enabled by</option>
-      <option selected value="extends ">extends</option>
-      <option selected value="is extended by ">is extended by</option>
-      <option selected value="deprecates ">deprecates</option>
-      <option selected value="is deprecated by ">is deprecated by</option>
-      <option selected value="is related to ">is related to</option>
+    <select class="form-select" id="relationType" aria-label="Select Visualization Type" [(ngModel)]="selectedRelation" (change)="getRelationsByTypeAndCreateGraph()">
+      <option  value="enables " selected>enables</option>
+      <option  value="is enabled by ">is enabled by</option>
+      <option  value="extends ">extends</option>
+      <option  value="is extended by ">is extended by</option>
+      <option  value="deprecates ">deprecates</option>
+      <option  value="is deprecated by ">is deprecated by</option>
+      <option  value="is related to ">is related to</option>
     </select>
   </div>
-  <button class="btn btn-dark d-block mx-auto mb-3" [disabled]="!selectedRelation" (click)="createGraph()">Create Graph</button>
-  <div #networkContainer class="network-container" id="mynetwork"></div>
+    <div #networkContainer class="network-container" id="mynetwork"></div>
+  <h2 id="eventSpanHeading"></h2>
+  <pre id="eventSpanContent"></pre>
 </div>
 
 

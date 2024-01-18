@@ -1,5 +1,17 @@
 #mynetwork {
-  width: 800px;
-  height: 600px;
+  width: 1000px;
+  height: 800px;
   border: 1px solid lightgray;
+  place-items: center;
+}
+
+.container {
+  display: grid;
+  place-items: center;
+  /*height: 100vh; /* 100% of the viewport height */
+}
+
+.vis-tooltip {
+  position: absolute;
+  visibility: visible;
 }
