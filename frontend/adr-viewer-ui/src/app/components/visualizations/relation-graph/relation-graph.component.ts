@@ -143,7 +143,6 @@ export class RelationGraphComponent implements OnInit {
   }
 }
 
-
 /* data structure of relation map */
 /* 0:
     key: 'ADR 001'
