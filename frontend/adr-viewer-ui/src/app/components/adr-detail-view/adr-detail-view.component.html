@@ -5,8 +5,8 @@
                class="bi bi-bookmark-dash-fill" viewBox="0 0 16 16" id="icon1">
             <path fill-rule="evenodd"
                   d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5M6 6a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z"/>
-          </svg>{{adrById.title}}</h2>
-      <div *ngIf="isActive(adrById.status) then active; else deprecated"></div>
+          </svg>{{adrById?.title}}</h2>
+      <div *ngIf="isActive(adrById?.status) then active; else deprecated"></div>
   </div>
 
 
@@ -20,7 +20,7 @@
       </h2>
       <div id="context" class="accordion-collapse collapse show">
         <div class="accordion-body">
-          {{adrById.context}}
+          {{adrById?.context}}
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@
       </h2>
       <div id="decision" class="accordion-collapse collapse">
         <div class="accordion-body">
-          {{adrById.decision}}
+          {{adrById?.decision}}
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
       </h2>
       <div id="consequences" class="accordion-collapse collapse">
         <div class="accordion-body">
-          {{adrById.consequences}}
+          {{adrById?.consequences}}
         </div>
       </div>
       <div class="accordion-item">
@@ -58,7 +58,7 @@
         </h2>
         <div id="artifacts" class="accordion-collapse collapse">
           <div class="accordion-body">
-            <ul *ngFor="let artifact of adrById.artifacts">
+            <ul *ngFor="let artifact of adrById?.artifacts">
               <li>{{artifact.name}}</li>
             </ul>
           </div>
@@ -73,7 +73,7 @@
       </h2>
       <div id="relations" class="accordion-collapse collapse">
         <div class="accordion-body">
-          <ul *ngFor="let relation of adrById.relations">
+          <ul *ngFor="let relation of adrById?.relations">
             <li (click)="navigateToAdr(relation.affectedAdr)">{{relation.type}}<p class="affectedAdr">ADR {{relation.affectedAdr}}</p></li>
           </ul>
         </div>
@@ -94,10 +94,10 @@
         <path fill-rule="evenodd"
               d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5zm-6 8A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5zm6 0A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5zm6 0a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5z"/>
       </svg>
-      Commit {{adrById.commit}}
+      Commit {{adrById?.commit}}
     </div>
     <div id="date">
-      {{adrById.date}}
+      {{adrById?.date}}
     </div>
   </div>
 </div>
@@ -107,7 +107,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="forestgreen">
       <circle cx="8" cy="8" r="8"/>
     </svg>
-    {{adrById.status}}
+    {{adrById?.status}}
   </div>
 </ng-template>
 <ng-template #deprecated>
@@ -115,6 +115,6 @@
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red">
       <circle cx="8" cy="8" r="8"/>
     </svg>
-    {{adrById.status}}
+    {{adrById?.status}}
   </div>
 </ng-template>

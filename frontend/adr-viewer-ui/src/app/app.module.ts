@@ -23,6 +23,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {PiechartComponent} from "./components/visualizations/piechart/piechart.component";
 import { LifecycleComponent } from './components/visualizations/lifecycle/lifecycle/lifecycle.component';
 import {Ng2GoogleChartsModule} from "ng2-google-charts";
+import { TimelineComponent } from './components/visualizations/timeline/timeline.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {Ng2GoogleChartsModule} from "ng2-google-charts";
     RelationGraphComponent,
     PiechartComponent,
     LifecycleComponent,
+    TimelineComponent,
   ],
   imports: [
     BrowserModule,

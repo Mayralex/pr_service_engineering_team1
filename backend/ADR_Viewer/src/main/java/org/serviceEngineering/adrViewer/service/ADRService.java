@@ -1,6 +1,9 @@
 package org.serviceEngineering.adrViewer.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import org.serviceEngineering.adrViewer.dto.CommitDTO;
 import org.serviceEngineering.adrViewer.entity.ADR;
 import org.serviceEngineering.adrViewer.dto.ADRPageDTO;
 import org.serviceEngineering.adrViewer.repository.ADRRepository;
@@ -91,5 +94,31 @@ public class ADRService {
 
     public void clear() {
         this.aDRRepository.deleteAll();
+    }
+
+    public CommitDTO extractLatestCommit(Object response) {
+
+        System.out.println(response);
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(response.toString());
+
+            JsonNode nodes = jsonNode.path("data").path("repository").path("ref").path("target").path("history").path("nodes");
+
+            if (nodes.isArray() && !nodes.isEmpty()) {
+                JsonNode latestCommit = nodes.get(0);
+
+                String oid = latestCommit.path("oid").asText();
+                String committedDate = latestCommit.path("committedDate").asText();
+                String message = latestCommit.path("message").asText();
+
+                return new CommitDTO(oid, committedDate, message);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null; // Extraction fails
     }
 }

@@ -5,6 +5,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {catchError, tap, switchMap, takeWhile} from 'rxjs/operators';
 import {AdrPage} from "../interfaces/adrPage";
 import {ImportTask} from "../interfaces/ImportTask";
+import {CommitData} from "../interfaces/commitData";
 
 /**
  * Service to communicate with backend endpoints
@@ -19,6 +20,7 @@ export class AdrService {
   private allADRsUrl = 'getAllADRs';
   private pageADRsUrl = 'ADR';
   private allADRsOfProjectUrl = 'getAllADRsOfProject';
+  private commitHistoryUrl = 'getHistory'
 
   // Polling variables used in getAllADRs
   private pollingInterval = 3000;
@@ -159,6 +161,22 @@ export class AdrService {
     queryParams = queryParams.append("limit", limit);
 
     return this.http.get<AdrPage>(requestUrl, {params: queryParams})
+  }
+
+
+  /**
+   * get the commit history of an ADR
+   * @param importTaskId to get repository data in the backend for the GraphQl request
+   * @param filePath of the file for the commit history
+   */
+  getCommitData(importTaskId: number, filePath: string): Observable<CommitData> {
+    let requestUrl = `${this.url}/${this.commitHistoryUrl}`;
+
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("importTaskId", importTaskId);
+    queryParams = queryParams.append("filePath", filePath);
+
+    return this.http.get<CommitData>(requestUrl, {params: queryParams})
   }
 
   /** Checks if the service finished fetching all ADRs from endpoint

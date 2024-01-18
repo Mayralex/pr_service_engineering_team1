@@ -10,6 +10,8 @@ export class ADR {
   consequences: string;
   artifacts: Artifact[];
   relations: Relation[];
+  importTaskId: number;
+  filePath: string;
   date: string;
   commit: string;
 }

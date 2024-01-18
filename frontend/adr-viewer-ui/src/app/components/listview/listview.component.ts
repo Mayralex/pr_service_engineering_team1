@@ -80,6 +80,7 @@ export class ListviewComponent implements OnInit, OnDestroy {
     this.router.navigate(['/detailview'], {
       queryParams: {
         id: adr.id,
+        importTaskId: this.importTaskId
       }
     });
   }

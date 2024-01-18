@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ADR} from "../../../interfaces/adr";
 import {Relation} from "../../../interfaces/relation";
-import * as vis from 'vis'
+import * as vis from 'vis';
 
 @Component({
   selector: 'app-relation-graph',
@@ -13,8 +13,8 @@ export class RelationGraphComponent implements OnInit {
   @ViewChild('networkContainer') networkContainer: ElementRef | undefined;
 
   private network: vis.Network | undefined;
-  private nodes: { id: string; label: string; color?: string }[] = [];
-  private edges: { from: string; to: string }[] = [];
+  private nodes: { id: string; label: string; color?: string; title?: string }[] = [];
+  private edges: { from: string; to: string; arrows: string; label: string}[] = [];
   private graphNodes: vis.DataSet<any>;
   private graphEdges: vis.DataSet<any>;
 
@@ -47,6 +47,11 @@ export class RelationGraphComponent implements OnInit {
     }
   }
 
+  getRelationsByTypeAndCreateGraph() {
+    this.getRelationsByType(this.selectedRelation);
+    this.createGraph();
+  }
+
   getRelationsByType(relationType: string) {
     this.adrRelationMapByType.clear();
 
@@ -66,7 +71,6 @@ export class RelationGraphComponent implements OnInit {
     }
   }
 
-
   createGraph() {
     this.nodes = [];
     this.edges = [];
@@ -76,20 +80,25 @@ export class RelationGraphComponent implements OnInit {
     for (const [key, value] of this.adrRelationMapByType.entries()) {
       // Add the key node
       if (!addedNodes.has(key)) {
-        this.nodes.push({ id: key, label: key, color: 'rgb(255,255,102)' });
+        const matchedAdr = this.adrs.find(adr => adr.title.includes(key));
+        const adrTitle = matchedAdr?.title;
+        this.nodes.push({ id: key, label: key, color: 'rgb(255,255,102)', title: "Test"});
         addedNodes.add(key);
       }
 
+      //add relation nodes
       for (const relation of value) {
         const { affectedAdr } = relation;
 
         if (!addedNodes.has(affectedAdr)) {
-          this.nodes.push({ id: affectedAdr, label: affectedAdr, color: 'rgb(204,255,204)' });
+          const matchedAdr = this.adrs.find(adr => adr.title.includes(key));
+          const adrTitle = matchedAdr?.title;
+          this.nodes.push({ id: affectedAdr, label: "ADR "+affectedAdr, color: 'rgb(204,255,204)', title: "ADR Title" });
           addedNodes.add(affectedAdr);
         }
 
         // Add edges between key and affected ADR nodes
-        this.edges.push({ from: key, to: affectedAdr });
+        this.edges.push({ from: key, to: affectedAdr, arrows: "to", label: this.selectedRelation });
       }
     }
 
@@ -105,12 +114,34 @@ export class RelationGraphComponent implements OnInit {
         edges: this.graphEdges,
       };
 
-      var options = {};
+      // var options = {}
+      var options = {
+        interaction: {hover: true},
+        manipulation: {
+          enabled: true,
+        },
+        nodes: {
+          scaling: {
+            label: {
+              enabled: true,
+            },
+          },
+        },
+      };
       this.network = new vis.Network(container, data, options);
+      this.network.on("hoverNode", function (params) {
+        // @ts-ignore
+        document.getElementById("eventSpanHeading").innerText = "showPopup event: ";
+        // @ts-ignore
+        document.getElementById("eventSpanContent").innerText = JSON.stringify(
+          params,
+          params,
+          4
+        );
+      });
     }
   }
 }
-
 
 /* data structure of relation map */
 /* 0:

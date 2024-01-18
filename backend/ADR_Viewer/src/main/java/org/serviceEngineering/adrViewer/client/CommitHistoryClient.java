@@ -25,7 +25,7 @@ public class CommitHistoryClient {
 
     /**
      * Retrieves commit history for a specific file within a GitHub repository using GraphQL.
-     * <p>
+     *
      * This method makes a request to the GitHub API to fetch the commit history for a particular file
      * within the specified repository and branch.
      *
@@ -55,7 +55,7 @@ public class CommitHistoryClient {
 
         log.info(graphQLRequestBody.toString());
 
-        return webClient.post()
+    return webClient.post()
                 .uri(githubApiUrl)
                 .bodyValue(graphQLRequestBody)
                 .headers(consumer)

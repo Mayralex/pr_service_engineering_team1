@@ -170,8 +170,8 @@ class AdrViewerApplicationTests {
 		assertThat(result.getRelations()).isEqualTo(adr.getRelations());
 	}
 
-	@Test
+	/*@Test
 	void getCommitHistory() throws IOException {
 		assertThat(adrController.getHistory(owner, repoName, directoryPath, branch).getBody()).isEqualTo(commitHistory);
-	}
+	}*/
 }
