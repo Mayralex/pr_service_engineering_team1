@@ -3,9 +3,14 @@ package org.serviceEngineering.adrViewer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.serviceEngineering.adrViewer.controller.ADRController;
+import org.serviceEngineering.adrViewer.controller.ImportController;
+import org.serviceEngineering.adrViewer.div.ADRParser;
 import org.serviceEngineering.adrViewer.entity.ADR;
+import org.serviceEngineering.adrViewer.entity.Artifact;
+import org.serviceEngineering.adrViewer.entity.Relation;
 import org.serviceEngineering.adrViewer.repository.ADRRepository;
 import org.serviceEngineering.adrViewer.service.ADRService;
+import org.serviceEngineering.adrViewer.service.ImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,7 +41,13 @@ class AdrViewerApplicationTests {
 	private ADRService ADRService;
 
 	@Autowired
+	private ImportService importService;
+
+	@Autowired
 	private ADRController adrController;
+
+	@Autowired
+	private ImportController importController;
 
 	@Autowired
 	private ADRRepository adrRepository;
@@ -51,8 +63,8 @@ class AdrViewerApplicationTests {
 		adr.setDecision("We will implement a three step pipeline architecture for GraalWasm. In the first step, the bytecode is parsed and validated. The output of this parsing step is an AST containing the control structures of the bytecode and actions that need to be performed during linking. In the second step, the linker executes all actions provided by the parsing step, resolves imports and exports and initializes the table and memory of every module. In the third step, the AST is executed in an interpreter that gets automatically optimized by the Truffle framework.");
 		adr.setStatus("Active");
 		adr.setConsequences("Having several steps allows for optimizations before the execution of the code in the interpreter. Furthermore, this makes the compliance to the Truffle frameworks AST representation easier. In addition, this architecture is easier to comprehend than having everything in a single step. This architecture is also easier to test, since the individual steps can be tested independent of each other.This approach will increase warmup time since additional work has to be performed before executing the code. In addition, extending the code with new features might imply changes in several locations.");
-		//adr.setArtifacts("{org.graalvm.wasm.BinaryStreamParser=../../src/org.graalvm.wasm/src/org/graalvm/wasm/BinaryStreamParser.java, org.graalvm.wasm.nodes.WasmBlockNode=../../src/org.graalvm.wasm/src/org/graalvm/wasm/nodes/WasmBlockNode.java, org.graalvm.wasm.nodes.WasmRootNode=../../src/org.graalvm.wasm/src/org/graalvm/wasm/nodes/WasmRootNode.java, org.graalvm.wasm.SymbolTable=../../src/org.graalvm.wasm/src/org/graalvm/wasm/SymbolTable.java, org.graalvm.wasm.BinaryParser=../../src/org.graalvm.wasm/src/org/graalvm/wasm/BinaryParser.java, org.graalvm.wasm.nodes.WasmIfNodes=../../src/org.graalvm.wasm/src/org/graalvm/wasm/nodes/WasmIfNode.java, org.graalvm.wasm.nodes.WasmCallStubNode=../../src/org.graalvm.wasm/src/org/graalvm/wasm/nodes/WasmCallStubNode.java, org.graalvm.wasm.nodes.WasmIndirectCallNode=../../src/org.graalvm.wasm/src/org/graalvm/wasm/nodes/WasmIndirectCallNode.java, org.graalvm.wasm.nodes.WasmUndefinedFunctionRootNode=../../src/org.graalvm.wasm/src/org/graalvm/wasm/nodes/WasmUndefinedFunctionRootNode.java, org.graalvm.wasm.Linker=../../src/org.graalvm.wasm/src/org/graalvm/wasm/Linker.java, org.graalvm.wasm.nodes.WasmNodeInterface=../../src/org.graalvm.wasm/src/org/graalvm/wasm/nodes/WasmNodeInterface.java, org.graalvm.wasm.nodes.WasmEmptyNode=../../src/org.graalvm.wasm/src/org/graalvm/wasm/nodes/WasmEmptyNode.java, org.graalvm.wasm.nodes.WasmNode=../../src/org.graalvm.wasm/src/org/graalvm/wasm/nodes/WasmNode.java}");
-		//adr.setRelations("{enables ADR 008=./adr-008.md, enables ADR 005=./adr-005.md, enables ADR 003=./adr-003.md}");
+		adr.setArtifacts(new ArrayList<>(List.of(new Artifact(1, "org.graalvm.wasm.BinaryStreamParser=../../src/org.graalvm.wasm/src/org/graalvm/wasm/BinaryStreamParser.java", adr))));
+		adr.setRelations(new ArrayList<>(List.of(new Relation(1, "enables", "ADR 002", adr))));
 		adr.setDate("9999-12-31");
 		adr.setCommit("179a300ef29");
 		return adr;
@@ -74,35 +86,34 @@ class AdrViewerApplicationTests {
 		adrRepository.deleteAll();
 	}
 
-
 	@Test
 	void contextLoads() {
 		assertThat(ADRService).isNotNull();
 		assertThat(adrController).isNotNull();
 	}
 
-	/*@Test
+	@Test
 	void connectGithub() {
 		adrRepository.deleteAll();
-		assertThat(ADRService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).isNotNull();
+		assertThat(importService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).isNotNull();
 	}
 
 	@Test
 	void extractADRsAndCheckNumberOfADRs() {
 		int nunADRs = 27;
 		adrRepository.deleteAll();
-		assertThat(ADRService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).hasSize(nunADRs);
+		assertThat(importService.fetchRepositoryContent(owner, repoName, directoryPath, branch)).hasSize(nunADRs);
 	}
 
 	@Test
 	void parseSingleADRToJSONNotNull() {
-		assertThat(ADRService.parseADRFileDeprecated(owner, repoName, filePath, branch)).isNotNull();
+		assertThat(importService.parseADRFile(owner, repoName, filePath, branch)).isNotNull();
 	}
 
 	@Test
 	void parseADRToEntity() {
 		ADR adr = initTestADR();
-		String markdown = ADRService.fetchADRFile(owner, repoName, filePath, branch);
+		String markdown = importService.fetchADRFile(owner, repoName, filePath, branch);
 		String html = ADRParser.convertMarkdownToHTML(markdown);
 		ADR result = ADRParser.convertHTMLToADR(html);
 		assertThat(result.getTitle()).isEqualTo(adr.getTitle());
@@ -110,19 +121,13 @@ class AdrViewerApplicationTests {
 		assertThat(result.getDecision()).isEqualTo(adr.getDecision());
 		assertThat(result.getStatus()).isEqualTo(adr.getStatus());
 		assertThat(result.getConsequences()).isEqualTo(adr.getConsequences());
-		assertThat(result.getArtifacts()).isEqualTo(adr.getArtifacts());
-		assertThat(result.getRelations()).isEqualTo(adr.getRelations());
+		assertThat(result.getCommit()).isEqualTo(adr.getCommit());
 	}
 
 	@Test
 	void readSingleADR() {
-		assertThat(ADRService.fetchADRFile(owner, repoName, filePath, branch)).isNotNull();
+		assertThat(importService.fetchADRFile(owner, repoName, filePath, branch)).isNotNull();
 	}
-
-	@Test
-	void convertADRtoHTML() {
-		assertThat(ADRService.parseADRFileToHTML(owner, repoName, filePath, branch)).isNotNull();
-	}*/
 
 	@Test
 	void bulkParse() throws Exception {
@@ -130,34 +135,24 @@ class AdrViewerApplicationTests {
 		this.mockMvc.perform(get("/api/v2/getAllADRs").params(params)).andDo(print()).andExpect(status().isOk());
 	}
 
-	/*@Test
-	void getAll() throws InterruptedException {
-		//assertThat(adrControllerV2.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
-		adrController.getAllADRs(owner, repoName, directoryPath, branch);
-		try {
-			Thread.sleep(25000);
-		} catch (InterruptedException e) {
-			throw e;
-		}
-		assertThat(adrController.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
-	}
-
 	@Test
 	void getByStatus() throws InterruptedException {
-		adrController.getAllADRs(owner, repoName, directoryPath, branch);
+		importController.parseRepository(owner, repoName, directoryPath, branch);
+		adrController.getAllADRs();
 		try {
 			Thread.sleep(25000);
 		} catch (InterruptedException e) {
 			throw e;
 		}
-		assertThat(adrController.getAllADRs(owner, repoName, directoryPath, branch).getBody()).asList().hasSize(27);
+		assertThat(adrController.getAllADRs().getBody()).asList().hasSize(27);
 		assertThat(adrController.getByStatus("active").getBody()).asList().hasSize(19);
 		assertThat(adrController.getByStatus("deprecated").getBody()).asList().hasSize(8);
-	}*/
+	}
 
 	//@Test
 	void getById() {
 		ADR adr = initTestADR();
+		adr.setId(1);
 		//TODO: solve error: org.hibernate.LazyInitializationException: could not initialize proxy
 		ADR result = (ADR) adrController.getADR(1).getBody();
 		assertThat(result).isNotNull();
@@ -169,9 +164,4 @@ class AdrViewerApplicationTests {
 		assertThat(result.getArtifacts()).isEqualTo(adr.getArtifacts());
 		assertThat(result.getRelations()).isEqualTo(adr.getRelations());
 	}
-
-	/*@Test
-	void getCommitHistory() throws IOException {
-		assertThat(adrController.getHistory(owner, repoName, directoryPath, branch).getBody()).isEqualTo(commitHistory);
-	}*/
 }
