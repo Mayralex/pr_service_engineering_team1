@@ -82,7 +82,7 @@ export class RelationGraphComponent implements OnInit {
       if (!addedNodes.has(key)) {
         const matchedAdr = this.adrs.find(adr => adr.title.includes(key));
         const adrTitle = matchedAdr?.title;
-        this.nodes.push({ id: key, label: key, color: 'rgb(255,255,102)', title: "Test"});
+        this.nodes.push({ id: key, label: key, color: 'rgb(255,255,102)', title: adrTitle});
         addedNodes.add(key);
       }
 
@@ -91,9 +91,9 @@ export class RelationGraphComponent implements OnInit {
         const { affectedAdr } = relation;
 
         if (!addedNodes.has(affectedAdr)) {
-          const matchedAdr = this.adrs.find(adr => adr.title.includes(key));
+          const matchedAdr = this.adrs.find(adr => adr.title.includes(affectedAdr));
           const adrTitle = matchedAdr?.title;
-          this.nodes.push({ id: affectedAdr, label: "ADR "+affectedAdr, color: 'rgb(204,255,204)', title: "ADR Title" });
+          this.nodes.push({ id: affectedAdr, label: "ADR "+affectedAdr, color: 'rgb(204,255,204)', title: adrTitle });
           addedNodes.add(affectedAdr);
         }
 
@@ -114,11 +114,10 @@ export class RelationGraphComponent implements OnInit {
         edges: this.graphEdges,
       };
 
-      // var options = {}
       var options = {
         interaction: {hover: true},
         manipulation: {
-          enabled: true,
+          enabled: false,
         },
         nodes: {
           scaling: {
@@ -129,16 +128,6 @@ export class RelationGraphComponent implements OnInit {
         },
       };
       this.network = new vis.Network(container, data, options);
-      this.network.on("hoverNode", function (params) {
-        // @ts-ignore
-        document.getElementById("eventSpanHeading").innerText = "showPopup event: ";
-        // @ts-ignore
-        document.getElementById("eventSpanContent").innerText = JSON.stringify(
-          params,
-          params,
-          4
-        );
-      });
     }
   }
 }

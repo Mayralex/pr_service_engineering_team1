@@ -1,4 +1,4 @@
-
-<div *ngFor="let adr of adrs" >
-  <li>{{adr.title}}, <b>Commit-Date: {{adr.date}}</b></li>
+<div class="container text-center">
+<button class="btn btn-dark mb-3" (click)="createTimeline()">Create Timeline</button>
+<div #timelineContainer id="timelineContainer"></div>
 </div>
