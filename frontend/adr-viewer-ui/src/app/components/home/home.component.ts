@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = {repoOwner: "", repoName: "", directoryPath: "", branch: ""};
-    this.hideButton = sessionStorage.getItem('previousProject') !== 'true';
+    this.hideButton = sessionStorage.getItem("previousProject") !== '"true"';
   }
 
   /** Navigate to listview component with user information and store input variables
@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
       this.userData.branch
     ).subscribe({
       next: value => {
+        sessionStorage.setItem("previousProject", JSON.stringify("true"));
         sessionStorage.setItem("importTaskId", JSON.stringify(value.id));
         sessionStorage.setItem("repoOwner", JSON.stringify(this.userData.repoOwner));
         sessionStorage.setItem("repoName", JSON.stringify(this.userData.repoName));
@@ -55,7 +56,9 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  // Used by "Go back to previous project" button to return to the last page
+  /** Used by "Go back to previous project" button to return to the last page
+   *
+   */
   prevProject(){
     this._location.back();
   }
@@ -70,6 +73,8 @@ export class HomeComponent implements OnInit {
     this.onSubmit();
   }
 
+  /** removed "View last analyzed project" button so not needed anymore unless we want dropdown --> was done in a simpler way with function "prevProject()"
+   *
   useLastAnalyzed() {
     this.adrService.getLastImportTask().subscribe({
       next: value => {
@@ -84,5 +89,5 @@ export class HomeComponent implements OnInit {
         });
       }, error: err => {"Retrieving the last import task was not successful"}
     });
-  }
+  } */
 }
