@@ -6,7 +6,7 @@ der Angular CLI wird der Befehl `npm install -g @angular/cli` in der Kommandozei
 Mit `ng version` kann man die Version abfragen. Wir verwenden Angular CLI: 14.3.0 und Node: 16.13.2 Unser Projekt unterstützt die Node-Versionen 14.5.0 - 16.x.x 
 
 ## Backend
-Bevor das Frontend gestarted wird, muss sichergestellt werden, dass das Backend gestartet ist. Dazu muss (in der Entwicklunsumgebung) `AdrViewerApplication` gestartet werden. 
+Bevor das Frontend gestarted wird, muss sichergestellt werden, dass das Backend gestartet ist. Dazu muss (in der Entwicklunsumgebung) `AdrViewerApplication` gestartet werden (Java Version: mind. 17). 
 
 ## Frontend
 Im Projekt in den Ordner `adr-viewer-ui` (pr_service_engineering_team1\frontend\adr-viewer-ui) navigieren (auf Ebene der package.json-Datei). In der Entwicklungsumgebung
