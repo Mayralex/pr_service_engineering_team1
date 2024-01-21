@@ -1,8 +1,8 @@
 # Installationsanleitung
 
 ## NodeJS und Angular
-Installation von NodeJS (`https://nodejs.org/en/`) und Installation der Angular CLI. F¨ur die Installation
-der Angular CLI wird der Befehl `npm install -g @angular/cli` in der Kommandozeile ausgef¨uhrt.
+Installation von NodeJS (`https://nodejs.org/en/`) und Installation der Angular CLI. Für die Installation
+der Angular CLI wird der Befehl `npm install -g @angular/cli` in der Kommandozeile ausgeführt.
 Mit `ng version` kann man die Version abfragen. Wir verwenden Angular CLI: 14.3.0 und Node: 16.13.2 Unser Projekt unterstützt die Node-Versionen 14.5.0 - 16.x.x 
 
 ## Backend
