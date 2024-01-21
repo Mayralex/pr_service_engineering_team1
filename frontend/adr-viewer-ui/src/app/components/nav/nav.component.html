@@ -18,15 +18,29 @@
                (change)="setTheme($event)"/>
       </label>
     </div>
-    <ul class="navbar-nav ms-auto">
-      <li class="nav-item px-4" *ngFor="let navbarItem of navbarItems">
-        <a class="nav-link active" aria-current="page" routerLink={{navbarItem[0]}}
-           [queryParams]="{importTaskId: repoData.importTaskId, repoOwner: repoData.repoOwner, repoName: repoData.repoName, directoryPath: repoData.directoryPath, branch: repoData.branch}"
-           queryParamsHandling="">
-          {{navbarItem[1]}}
-        </a>
-      </li>
-    </ul>
+    <div *ngIf="disableLinks; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item px-4" *ngFor="let navbarItem of navbarItems">
+          <a class="nav-link disabled" aria-current="page" routerLink={{navbarItem[0]}}
+             [queryParams]="{importTaskId: repoData.importTaskId, repoOwner: repoData.repoOwner, repoName: repoData.repoName, directoryPath: repoData.directoryPath, branch: repoData.branch}"
+             queryParamsHandling="">
+            {{navbarItem[1]}}
+          </a>
+        </li>
+      </ul>
+    </ng-template>
+    <ng-template #elseBlock>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item px-4" *ngFor="let navbarItem of navbarItems">
+          <a class="nav-link active" aria-current="page" routerLink={{navbarItem[0]}}
+             [queryParams]="{importTaskId: repoData.importTaskId, repoOwner: repoData.repoOwner, repoName: repoData.repoName, directoryPath: repoData.directoryPath, branch: repoData.branch}"
+             queryParamsHandling="">
+            {{navbarItem[1]}}
+          </a>
+        </li>
+      </ul>
+    </ng-template>
     <a class="nav-link active text-info px-4" aria-current="page" routerLink={{home[0]}}>
       {{home[1]}}
     </a>
