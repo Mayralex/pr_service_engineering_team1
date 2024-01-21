@@ -5,9 +5,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.serviceEngineering.adrViewer.client.CommitHistoryClient;
-import org.serviceEngineering.adrViewer.dto.CommitDTO;
-import org.serviceEngineering.adrViewer.entity.ADR;
 import org.serviceEngineering.adrViewer.dto.ADRPageDTO;
+import org.serviceEngineering.adrViewer.entity.ADR;
 import org.serviceEngineering.adrViewer.entity.ImportTask;
 import org.serviceEngineering.adrViewer.exceptions.ServiceException;
 import org.serviceEngineering.adrViewer.service.ADRService;
@@ -173,13 +172,13 @@ public class ADRController {
      */
     @Operation(
             summary = "Get commit history",
-            description = "Get the commit history (oid, committedDate, message)")
+            description = "Get the commit history (oid, committedDate, message, adr status)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
     @CrossOrigin(origins = "http://localhost:4200") // only allows access from our frontend
     @GetMapping(value = "v2/getHistory", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CommitDTO> getHistory(
+    public ResponseEntity<Object> getHistory(
             @RequestParam int importTaskId,
             @RequestParam String filePath
     ) throws IOException {
@@ -187,8 +186,9 @@ public class ADRController {
         Object result = commitHistoryClient.getHistory(importTask.getRepoOwner(), importTask.getRepoName(), filePath, importTask.getBranch());
         log.info(result.toString());
 
-        CommitDTO latestCommitDTO = adrService.extractLatestCommit(result);
-        return new ResponseEntity<>(latestCommitDTO, HttpStatus.OK);
+        //CommitDTO latestCommitDTO = adrService.extractLatestCommit(result);
+        //return new ResponseEntity<>(latestCommitDTO, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     /**
