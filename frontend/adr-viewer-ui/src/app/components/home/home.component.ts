@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Location} from "@angular/common";
 import {AdrService} from "../../services/adr.service";
+import {LoadingService} from "../../services/loading.service";
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,9 @@ export class HomeComponent implements OnInit {
 
   constructor(private router: Router,
               private _location: Location,
-              private adrService: AdrService) {
+              private adrService: AdrService,
+              private loadingService: LoadingService
+  ) {
   }
 
   ngOnInit(): void {
@@ -37,6 +40,9 @@ export class HomeComponent implements OnInit {
       this.userData.branch
     ).subscribe({
       next: value => {
+        // disable navbar buttons while loading
+        this.loadingService.toggleLoadingStatus();
+
         sessionStorage.setItem("previousProject", JSON.stringify("true"));
         sessionStorage.setItem("importTaskId", JSON.stringify(value.id));
         sessionStorage.setItem("repoOwner", JSON.stringify(this.userData.repoOwner));

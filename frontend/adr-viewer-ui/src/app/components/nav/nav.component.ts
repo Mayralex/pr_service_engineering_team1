@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {LoadingService} from "../../services/loading.service";
 
 @Component({
   selector: 'app-nav',
@@ -13,6 +14,9 @@ export class NavComponent implements OnInit {
   // route to input mask
   home = ["/home", "Change Project"];
 
+  // disable link buttons
+  disableLinks = false;
+
   // list of items in the navbar, including route and name - can be added/removed here
   navbarItems = [
     ["/listview", "ADR-List"],
@@ -22,7 +26,7 @@ export class NavComponent implements OnInit {
   repoData: { importTaskId: any, repoOwner: any; repoName: any; directoryPath: any; branch: any };
   isChecked: boolean = false;
 
-  constructor() { }
+  constructor(private loadingService: LoadingService) { }
 
   ngOnInit(): void {
     this.repoData = {importTaskId: 0, repoOwner: "", repoName: "", directoryPath: "", branch: ""};
@@ -32,6 +36,10 @@ export class NavComponent implements OnInit {
     this.repoData.repoName = sessionStorage.getItem('repoName');
     this.repoData.directoryPath = sessionStorage.getItem('directoryPath');
     this.repoData.branch = sessionStorage.getItem('branch');
+
+    this.loadingService.isLoading$.subscribe(isLoading => {
+      this.disableLinks = isLoading;
+    });
   }
 
   /**

@@ -3,6 +3,7 @@ import {timer} from "rxjs";
 import {switchMap, takeWhile} from "rxjs/operators";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AdrService} from "../../services/adr.service";
+import {LoadingService} from "../../services/loading.service";
 
 @Component({
   selector: 'app-loading-page',
@@ -18,7 +19,8 @@ export class LoadingPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private adrService: AdrService
+    private adrService: AdrService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
@@ -49,6 +51,9 @@ export class LoadingPageComponent implements OnInit {
           this.importFinished = importTask.finished;
 
           if (importTask.finished) {
+            // enable navbar buttons when loading is finished
+            this.loadingService.toggleLoadingStatus();
+
             this.router.navigate(['/listview'], {
               queryParams: {
                 importTaskId: importTask.id,
