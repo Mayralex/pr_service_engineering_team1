@@ -202,4 +202,13 @@ public class ImportService {
             return restTemplate.exchange(Objects.requireNonNull(responseEntity.getBody()).getDownload_url(), HttpMethod.GET, new HttpEntity<>(headers), String.class).getBody();
         } else throw new ServiceException("Path not pointing to markdown file", filePath);
     }
+
+    /**
+     * Clears the cache of Import Tasks by removing all records from the repository.
+     * This method deletes all Import Tasks stored in the repository, effectively clearing the cache.
+     * Use with caution, as it permanently removes all Import Tasks from the repository.
+     */
+    public void clear() {
+        this.importTaskRepository.deleteAll();
+    }
 }
