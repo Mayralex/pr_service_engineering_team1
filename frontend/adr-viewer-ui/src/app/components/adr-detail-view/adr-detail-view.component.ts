@@ -9,11 +9,14 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./adr-detail-view.component.css']
 })
 export class AdrDetailViewComponent implements OnInit {
-
+// id of the selected ADR
   id: number;
+  // id of the current import task
   importTaskId: number;
-  adrById?: ADR;
-  adrs: ADR[];
+  // the selected ADR
+  adrById?: ADR = new ADR();
+  // all ADRs of the project
+  adrs: ADR[] = [];
 
   constructor(
     private adrService: AdrService,
@@ -21,8 +24,10 @@ export class AdrDetailViewComponent implements OnInit {
     private router: Router,
   ) { }
 
+  /**
+   * initialize the selected ADR
+   */
   ngOnInit(): void {
-    //TODO: Exception handling für z.B. id bleibt -1
     this.id = -1;
     this.route.queryParams.subscribe(params => {
       this.id = params['id'];
@@ -35,15 +40,25 @@ export class AdrDetailViewComponent implements OnInit {
     this.getAllAdrsOfProject();
   }
 
+  /**
+   * get a ADR with the
+   * @param id
+   */
   getAdrById(id: number): void {
     this.adrService.getAdrById(id)
       .subscribe(adr => this.adrById = adr);
   }
-
+  /**
+   * check wether an ADR is active
+   * @param status
+   */
   isActive(status: string | undefined): boolean {
     return status === 'Active'
   }
-
+  /**
+   * navigate to the related ADR
+   * @param reference
+   */
   navigateToAdr(reference: string): void {
     if (this.adrs && this.adrs.length > 0) {
       const matchedAdr = this.adrs.find(adr => adr.title.includes(reference));
