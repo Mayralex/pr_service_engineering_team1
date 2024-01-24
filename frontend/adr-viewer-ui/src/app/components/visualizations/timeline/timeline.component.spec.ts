@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimelineComponent } from './timeline.component';
+import {HttpClientModule} from "@angular/common/http";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('TimelineComponent', () => {
   let component: TimelineComponent;
@@ -8,6 +10,7 @@ describe('TimelineComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientModule, RouterTestingModule],
       declarations: [ TimelineComponent ]
     })
     .compileComponents();
