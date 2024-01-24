@@ -10,11 +10,14 @@ import {Subscription} from "rxjs";
   styleUrls: ['./adr-detail-view.component.css']
 })
 export class AdrDetailViewComponent implements OnInit {
-
+// id of the selected ADR
   id: number;
+// id of the current import task
   importTaskId: number;
-  adrById:ADR;
-  adrs: ADR[];
+// the selected ADR
+  adrById:ADR = new ADR();
+// all ADRs of the project
+  adrs: ADR[] = [];
 
   private adrSubscription: Subscription;
 
@@ -24,8 +27,10 @@ export class AdrDetailViewComponent implements OnInit {
     private router: Router,
   ) { }
 
+  /**
+   * initialize the selected ADR
+   */
   ngOnInit(): void {
-    //TODO: Exception handling für z.B. id bleibt -1
     this.id = -1;
     this.getAllAdrs();
     this.route.queryParams.subscribe(params => {
@@ -37,15 +42,27 @@ export class AdrDetailViewComponent implements OnInit {
     this.getAdrById(this.id);
   }
 
+  /**
+   * get a ADR with the
+   * @param id
+   */
   getAdrById(id: number): void {
     this.adrService.getAdrById(id)
       .subscribe(adr => this.adrById = adr);
   }
 
-  isActive(status: string): boolean {
+  /**
+   * check wether an ADR is active
+   * @param status
+   */
+  isActive(status: string | undefined): boolean {
     return status === 'Active'
   }
 
+  /**
+   * navigate to the related ADR
+   * @param reference
+   */
   navigateToAdr(reference: string): void {
     if (this.adrs && this.adrs.length > 0) {
       const matchedAdr = this.adrs.find(adr => adr.title.includes(reference));
