@@ -169,14 +169,14 @@ export class AdrService {
    * @param importTaskId to get repository data in the backend for the GraphQl request
    * @param filePath of the file for the commit history
    */
-  getCommitData(importTaskId: number, filePath: string): Observable<CommitData> {
+  getCommitData(importTaskId: number, filePath: string): Observable<CommitData[]> {
     let requestUrl = `${this.url}/${this.commitHistoryUrl}`;
 
     let queryParams = new HttpParams();
     queryParams = queryParams.append("importTaskId", importTaskId);
     queryParams = queryParams.append("filePath", filePath);
 
-    return this.http.get<CommitData>(requestUrl, {params: queryParams})
+    return this.http.get<CommitData[]>(requestUrl, {params: queryParams})
   }
 
   /** Checks if the service finished fetching all ADRs from endpoint

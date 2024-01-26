@@ -70,30 +70,13 @@ export class HomeComponent implements OnInit {
   }
 
   // Used for easy access to Graal Project for testing, etc. - can be deleted when not needed anymore
-  useGraal() {
-    this.userData.repoOwner = "flohuemer";
-    this.userData.repoName = "graal";
-    this.userData.directoryPath = "wasm/docs/arch";
-    this.userData.branch = "adrs";
+  useExample() {
+    this.userData.repoOwner = "mayralex";
+    this.userData.repoName = "pr_service_engineering_team1";
+    this.userData.directoryPath = "docs/adrs";
+    this.userData.branch = "main";
 
     this.onSubmit();
   }
 
-  /** removed "View last analyzed project" button so not needed anymore unless we want dropdown --> was done in a simpler way with function "prevProject()"
-   *
-  useLastAnalyzed() {
-    this.adrService.getLastImportTask().subscribe({
-      next: value => {
-        this.userData.repoOwner = value.repoOwner
-        this.userData.repoName = value.repoName
-        this.userData.directoryPath = value.directoryPath
-        this.userData.branch = value.branch
-        this.router.navigate(['/loading'], {
-          queryParams: {
-            importTaskId: value.id
-          }
-        });
-      }, error: err => {"Retrieving the last import task was not successful"}
-    });
-  } */
 }

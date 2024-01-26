@@ -1,5 +1,20 @@
 <div class="flex-item">
-  <div id="timeline-chart">
-    <google-chart [data]="timelineChartData" (chartSelect)="select($event)"> </google-chart>
+  <div *ngIf="privateRepo" id="private">
+    <br>
+    <p>Not able to display lifecycle for private repository...</p>
+  </div>
+  <div *ngIf="!privateRepo">
+    <div *ngIf="!timelineChartData">
+      <br>
+      <div id="bar">
+        <ngb-progressbar class="mb-3 w-25" type="dark" [value]="loadingProgess"></ngb-progressbar>
+      </div>
+      <div id="text">
+        <p>Fetching data. This may take a while...</p>
+      </div>
+    </div>
+    <div *ngIf="timelineChartData" id="timeline-chart">
+      <google-chart [data]="timelineChartData" (chartSelect)="select($event)"></google-chart>
+    </div>
   </div>
 </div>

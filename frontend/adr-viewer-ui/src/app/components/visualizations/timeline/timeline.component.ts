@@ -61,7 +61,7 @@ export class TimelineComponent implements OnInit {
           next: commit => {
             //console.log('Commit data received: ', commit);
             if (commit) {
-              const dateTimeString = commit.committedDate;
+              const dateTimeString = commit[0].committedDate;
               const dateString = new Date(dateTimeString).toISOString().slice(0, 10);
               console.log(dateString);
               adr.date = dateString;

@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="m-lg-3">
+  <div class="m-lg-3 w-25">
     <label class="mb-2 m-lg-1" for="visualizationType">Select Use Case:</label>
     <select class="form-select" id="visualizationType" aria-label="Select Visualization Type" [(ngModel)]="selectedVisualization">
       <option selected value="bar" (click)="loadAdrs()">Artifacts</option>
@@ -7,7 +7,7 @@
       <option selected value="graph" (click)="loadAdrs()">Relations</option>
       <option selected value="pie" (click)="loadAdrs()">Status</option>
       <option selected value="lifecycle" (click)="loadAdrs()">ADR-Lifecycle</option>
-      <option selected value="timeline" (click)="loadAdrs()">ADR-Timeline</option>
+      <!-- <option selected value="timeline" (click)="loadAdrs()">ADR-Timeline</option> -->
   </select>
   </div>
 
@@ -17,7 +17,7 @@
     <app-relation-graph *ngIf="selectedVisualization === 'graph'" [adrs]="adrs"></app-relation-graph>
     <app-piechart *ngIf="selectedVisualization === 'pie'" [adrs]="adrs"></app-piechart>
     <app-lifecycle *ngIf="selectedVisualization === 'lifecycle'" [adrs]="adrs"></app-lifecycle>
-    <app-timeline *ngIf="selectedVisualization === 'timeline'" [adrs]="adrs" [importTaskId]="importTaskId"></app-timeline>
+   <!-- <app-timeline *ngIf="selectedVisualization === 'timeline'" [adrs]="adrs" [importTaskId]="importTaskId"></app-timeline> -->
   </div>
 
   <ng-template #noADRs>

@@ -26,7 +26,13 @@ export class AdrDetailViewComponent implements OnInit {
     this.id = -1;
     this.route.queryParams.subscribe(params => {
       this.id = params['id'];
-      this.importTaskId = params['importTaskId'];
+      if(params['importTaskId']) {
+        this.importTaskId = params['importTaskId'];
+      }
+      else {
+        // @ts-ignore
+        this.importTaskId = +sessionStorage.getItem('importTaskId');
+      }
       if (this.id) {
         this.getAdrById(this.id)
       }
