@@ -57,7 +57,6 @@ export class HomeComponent implements OnInit {
       },
       error: err => {
         console.error("An error occured when analysing the repository")
-        // TODO: Show error message
       }
     })
   }

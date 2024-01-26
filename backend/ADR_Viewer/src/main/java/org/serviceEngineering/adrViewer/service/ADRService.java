@@ -3,9 +3,9 @@ package org.serviceEngineering.adrViewer.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
+import org.serviceEngineering.adrViewer.dto.ADRPageDTO;
 import org.serviceEngineering.adrViewer.dto.CommitDTO;
 import org.serviceEngineering.adrViewer.entity.ADR;
-import org.serviceEngineering.adrViewer.dto.ADRPageDTO;
 import org.serviceEngineering.adrViewer.repository.ADRRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,6 +92,11 @@ public class ADRService {
     }
 
 
+    /**
+     * Clears the cache of Architectural Decision Records (ADRs) by removing all records from the repository.
+     * This method deletes all ADRs stored in the repository, effectively clearing the cache.
+     * Use with caution, as it permanently removes all ADRs from the repository.
+     */
     public void clear() {
         this.aDRRepository.deleteAll();
     }

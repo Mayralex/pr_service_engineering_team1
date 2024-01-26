@@ -15,11 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-
+/**
+ * Utility class for parsing Architectural Decision Records (ADRs) from HTML and Markdown formats.
+ */
 public class ADRParser {
 
     private static final Logger log = LoggerFactory.getLogger(ADRParser.class);
@@ -55,9 +55,14 @@ public class ADRParser {
         try {
             title = document.selectFirst("h1").textNodes().get(0).toString();
         } catch (NullPointerException e) {
-            log.warn(e.getMessage());
+            log.error(e.getMessage());
         }
-        adr.setTitle(((title == null) ? "PLACEHOLDER TITLE" : title));
+        //adr.setTitle(((title == null) ? "PLACEHOLDER TITLE" : title));
+        if (title == null) {
+            log.warn("No title found --> setting placeholder title");
+            adr.setTitle("PLACEHOLDER TITLE");
+        } else
+            adr.setTitle(title);
         adr.setContext(extractSectionText(document, "Context"));
         adr.setDecision(extractSectionText(document, "Decision"));
         adr.setStatus(extractSectionText(document, "Status"));
@@ -68,9 +73,14 @@ public class ADRParser {
         try {
             date = extractSectionText(document, "Date");
         } catch (NullPointerException e) {
-            log.warn(e.getMessage());
+            log.error(e.getMessage());
         }
-        adr.setDate(((date == null) ? "9999-12-31" : date));
+        //adr.setDate(((date == null) ? "9999-12-31" : date));
+        if (date == null) {
+            log.warn("No date found --> setting placeholder date 9999-12-31");
+            adr.setDate("999-12-31");
+        } else
+            adr.setDate(date);
         adr.setCommit(extractSectionText(document, "Commit"));
         return adr;
     }
@@ -201,28 +211,16 @@ public class ADRParser {
         // Get the text before the <a> tag in the list item
         String listItemText = listItem.ownText().trim();
 
-        // Determine the relation type based on the extracted text
-        if (listItemText.startsWith("enables")) {
-            return "enables ";
-        } else if (listItemText.startsWith("deprecates")) {
-            return "deprecates ";
-        } else if (listItemText.startsWith("extends")) {
-            return "extends ";
-        } else if (listItemText.startsWith("is enabled by")) {
-            return "is enabled by ";
-        } else if (listItemText.startsWith("is deprecated by")) {
-            return "is deprecated by ";
-        } else if (listItemText.startsWith("deprecated by")) {
-            return "is deprecated by ";
-        } else if (listItemText.startsWith("is related to")) {
-            return "is related to ";
-        } else if (listItemText.startsWith("related to")) {
-            return "is related to ";
-        } else if (listItemText.startsWith("is extended by")) {
-            return "is extended by ";
-        } else {
-            return ""; // Default value or handle other relation types
-        }
+        return switch (listItemText) {
+            case "enables" -> "enables ";
+            case "deprecates" -> "deprecates ";
+            case "extends" -> "extends ";
+            case "is enabled by" -> "is enabled by ";
+            case "is deprecated by", "deprecated by" -> "is deprecated by ";
+            case "is related to", "related to" -> "is related to ";
+            case "is extended by" -> "is extended by ";
+            default -> ""; // Default value or handle other relation types
+        };
     }
 }
 

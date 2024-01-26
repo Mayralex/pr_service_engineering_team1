@@ -92,7 +92,7 @@ export class ListviewComponent implements OnInit, OnDestroy {
    * @param limit limit of ADRs to display per page
    * @private
    */
-  private loadPage(searchText: string, pageOffset: number, limit: number): void {
+  public loadPage(searchText: string, pageOffset: number, limit: number): void {
     window.location.hash = pageOffset.toString();
 
     this.adrSubscription = this.adrService.getAdrs(this.importTaskId, searchText, pageOffset, limit)
