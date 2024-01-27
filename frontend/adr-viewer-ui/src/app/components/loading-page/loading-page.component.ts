@@ -49,10 +49,11 @@ export class LoadingPageComponent implements OnInit {
       .subscribe({
         next: (importTask) => {
           this.importFinished = importTask.finished;
+          console.log(this.importFinished);
 
           if (importTask.finished) {
             // enable navbar buttons when loading is finished
-            this.loadingService.toggleLoadingStatus();
+            this.loadingService.toggleLoadingStatusFalse();
 
             this.router.navigate(['/listview'], {
               queryParams: {

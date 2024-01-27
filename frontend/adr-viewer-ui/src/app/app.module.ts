@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import {BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from "@angular/common/http";
+import {ADR_HTTP_INTERCEPTOR_PROVIDERS} from "./http-interceptors";
 import { NgFor } from "@angular/common";
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -53,7 +54,7 @@ import { TimelineComponent } from './components/visualizations/timeline/timeline
     BrowserAnimationsModule,
     Ng2GoogleChartsModule,
   ],
-  providers: [],
+  providers: [ADR_HTTP_INTERCEPTOR_PROVIDERS],
   bootstrap: [AppComponent]
 })
 export class AppModule {

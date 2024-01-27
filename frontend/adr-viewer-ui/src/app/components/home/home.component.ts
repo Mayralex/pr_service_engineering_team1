@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
     ).subscribe({
       next: value => {
         // disable navbar buttons while loading
-        this.loadingService.toggleLoadingStatus();
+        this.loadingService.toggleLoadingStatusTrue();
 
         sessionStorage.setItem("previousProject", JSON.stringify("true"));
         sessionStorage.setItem("importTaskId", JSON.stringify(value.id));
@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit {
     this._location.back();
   }
 
-  // Used for easy access to Graal Project for testing, etc. - can be deleted when not needed anymore
+  // Used for easy access to ADRs of this project for testing, etc. - can be deleted when not needed anymore
   useExample() {
     this.userData.repoOwner = "mayralex";
     this.userData.repoName = "pr_service_engineering_team1";

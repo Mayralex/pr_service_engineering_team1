@@ -9,8 +9,12 @@ export class LoadingService {
 
   constructor() { }
 
-  public toggleLoadingStatus(){
-    this.isLoading$.next(!this.isLoading$.getValue());
+  public toggleLoadingStatusTrue(){
+    this.isLoading$.next(true);
+  }
+
+  public toggleLoadingStatusFalse(){
+    this.isLoading$.next(false);
   }
 
 }
