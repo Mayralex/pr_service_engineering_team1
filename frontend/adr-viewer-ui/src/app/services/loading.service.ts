@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 
+/**
+ * Service contains information about the fetching status of ADRs for a given repository
+ */
 @Injectable({
   providedIn: 'root'
 })

@@ -3,6 +3,9 @@ import {ADR} from "../../../interfaces/adr";
 import {AdrService} from "../../../services/adr.service";
 import * as vis from "vis";
 
+/**
+ * @deprecated This component is faulty and should not be used
+ */
 @Component({
   selector: 'app-timeline',
   templateUrl: './timeline.component.html',

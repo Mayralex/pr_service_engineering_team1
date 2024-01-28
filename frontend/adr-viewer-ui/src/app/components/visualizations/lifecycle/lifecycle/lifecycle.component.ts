@@ -5,8 +5,10 @@ import {ChartSelectEvent} from 'ng2-google-charts';
 import {Router} from "@angular/router";
 import {AdrService} from "../../../../services/adr.service";
 import {CommitData} from "../../../../interfaces/commitData";
-import {last} from "rxjs";
 
+/**
+ * This component renders the lifecycle visualization for ADRs
+ */
 @Component({
   selector: 'app-lifecycle',
   templateUrl: './lifecycle.component.html',
@@ -16,15 +18,22 @@ export class LifecycleComponent implements OnInit {
   @Input() adrs: ADR[] = [];
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
+  // arrays containing the data for the chart
   adrsData : any[] = [];
   colorData : string[] = [];
+
+  // variable containing chart config
   timelineChartData: any;
+
   importTaskId: number;
+
+  // value for progress bar
   loadingProgess: number;
+
+  // component cannot be rendered for private repositories
   privateRepo: boolean;
 
   constructor(private router: Router, private adrService: AdrService) {
-
   }
 
   ngOnInit(): void {
@@ -84,6 +93,7 @@ export class LifecycleComponent implements OnInit {
             let bTime = new Date(b.committedDate);
             return aTime.getTime() - bTime.getTime();
           });
+
           // get last date or current date if still active
           let lastDate: Date;
           if(commitData.length <= 1){

@@ -4,6 +4,9 @@ import {Location} from "@angular/common";
 import {AdrService} from "../../services/adr.service";
 import {LoadingService} from "../../services/loading.service";
 
+/**
+ * Component contains input mask for repository information
+ */
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -16,6 +19,9 @@ export class HomeComponent implements OnInit {
 
   // hide previous project button
   hideButton: boolean = true;
+
+  // if repo does not exist
+  repoError: boolean = false;
 
   constructor(private router: Router,
               private _location: Location,
@@ -40,20 +46,25 @@ export class HomeComponent implements OnInit {
       this.userData.branch
     ).subscribe({
       next: value => {
-        // disable navbar buttons while loading
-        this.loadingService.toggleLoadingStatusTrue();
+        if (value) {
+          // disable navbar buttons while loading
+          this.loadingService.toggleLoadingStatusTrue();
 
-        sessionStorage.setItem("previousProject", JSON.stringify("true"));
-        sessionStorage.setItem("importTaskId", JSON.stringify(value.id));
-        sessionStorage.setItem("repoOwner", JSON.stringify(this.userData.repoOwner));
-        sessionStorage.setItem("repoName", JSON.stringify(this.userData.repoName));
-        sessionStorage.setItem("directoryPath", JSON.stringify(this.userData.directoryPath));
-        sessionStorage.setItem("branch", JSON.stringify(this.userData.branch));
-        this.router.navigate(['/loading'], {
-          queryParams: {
-            importTaskId: value.id
-          }
-        });
+          sessionStorage.setItem("previousProject", JSON.stringify("true"));
+          sessionStorage.setItem("importTaskId", JSON.stringify(value.id));
+          sessionStorage.setItem("repoOwner", JSON.stringify(this.userData.repoOwner));
+          sessionStorage.setItem("repoName", JSON.stringify(this.userData.repoName));
+          sessionStorage.setItem("directoryPath", JSON.stringify(this.userData.directoryPath));
+          sessionStorage.setItem("branch", JSON.stringify(this.userData.branch));
+          this.router.navigate(['/loading'], {
+            queryParams: {
+              importTaskId: value.id
+            }
+          });
+        }
+        else{
+          this.repoError = true;
+        }
       },
       error: err => {
         console.error("An error occured when analysing the repository")
@@ -68,7 +79,9 @@ export class HomeComponent implements OnInit {
     this._location.back();
   }
 
-  // Used for easy access to ADRs of this project for testing, etc. - can be deleted when not needed anymore
+  /** Used for easy access to ADRs of this project for testing, etc.
+   *
+    */
   useExample() {
     this.userData.repoOwner = "mayralex";
     this.userData.repoName = "pr_service_engineering_team1";

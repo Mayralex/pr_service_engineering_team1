@@ -1,15 +1,17 @@
-import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
+import {Component, OnInit, HostListener} from '@angular/core';
 import {ADR} from "../../interfaces/adr";
 import {AdrService} from "../../services/adr.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Subscription} from "rxjs";
 
+/**
+ * Component renders listview, including pagination and searchbar
+ */
 @Component({
   selector: 'app-listview',
   templateUrl: './listview.component.html',
   styleUrls: ['./listview.component.css']
 })
-export class ListviewComponent implements OnInit, OnDestroy {
+export class ListviewComponent implements OnInit {
 
   // User input data
   importTaskId: number = -1;
@@ -19,17 +21,16 @@ export class ListviewComponent implements OnInit, OnDestroy {
   showEmpty = false;
   isLoading = true;
 
-  // Subscription to ADR service
-  private adrSubscription: Subscription;
-
   // variable for fetched ADRs
   adrs = [] as ADR[];
 
   // for search by title
   _searchText: string = '';
+
   get searchText(): string {
     return this._searchText;
   }
+
   set searchText(value: string) {
     this._searchText = value;
     this.loadPage(this.searchText, this.pageOffset, this.limit);
@@ -86,7 +87,7 @@ export class ListviewComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Loads a oage of ADRs
+   * Loads a page of ADRs
    * @param searchText to filter the ADRs
    * @param pageOffset current page
    * @param limit limit of ADRs to display per page
@@ -95,7 +96,7 @@ export class ListviewComponent implements OnInit, OnDestroy {
   public loadPage(searchText: string, pageOffset: number, limit: number): void {
     window.location.hash = pageOffset.toString();
 
-    this.adrSubscription = this.adrService.getAdrs(this.importTaskId, searchText, pageOffset, limit)
+    this.adrService.getAdrs(this.importTaskId, searchText, pageOffset, limit)
       .subscribe({
         next: page => {
           if (page && page.data.length > 0) {
@@ -113,10 +114,6 @@ export class ListviewComponent implements OnInit, OnDestroy {
           console.log('Get Next Adrs failed:', error);
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    console.log('Listview component was destroyed.');
   }
 
   /**

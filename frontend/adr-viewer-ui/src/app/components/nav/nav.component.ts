@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {LoadingService} from "../../services/loading.service";
 
+/**
+ * Component renders naviagtion bar on top of the application, including routes to listview, dashboard-view, home-view and a darkmode slider
+ */
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',

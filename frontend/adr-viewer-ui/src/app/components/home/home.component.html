@@ -40,8 +40,12 @@
              pattern="[\-A-Za-z0-9À-ž_.\\]+" name="branch" [(ngModel)]="userData.branch" required>
     </div>
 
+    <div *ngIf="repoError" class="alert alert-danger text-center h-auto mt-3 p-0 mx-5" role="alert">
+     Invalid repository information!
+    </div>
+
     <div class="text-center">
-      <button type="submit" [disabled]="!adrForm.form.valid" class="btn btn-outline-primary mt-4 mx-2">Search for ADRs
+      <button type="submit" [disabled]="!adrForm.form.valid" class="btn btn-outline-primary mt-3 mx-2">Search for ADRs
       </button>
     </div>
     <div class="text-center mt-1">or</div>
@@ -51,4 +55,3 @@
     </div>
   </form>
 </div>
-

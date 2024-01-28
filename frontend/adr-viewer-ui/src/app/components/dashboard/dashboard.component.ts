@@ -3,6 +3,9 @@ import {ADR} from "../../interfaces/adr";
 import {AdrService} from "../../services/adr.service";
 import {ActivatedRoute} from "@angular/router";
 
+/**
+ * Component renders the dashboard view
+ */
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
