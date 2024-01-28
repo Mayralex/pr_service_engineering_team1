@@ -121,6 +121,6 @@ export class ListviewComponent implements OnInit {
    * @param status ADR status parameter
    */
   isActive(status: string): boolean {
-    return status === 'Active'
+    return status.toLowerCase() === 'active' || status.toLowerCase() === 'accepted'
   }
 }

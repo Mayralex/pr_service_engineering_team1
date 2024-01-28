@@ -99,7 +99,8 @@ export class LifecycleComponent implements OnInit {
           if(commitData.length <= 1){
             lastDate = new Date;
           }
-          else if(commitData[commitData.length-1].status.toLowerCase() != 'active') {
+          else if((commitData[commitData.length-1].status.toLowerCase() != 'active') && (commitData[commitData.length-1].status.toLowerCase() != 'accepted')) {
+            console.log(commitData[commitData.length-1].status.toLowerCase());
             lastDate = new Date(commitData[commitData.length - 1].committedDate);
           }
           else {
@@ -109,10 +110,10 @@ export class LifecycleComponent implements OnInit {
           this.adrsData.push([adr.id.toString(), adr.title, new Date(commitData[0].committedDate), new Date(lastDate), '<div>test</div>']);
 
           // color for status
-          if(adr.status.toLowerCase() === 'active'){
+          if(adr.status.toLowerCase() === 'active' || adr.status.toLowerCase() === 'accepted'){
             this.colorData.push('#7fc45b');
           }
-          else if(adr.status.toLowerCase() === 'deprecated'){
+          else if(adr.status.toLowerCase() === 'deprecated' || adr.status.toLowerCase() === 'rejected'){
             this.colorData.push('#c96868');
           }
           else{
