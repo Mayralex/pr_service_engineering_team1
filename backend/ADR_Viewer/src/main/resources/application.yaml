@@ -18,5 +18,5 @@ spring:
 github:
   api:
     url: https://api.github.com
-    token: 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
+    token: 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
     graphql: https://api.github.com/graphql
