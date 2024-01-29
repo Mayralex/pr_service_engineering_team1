@@ -1,6 +1,10 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {ADR} from "../interfaces/adr";
 
+/**
+ * @deprecated This pipe should NOT be used.
+ * Pipe for filter functionality of searchbar in listview
+ */
 @Pipe({
   name: 'search'
 })
