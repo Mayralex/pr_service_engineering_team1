@@ -29,4 +29,3 @@
 ## ADRs still missing for:
 
 - Commit-History Endpoint - Holen von ImportTask im Backend (repoOwner, repoName, Branch), Erweiterung des ADR um FilePath
-- ADR Lifecycle - Library Usage
