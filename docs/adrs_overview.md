@@ -24,8 +24,3 @@
 - [ADR 021: Introducing Swagger UI](./adrs/adr-021.md)
 - [ADR 022: Enhancing Dashboard with Visualization Components and Selection](./adrs/adr-022.md)
 - [ADR 023: Selecting Visualization Library for relation visualization](./adrs/adr-023.md)
-
-
-## ADRs still missing for:
-
-- Commit-History Endpoint - Holen von ImportTask im Backend (repoOwner, repoName, Branch), Erweiterung des ADR um FilePath
