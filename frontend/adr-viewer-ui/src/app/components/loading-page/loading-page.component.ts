@@ -67,7 +67,7 @@ export class LoadingPageComponent implements OnInit {
           }
         },
         error: err => {
-          // TODO
+          console.log("Error while polling")
         }
       });
   }
