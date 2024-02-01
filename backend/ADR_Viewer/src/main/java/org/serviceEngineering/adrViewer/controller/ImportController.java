@@ -80,6 +80,5 @@ public class ImportController {
     public ResponseEntity<ImportTask> getLastImportTask() {
         var importTask = importService.getLastImportTask();
         return new ResponseEntity<>(importTask, HttpStatus.OK);
-        //TODO: Fallback if no last import task available (Flag?, check if getById1 works?)
     }
 }

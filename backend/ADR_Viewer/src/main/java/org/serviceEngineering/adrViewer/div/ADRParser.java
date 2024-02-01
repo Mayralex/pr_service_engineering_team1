@@ -75,7 +75,6 @@ public class ADRParser {
         } catch (NullPointerException e) {
             log.error(e.getMessage());
         }
-        //adr.setDate(((date == null) ? "9999-12-31" : date));
         if (date == null) {
             log.warn("No date found --> setting placeholder date 9999-12-31");
             adr.setDate("999-12-31");
@@ -84,7 +83,6 @@ public class ADRParser {
         adr.setCommit(extractSectionText(document, "Commit"));
         return adr;
     }
-
 
     /**
      * Extract the text from a section in the ADR
