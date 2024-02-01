@@ -7,7 +7,7 @@ Mit `ng version` kann man die Version abfragen. Wir verwenden Angular CLI: 14.3.
 
 ## Backend
 Bevor das Frontend gestarted wird, muss sichergestellt werden, dass das Backend gestartet ist. Dazu muss (in der Entwicklunsumgebung) `AdrViewerApplication` gestartet werden (Java Version: mind. 17). 
-Da das Repository public ist, und für den Zugriff auf die GitHub API ein GitHub-Token benötigt wird, muss man im Ordner `backend/ADR_Viewer/src/main/resources` ein `secrets.yaml` file einfügen, welches den API-Token enthält. Aus Sicherheitsgründen kann das `secrets.yaml` file nicht direkt im Repository zur Verfügung gestellt werden. 
+Da das Repository public ist, und für den Zugriff auf die GitHub API ein GitHub-Token benötigt wird, muss man im Ordner `backend/ADR_Viewer/src/main/resources` ein `secrets.yaml` file einfügen, welches den API-Token enthält. Aus Sicherheitsgründen kann das `secrets.yaml` file nicht direkt im Repository zur Verfügung gestellt werden (File ist in Abgabeordner enthalten bzw. in der abgegebenen ZIP-Datei bereits integriert).
 
 ## Frontend
 Im Projekt in den Ordner `adr-viewer-ui` (pr_service_engineering_team1\frontend\adr-viewer-ui) navigieren (auf Ebene der package.json-Datei). In der Entwicklungsumgebung
