@@ -108,8 +108,6 @@ public class ImportService {
 
     /***
      * Service method for fetching the contents of a GitHub repository directory, including ADR files.
-     * TODO: create search methode in order to search for ADRs inside a project ---> Goal is that, the user does not have to specify
-     *  the path to the folder
      * @param owner: GitHub Username of the person created the GitHub repository
      * @param repoName: Name of the repository stored in GitHub
      * @param directoryPath: Path to the directory where to ADRs are stores ---> To be decommissioned

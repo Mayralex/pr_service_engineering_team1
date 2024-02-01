@@ -19,7 +19,6 @@ public class Relation {
     @Column(name = "relation_id", nullable = false)
     private int id;
 
-    //TODO: Introduce enum for relation type
     @Column(name = "relation_type", length = 999999)
     private String type;
 

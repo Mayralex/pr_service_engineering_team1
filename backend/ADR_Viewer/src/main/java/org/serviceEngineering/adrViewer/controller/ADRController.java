@@ -33,7 +33,6 @@ public class ADRController {
 
     /**
      * Constructor for the ADRController class.
-     * <p>
      * Initializes the ADRController with the provided instances of ADRService, ImportService, and CommitHistoryClient.
      *
      * @param adrService          Service for managing Architectural Decision Records (ADRs).
@@ -49,7 +48,6 @@ public class ADRController {
 
     /**
      * Controller method for retrieving an Architectural Decision Record (ADR) by its unique identifier.
-     * <p>
      * This endpoint allows fetching a specific ADR by providing its unique ID. If the ADR with the
      * specified ID is found in the database, it will be returned with an HTTP status of 200 (OK).
      * If the ADR is not found or if there's a service exception, it will return an appropriate HTTP
@@ -77,7 +75,6 @@ public class ADRController {
 
     /**
      * Controller method for retrieving all Architectural Decision Records (ADRs).
-     * <p>
      * This endpoint allows fetching a list of all ADRs. The ADRs are retrieved from the storage,
      * and if successful, the list is returned with an HTTP status of 200 (OK).
      *
@@ -97,7 +94,6 @@ public class ADRController {
 
     /**
      * Controller method for retrieving all Architectural Decision Records (ADRs) of the current project.
-     * <p>
      * This endpoint allows fetching a list of all ADRs associated with the current project identified
      * by the provided importTaskId. The ADRs are retrieved from the storage, and if successful, the list
      * is returned with an HTTP status of 200 (OK).
@@ -119,7 +115,6 @@ public class ADRController {
 
     /**
      * Controller method for retrieving a list of Architectural Decision Records (ADRs) by status.
-     * <p>
      * This endpoint allows fetching a list of ADRs from storage based on the provided status.
      * If successful, the list is returned with an HTTP status of 200 (OK).
      *
@@ -139,7 +134,6 @@ public class ADRController {
 
     /**
      * Controller method for retrieving a page of Architectural Decision Records (ADRs) by pageOffset and limit.
-     * <p>
      * This endpoint allows retrieving a specified number of ADRs based on pageOffset and limit,
      * and it also considers filtering with a query. If successful, the result is returned with
      * an HTTP status of 200 (OK).
@@ -168,7 +162,6 @@ public class ADRController {
 
     /**
      * Controller method for retrieving commit history for a specific file within a GitHub repository.
-     * <p>
      * This endpoint allows fetching commit history for a particular file in a GitHub repository,
      * including the commit OID, committed date, commit message, and ADR status.
      *
@@ -195,7 +188,6 @@ public class ADRController {
 
     /**
      * Controller method for clearing the cache of repositories.
-     * <p>
      * This endpoint allows removing all objects from the cache associated with repositories.
      * It performs cache clearance, and if successful, logs the information with an HTTP status of 200 (OK).
      */

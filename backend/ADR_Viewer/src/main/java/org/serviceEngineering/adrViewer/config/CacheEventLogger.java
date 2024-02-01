@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A simple implementation of Spring's CacheEventListener for logging cache events.
- * <p>
  * This class implements the CacheEventListener interface to capture cache events such as PUT, GET, and EVICT.
  * It logs relevant information about the cache event, including the event type, key, old value, and new value.
  */

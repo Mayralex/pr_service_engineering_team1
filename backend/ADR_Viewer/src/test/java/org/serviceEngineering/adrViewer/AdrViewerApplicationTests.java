@@ -26,7 +26,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @SpringBootTest
 @AutoConfigureMockMvc
 class AdrViewerApplicationTests {
@@ -69,8 +68,6 @@ class AdrViewerApplicationTests {
 		adr.setCommit("179a300ef29");
 		return adr;
 	}
-
-	private final String commitHistory = "{\"data\":{\"repository\":{\"ref\":{\"target\":{\"history\":{\"nodes\":[{\"oid\":\"08a8ec645b96ce7781d81ffd2512dec6b5fa5c3b\",\"committedDate\":\"2023-04-10T09:06:18Z\",\"message\":\"Added architecture decision records.\\nThis documents passed decisions and helps to understand the design of the WebAssembly runtime.\"}]}}}}}}";
 
 	private static MultiValueMap<String, String> setUpParams() {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -153,7 +150,7 @@ class AdrViewerApplicationTests {
 	void getById() {
 		ADR adr = initTestADR();
 		adr.setId(1);
-		//TODO: solve error: org.hibernate.LazyInitializationException: could not initialize proxy
+		//solve error: org.hibernate.LazyInitializationException: could not initialize proxy
 		ADR result = (ADR) adrController.getADR(1).getBody();
 		assertThat(result).isNotNull();
 		assertThat(result.getTitle()).isEqualTo(adr.getTitle());
